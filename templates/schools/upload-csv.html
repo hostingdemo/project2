@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% block title %}UPLOAD CSV{% endblock %}
+
+{% block body %}
+{% if request.user.is_superuser %}
+
+<div class="container">
+
+    <div class="dropdown">
+        <button class="btn btn-sm btn-primary float-end mt-4 mb-3" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+            + Upload File
+        </button>
+        <div class="dropdown-menu mt-2" aria-labelledby="dropdownMenuButton1">
+            <form class="d-flex flex-column py-2 px-3 gap-2" style="max-width: 250px;" action="{% url 'upload_csv' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form }}
+                <button class="btn btn-sm btn-secondary" type="submit">Upload</button>
+            </form> 
+        </div>
+      </div>
+      
+    
+
+    <table class="table table-sm table-bordered shadow-sm my-3">
+        <thead>
+            <tr>
+                <th scope="col" class="text-center ">#</th>
+                <th scope="col">School Name</th>
+                <th scope="col">Id</th>
+                <th scope="col" class="text-center ">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for school in page_obj %}
+            <tr>
+                <td class="text-center ">{{ forloop.counter }}</td>
+                <td>{{ school.school_name }}</td>
+                <td>{{ school.id }}</td>
+                <td class="d-flex justify-content-center align-items-center">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" 
+                        {% if school.verified %}checked{% endif %}>
+                    </div>
+                </td>
+                {% empty %}
+                <td class="text-center" colspan="4">No Data Available</td>
+            </tr>
+            
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- pagination start -->
+    <div class="d-flex justify-content-center align-items-center">
+        <nav class="mt-2">
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1">
+                        <span>&laquo;</span>
+                        <span>First</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}"">
+                                        <span>Previous</span>
+                                    </a>
+                                </li>
+                                {% endif %}
+    
+                                <li class=" page-item">
+                        <span class="page-link">
+                            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                        </span>
+                </li>
+
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                        <span>Next</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Next">
+                        <span>Last</span>
+                        <span>&raquo;</span>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+    <!-- pagination ends -->
+
+</div>
+{% else %}
+<h2 class="my-5 text-center">Restricted area </h2>
+{% endif %}
+{% endblock %}
+

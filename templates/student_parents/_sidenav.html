@@ -1,0 +1,43 @@
+<!-- partial:partials/_sidebar.html -->
+<nav class="sidebar sidebar-offcanvas" id="sidebar">
+    {% if user.is_authenticated %}
+    <!-- <div class="sidebar-profile bg-info d-md-none d-lg-block">
+      <div class="sidebar-profile-circle bg-light">{{request.user.email|make_list|first}}</div>
+      <div class="sidebar-profile-email bg-primary">
+        <span>{{request.user.email|slice:"-10"}}</span>
+      </div>
+    </div> -->
+    {% endif %}
+    <ul class="nav">
+        <li class="nav-item {{ dashboard }}">
+            <a class="nav-link" href="{% url 'my_account'%}">
+                <i class="icon-grid menu-icon"></i>
+                <span class="menu-title">Dashboard</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'profile' %}">
+                <i class="ti-user menu-icon"></i>
+                <span class="menu-title">Manage Profile</span>
+            </a>
+        </li>
+
+        <li class="nav-item {{ register_student }}">
+            <a class="nav-link" href="{% url 'register_student'%}">
+                <i class="ti-receipt menu-icon"></i>
+                <span class="menu-title">Manage Child</span>
+            </a>
+        </li>
+
+        {% if is_update_available %}
+        <li class="nav-item">
+            <a class="nav-link">
+                <i class="icon-paper menu-icon"></i>
+                <span class="menu-title">Update</span>
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+<!-- partial -->

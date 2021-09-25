@@ -1,0 +1,148 @@
+{% extends 'student_parents/base.html' %}
+{% block header_style %}
+{% endblock %}
+
+{% block nav_content %}
+
+{% endblock %}
+
+{% block main_content %}
+<div class="container">
+    <form class="editable needs-validation mt-4 shadow rounded px-4 py-3 bg-light d-flex flex-column"
+        id="editProfileForm" novalidate>
+
+        {% if not request.user.mobile_no %}
+        <p class="alert alert-danger" role="alert">
+            <i class="ti-info rounded-circle border border-danger p-1"></i>Your mobile number is not
+            available with us. Please update your mobile number to get notified.
+        </p>
+        {% endif %}
+        <h3 class="mt-1 mb-3">Account</h3>
+
+        <div class="row">
+            <div class="form-group col-12 col-md-3">
+                <label for="firstname">First name</label>
+                <input type="text" id="firstname" name="firstname" class="form-control form-control-sm"
+                    value="{{ request.user.first_name}}" disabled required pattern="^[a-zA-z]+$">
+                <div class="invalid-feedback">
+                    First name is invalid!
+                </div>
+            </div>
+
+            <div class="form-group col-12 col-md-3">
+                <label for="lastname">Last name</label>
+                <input type="text" id="lastname" name="lastname" class="form-control form-control-sm"
+                    value="{{ request.user.last_name}}" disabled required pattern="^[a-zA-z]+$">
+                <div class="invalid-feedback">
+                    Last name is invalid!
+                </div>
+            </div>
+
+            <div class="form-group col-12 col-md-3">
+                <label for="mobile-no">Mobile Number</label>
+                <input type="text" id="mobile-no" name="mobileno" class="form-control form-control-sm"
+                    value="{{ request.user.mobile_no}}" disabled required pattern="^\d{10}$">
+                <div class="invalid-feedback">
+                    This field is required!
+                </div>
+            </div>
+
+            <div class="form-group col-12 col-md-3">
+                <label for="email">Email Address</label>
+                <input type="email" id="emailp" class="form-control form-control-sm" value="{{ request.user.email}}"
+                    disabled>
+                <div class="invalid-feedback">
+                    Mobile no. is invalid!
+                </div>
+            </div>
+
+            <div class="col-12">
+                <button class="btn btn-sm btn-primary float-right d-none" type="submit" id="submit-btn">Save
+                    changes</button>
+                <button class="btn btn-sm btn-primary float-right" type="button" id="edit-profile-btn">Make
+                    changes</button>
+                <button class="btn btn-sm btn-primary float-right mx-2 btn-warning d-none" type="button" id="cancel-btn"
+                    onclick="cancelBtn()">Cancel</button>
+            </div>
+        </div>
+    </form>
+
+    <h6 class="mt-5">Want to chanege your passsword <a href="{% url 'password_reset' %}">click here</a></h6>
+</div>
+{% endblock %}
+
+{% block extrascript %}
+
+<script>
+
+    // Disable form submissions if there are invalid fields
+    (function () {
+        'use strict';
+        window.addEventListener('load', function () {
+            // Get the forms we want to add validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+
+    const profileEditButton = document.querySelector('#edit-profile-btn')
+    const profileCancelButton = document.querySelector('#cancel-btn')
+    const submitButton = document.querySelector('#submit-btn')
+    const firstName = document.querySelector('#firstname')
+    const lastName = document.querySelector('#lastname')
+    const mobileNo = document.querySelector('#mobile-no')
+
+    profileEditButton.addEventListener('click', () => {
+        firstName.disabled = false
+        lastName.disabled = false
+        mobileNo.disabled = false
+        profileEditButton.classList.add('d-none')
+        profileCancelButton.classList.remove('d-none')
+        submitButton.classList.remove('d-none')
+    })
+
+    function cancelBtn() {
+        firstName.disabled = true
+        lastName.disabled = true
+        mobileNo.disabled = true
+        profileEditButton.classList.remove('d-none')
+        profileCancelButton.classList.add('d-none')
+        submitButton.classList.add('d-none')
+    }
+
+    $('#editProfileForm').submit(function (e) {
+        e.preventDefault()
+        const url = "{% url 'profile-update' request.user.id %}"
+        if (document.querySelector('#editProfileForm').checkValidity()) {
+            $.ajax({
+                method: 'POST',
+                url: url,
+                data: $(this).serialize(),
+                headers: { 'X-CSRFToken': '{{ csrf_token }}' },
+                success: function (res) {
+                    submitButton.disabled = false
+                    cancelBtn()
+                    $('#editProfileForm').trigger('reset')
+                    firstName.value = res.first_name
+                    lastName.value = res.last_name
+                },
+                error: function (res) {
+                    submitButton.disabled = false
+                    alert(res.responseJSON.message)
+                    $('#editProfileForm').trigger('reset')
+                }
+            })
+        }
+    })
+</script>
+
+{% endblock %}

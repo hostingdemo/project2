@@ -1,0 +1,322 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Home Page{% endblock %}
+
+{% block body %}
+    <!-- Hero Section Start -->
+    <section class="bg-wine-berry hero-section">
+        <img src="{% static 'assets/hero-svgs/1.svg' %}" class="svg-1-1 d-none d-md-block">
+        <img src="{% static 'assets/hero-svgs/1.svg' %}" class="svg-1-2 d-none d-md-block">
+
+        <img src="{% static 'assets/hero-svgs/2.svg' %}" class="svg-2-1 d-none d-md-block">
+        <img src="{% static 'assets/hero-svgs/2.svg' %}" class="svg-2-2 d-none d-md-block">
+        <img src="{% static 'assets/hero-svgs/2.svg' %}" class="svg-2-3 d-none d-md-block">
+
+        <img src="{% static 'assets/hero-svgs/3.svg' %}" class="svg-3-1 d-none d-md-block">
+        <img src="{% static 'assets/hero-svgs/3.svg' %}" class="svg-3-2 d-none d-md-block">
+
+        <img src="{% static 'assets/hero-svgs/4.svg' %}" class="svg-4-1 d-none d-md-block">
+        <img src="{% static 'assets/hero-svgs/4.svg' %}" class="svg-4-2 d-none d-md-block">
+
+        <div class="container hero-search">
+            <div class="search-box">
+                <div class="search-text">
+                    <h2 class="text-center mb-3 fm-quicksand fw-700">Find Best School For Your Child</h2>
+                    <div class="d-flex input-group-lg">
+                        <input type="text" class="form-control fm-quicksand-regular" placeholder="Search City"
+                            style="border-radius: 999px 0px 0px 999px;">
+                        <button class="btn bg-roof-terracotta text-white fm-quicksand fw-700 search-btn"
+                            style="border-radius: 0px 999px 999px 0px;">Search
+                            <img src="{% static 'assets/hero-svgs/Character.svg' %}" class="character-svg d-none d-md-block">
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <!-- Hero Section -->
+
+
+    <!-- Section Second Start -->
+    <section class="my-3">
+        <img src="{% static 'assets/air-line.svg' %}" class="home-hero">
+        <div class="container">
+            <div class="text-center fw-900 section-title mb-5">We Provide You With</div>
+
+            <div class="row justify-content-between gap-4 gap-lg-0">
+                <!-- Searching start -->
+                <div class="c-card py-5 px-2 fm-quicksand col-lg-3 col-md-3 col-sm-12">
+                    <h4 class="text-center fw-700 text-wine-berry mb-4">Explore</h4>
+                    <div class="card-front">
+                        <img src="{% static 'assets/Searching.svg' %}" class="mb-4">
+                    </div>
+                    <div class="card-back">
+                        <!-- Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet tenetur impedit, possimus minima,
+                        minus enim autem sunt totam pariatur veniam culpa, dolorum exercitationem eos nulla? Impedit,
+                        nemo? Quas, facilis repellendus. -->
+                    </div>
+                    <div class="d-flex mt-2 justify-content-end me-2 next-btn">
+                        <a href="#" class="d-flex link black gap-2">Explore
+                            <img src="{% static 'assets/next-arrow.svg' %}" class="float-end" alt="next-arrow">
+                        </a>
+                    </div>
+                </div>
+                <!-- Searching End -->
+
+                <!-- Daily Progress Start -->
+                <div class="c-card py-5 fm-quicksand col-lg-3 col-md-3 col-sm-12">
+                    <h4 class="text-center fw-700 text-wine-berry mb-3">Compare Schools</h4>
+                    <img src="{% static 'assets/daily-progress.svg' %}" class="mb-4">
+
+                    <div class="d-flex mt-2 justify-content-end me-3 next-btn">
+                        <a href="#" class="d-flex link black gap-2">Compare
+                            <img src="{% static 'assets/next-arrow.svg' %}" class="float-end" alt="next-arrow">
+                        </a>
+                    </div>
+                </div>
+                <!-- Daily Progress End -->
+
+                <!-- Daily Progress Start -->
+                <div class="c-card py-5 fm-quicksand col-lg-3 col-md-3 col-sm-12">
+                    <h4 class="text-center fw-700 text-wine-berry mb-2">Admission Tracker</h4>
+                    <img src="{% static 'assets/invoice-sent.svg' %}" class="mb-2">
+
+                    <div class="d-flex mt-2 justify-content-end me-3 next-btn">
+                        <a href="#" class="d-flex link black gap-2">Track
+                            <img src="{% static 'assets/next-arrow.svg' %}" class="float-end" alt="next-arrow">
+                        </a>
+                    </div>
+                </div>
+                <!-- Daily Progress End -->
+
+                <!-- Daily Progress Start -->
+                <div class="c-card py-5 px-2 fm-quicksand col-lg-3 col-md-3 col-sm-12">
+                    <h4 class="text-center fw-700 text-wine-berry mb-2">Common Form</h4>
+                    <img src="{% static 'assets/form.svg' %}" class="mb-2 ms-3">
+
+                    <div class="d-flex mt-2 justify-content-end me-2 next-btn">
+                        <a href="#" class="d-flex link black gap-2">Apply
+                            <img src="{% static 'assets/next-arrow.svg' %}" class="float-end" alt="next-arrow">
+                        </a>
+                    </div>
+                </div>
+                <!-- Daily Progress End -->
+            </div>
+        </div>
+    </section>
+    <!-- Section Second End -->
+
+    <section class="background-svg">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-5 d-none d-md-none d-lg-block me-lg-5">
+                    <img src="{% static 'assets/location-tracking-bro-1.svg' %}" class="location-tracking-bro">
+                    <img src="{% static 'assets/characters.svg' %}" class="characters">
+                </div>
+                <div class="col-lg-6 col-sm-12 pt-lg-5 mt-lg-5">
+                    <div class="ms-lg-5 mt-5">
+                        <h2 class=" fw-700 text-wine-berry">Explore your city</h2>
+                        <p>Tell us where you are we'll help ypu to discover schools for your child</p>
+                    </div>
+
+                    <div id="carouselDesktopControls" class="carousel slide mt-5 d-none d-md-block "
+                        data-ride="carousel">
+                        <div class="carousel-inner ps-5 ms-2">
+                            <div class="carousel-item active">
+                                <div class="row">
+                                    <div class="col mb-5 mx-auto">
+                                        <div class="city-card">
+                                            <div class="city-card-img align-middle">
+                                                <h3 class="fw-700">Photo</h3>
+                                            </div>
+                                            <div class="city-card-footer align-middle" style="height: 100px;">
+                                                <h5 class="">Name of City</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col mb-5 mx-auto">
+                                        <div class="city-card">
+                                            <div class="city-card-img align-middle">
+                                                <h3 class="fw-700">Photo</h3>
+                                            </div>
+                                            <div class="city-card-footer align-middle" style="height: 100px;">
+                                                <h5 class="">Name of City</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col mb-5 mx-auto">
+                                        <div class="city-card">
+                                            <div class="city-card-img align-middle">
+                                                <h3 class="fw-700">Photo</h3>
+                                            </div>
+                                            <div class="city-card-footer align-middle" style="height: 100px;">
+                                                <h5 class="">Name of City</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col mb-5 mx-auto">
+                                        <div class="city-card">
+                                            <div class="city-card-img align-middle">
+                                                <h3 class="fw-700">Photo</h3>
+                                            </div>
+                                            <div class="city-card-footer align-middle" style="height: 100px;">
+                                                <h5 class="">Name of City</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="carousel-item">
+                                <div class="row">
+                                    <div class="col mb-5 mx-auto">
+                                        <div class="city-card">
+                                            <div class="city-card-img align-middle">
+                                                <h3 class="fw-700">Photo</h3>
+                                            </div>
+                                            <div class="city-card-footer align-middle" style="height: 100px;">
+                                                <h5 class="">Name of City</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col mb-5 mx-auto">
+                                        <div class="city-card">
+                                            <div class="city-card-img align-middle">
+                                                <h3 class="fw-700">Photo</h3>
+                                            </div>
+                                            <div class="city-card-footer align-middle" style="height: 100px;">
+                                                <h5 class="">Name of City</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col mb-5 mx-auto">
+                                        <div class="city-card">
+                                            <div class="city-card-img align-middle">
+                                                <h3 class="fw-700">Photo</h3>
+                                            </div>
+                                            <div class="city-card-footer align-middle" style="height: 100px;">
+                                                <h5 class="">Name of City</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col mb-5 mx-auto">
+                                        <div class="city-card">
+                                            <div class="city-card-img align-middle">
+                                                <h3 class="fw-700">Photo</h3>
+                                            </div>
+                                            <div class="city-card-footer align-middle" style="height: 100px;">
+                                                <h5 class="">Name of City</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <a class="carousel-control-prev" href="#carouselDesktopControls" role="button"
+                            data-slide="prev">
+                            <span class="" aria-hidden="true">
+                                <img src="{% static 'assets/carousel-back.svg' %}" height="32px" width="32px">
+                            </span>
+                        </a>
+                        <a class="carousel-control-next" href="#carouselDesktopControls" role="button"
+                            data-slide="next">
+                            <span class="" aria-hidden="true">
+                                <img src="{% static 'assets/carousel-next.svg' %}" height="32px" width="32px">
+                            </span>
+                        </a>
+                    </div>
+
+
+                    <!-- Moble only  -->
+                    <div id="carouselMobileControls" class="carousel slide d-block d-md-none" data-ride="carousel">
+                        <div class="carousel-inner py-5">
+                            <div class="carousel-item active">
+                                <div class="d-flex justify-content-between mobile-carousel mx-5">
+                                    <div class="city-card mb-5 mx-auto">
+                                        <div class="city-card-img align-middle">
+                                            <h3 class="fw-700">Photo</h3>
+                                        </div>
+                                        <div class="city-card-footer align-middle" style="height: 100px;">
+                                            <h5 class="">Name of City</h5>
+                                        </div>
+                                    </div>
+                                    <div class="city-card mb-5 mx-auto">
+                                        <div class="city-card-img align-middle">
+                                            <h3 class="fw-700">Photo</h3>
+                                        </div>
+                                        <div class="city-card-footer align-middle" style="height: 100px;">
+                                            <h5 class="">Name of City</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <div class="d-flex justify-content-between mobile-carousel mx-5">
+                                    <div class="city-card mb-5 mx-auto">
+                                        <div class="city-card-img align-middle">
+                                            <h3 class="fw-700">Photo</h3>
+                                        </div>
+                                        <div class="city-card-footer align-middle" style="height: 100px;">
+                                            <h5 class="">Name of City</h5>
+                                        </div>
+                                    </div>
+                                    <div class="city-card mb-5 mx-auto">
+                                        <div class="city-card-img align-middle">
+                                            <h3 class="fw-700">Photo</h3>
+                                        </div>
+                                        <div class="city-card-footer align-middle" style="height: 100px;">
+                                            <h5 class="">Name of City</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <div class="d-flex justify-content-between mobile-carousel mx-5">
+                                    <div class="city-card mb-5 mx-auto">
+                                        <div class="city-card-img align-middle">
+                                            <h3 class="fw-700">Photo</h3>
+                                        </div>
+                                        <div class="city-card-footer align-middle" style="height: 100px;">
+                                            <h5 class="">Name of City</h5>
+                                        </div>
+                                    </div>
+                                    <div class="city-card mb-5 mx-auto">
+                                        <div class="city-card-img align-middle">
+                                            <h3 class="fw-700">Photo</h3>
+                                        </div>
+                                        <div class="city-card-footer align-middle" style="height: 100px;">
+                                            <h5 class="">Name of City</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a class="carousel-control-prev" href="#carouselMobileControls" role="button"
+                                data-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true">
+                                    <img src="{% static 'assets/carousel-back.svg' %}" height="32px" width="32px">
+                                </span>
+                            </a>
+                            <a class="carousel-control-next" href="#carouselMobileControls" role="button"
+                                data-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true">
+                                    <img src="{% static 'assets/carousel-next.svg' %}" height="32px" width="32px">
+                                </span>
+                            </a>
+                        </div>
+                        <!-- mobile only End -->
+                    </div>
+                </div>
+            </div>
+    </section>
+
+
+
+{% endblock %}

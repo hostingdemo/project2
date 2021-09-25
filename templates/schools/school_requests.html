@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block title %}Admin Site {% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+  <table class="table table-sm shadow-sm my-3">
+    <thead>
+      <tr>
+        <th scope="col" class="text-center ">#</th>
+        <th scope="col">School Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Mob No.</th>
+        <th scope="col" class="text-center ">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for school in page_obj %}
+      <tr>
+        <td class="text-center ">{{ forloop.counter }}</td>
+        <td>{{ school.name }}</td>
+        <td>{{ school.email }}</td>
+        <td>{{ school.contact_number }}</td>
+        <td class="text-center">
+          {% if school.user.is_active %}
+          <i class="fas fa-check-circle text-success"></i>
+          {% else %}
+          <a class="btn btn-warning btn-sm" href="{% url 'send_school_activation_mail' school.user.id %}">
+            <i class="fas fa-envelope"></i>&nbsp;&nbsp;send
+          </a>
+          {% endif %}
+        </td>
+
+        {% empty %}
+        <td class="text-center" colspan="4">No Data Available</td>
+      </tr>
+
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <!-- pagination start -->
+  <div class="d-flex justify-content-center align-items-center">
+    <nav class="mt-2">
+      <ul class="pagination">
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page=1">
+            <span>&laquo;</span>
+            <span>First</span>
+          </a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.previous_page_number }}"">
+                                  <span>Previous</span>
+                              </a>
+                          </li>
+                          {% endif %}
+
+                          <li class=" page-item">
+            <span class="page-link">
+              Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+        </li>
+
+        {% if page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+            <span>Next</span>
+          </a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Next">
+            <span>Last</span>
+            <span>&raquo;</span>
+          </a>
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+</div>
+<!-- pagination ends -->
+{% endblock %}

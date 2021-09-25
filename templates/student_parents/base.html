@@ -1,0 +1,18 @@
+{% extends 'base1.html' %}
+
+{% block body %}
+
+  {% include 'student_parents/_topnav.html' %}
+
+<div class="container-fluid page-body-wrapper">
+
+  {% include 'student_parents/_sidenav.html' %}
+
+  <div class="main-panel">
+    <div class="content-wrapper">
+      {% block main_content %}
+      {% endblock %}
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,969 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load str_to_arr %}
+{% block title %}Details - {{ object.school.school_name }}{% endblock %}
+
+{% block style %}
+<style>
+    .review-card {
+        position: relative;
+    }
+    .del-review-btn {
+        position: absolute;
+        top: 1em;
+        right: 1em;
+        transform: scale(.8);
+    }
+</style>
+{% endblock %}
+{% block body %}
+
+<!-- hero section start -->
+<section class="school-name-hero pt-4">
+    <div class="container">
+        <div class="text-white">
+            <nav aria-label="breadcrumb" class="d-inline">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#" class="text-link">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#" class="text-link">Explore</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">school Name</li>
+                </ol>
+            </nav>
+        </div>
+
+        <div class="card d-inline-flex flex-row flex-no-wrap border-0 text-white" style="background: transparent">
+            <div class="p-3 d-flex justify-content-center align-items-center">
+                <img src="{% static 'assets/explore-page/school-logo.png' %}" alt="school-logo" class="school-logo">
+            </div>
+            <div class="d-flex flex-column justify-content-center align-items-start">
+                <h4 class="fw-700 ">{{ object.school.school_name }}</h4>
+                <p class="d-flex align-items-top gap-3">
+                    <span><i class="fas fa-map-marker-alt"></i></span>
+                    <span style="display:block; max-width: 70%;">{{ object.school.address }}</span>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- hero section end -->
+
+
+<!-- tabs start -->
+<div class="container fm-quicksand">
+
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link link fw-500" id="about-tab" data-toggle="tab" href="#about" role="tab"
+                aria-controls="about" aria-selected="true">About</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link link fw-500" id="admission-tab" data-toggle="tab" href="#admission" role="tab"
+                aria-controls="admission" aria-selected="false">Admission & Fees</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link link fw-500" id="infrastrucure-tab" data-toggle="tab" href="#infrastrucure" role="tab"
+                aria-controls="infrastrucure" aria-selected="false">Infrastrucure & Facilities</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link link fw-500" id="extra-tab" data-toggle="tab" href="#extra" role="tab"
+                aria-controls="extra" aria-selected="false">Extra Curricular</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link link fw-500" id="academics-tab" data-toggle="tab" href="#academics" role="tab"
+                aria-controls="academics" aria-selected="false">Academics</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link link fw-500 active" id="reviews-tab" data-toggle="tab" href="#reviews" role="tab"
+                aria-controls="reviews" aria-selected="true">Reviews</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link link fw-500" id="contact-tab" data-toggle="tab" href="#contact" role="tab"
+                aria-controls="contact" aria-selected="false">Contact</a>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="myTabContent">
+
+        <!-- admission tab starts -->
+        <div class="tab-pane fade show active" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12 col-md-8 my-5 p-3 rounded" style="background: #FFF4E3;">
+                        <h2 class="underline d-inline-block fw-700">Reviews</h2>
+
+                        <div class="row mt-5">
+                            <div class="col-12 col-md-4 justify-content-center d-flex align-items-center">
+                                <div>
+                                    <div
+                                        class="review-rect bg-wine-berry d-flex text-white flex-column justify-content-center align-items-center">
+                                        <h1 class="m-0">5.0</h1>
+                                        <small>out of 5</small>
+                                    </div>
+                                    <div class="d-flex justify-content-evenly">
+                                        <div class="align-middle mt-2 bg-wine-berry rating-star">
+                                            <i class="fas fa-star text-white"></i>
+                                        </div>
+                                        <div class="align-middle mt-2 bg-wine-berry rating-star">
+                                            <i class="fas fa-star text-white"></i>
+                                        </div>
+                                        <div class="align-middle mt-2 bg-wine-berry rating-star">
+                                            <i class="fas fa-star text-white"></i>
+                                        </div>
+                                        <div class="align-middle mt-2 bg-wine-berry rating-star">
+                                            <i class="fas fa-star text-white"></i>
+                                        </div>
+                                        <div class="align-middle mt-2 bg-wine-berry rating-star">
+                                            <i class="fas fa-star text-white"></i>
+                                        </div>
+                                    </div>
+                                    <h5 class="mt-2 text-center">LOREM IPSUM</h5>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-8">
+                                <div class="d-flex gap-2 align-items-center">
+                                    <div><i class="fas fa-star"></i></div>
+                                    <h6 class="mt-2 fw-700">5</h6>
+                                    <div class="progress" style="height: 10px; width: 100%;">
+                                        <div class="progress-bar bg-wine-berry" role="progressbar" style="width: 25%;"
+                                            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    <h6 class="mt-2 fw-700">100%</h6>
+                                </div>
+                                <div class="d-flex gap-2 align-items-center">
+                                    <div><i class="fas fa-star"></i></div>
+                                    <h6 class="mt-2 fw-700">5</h6>
+                                    <div class="progress" style="height: 10px; width: 100%;">
+                                        <div class="progress-bar bg-wine-berry" role="progressbar" style="width: 25%;"
+                                            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    <h6 class="mt-2 fw-700">100%</h6>
+                                </div>
+                                <div class="d-flex gap-2 align-items-center">
+                                    <div><i class="fas fa-star"></i></div>
+                                    <h6 class="mt-2 fw-700">5</h6>
+                                    <div class="progress" style="height: 10px; width: 100%;">
+                                        <div class="progress-bar bg-wine-berry" role="progressbar" style="width: 25%;"
+                                            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    <h6 class="mt-2 fw-700">100%</h6>
+                                </div>
+                                <div class="d-flex gap-2 align-items-center">
+                                    <div><i class="fas fa-star"></i></div>
+                                    <h6 class="mt-2 fw-700">5</h6>
+                                    <div class="progress" style="height: 10px; width: 100%;">
+                                        <div class="progress-bar bg-wine-berry" role="progressbar" style="width: 25%;"
+                                            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    <h6 class="mt-2 fw-700">100%</h6>
+                                </div>
+                                <div class="d-flex gap-2 align-items-center">
+                                    <div><i class="fas fa-star"></i></div>
+                                    <h6 class="mt-2 fw-700">5</h6>
+                                    <div class="progress" style="height: 10px; width: 100%;">
+                                        <div class="progress-bar bg-wine-berry" role="progressbar" style="width: 25%;"
+                                            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    <h6 class="mt-2 fw-700">100%</h6>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                        <div class="mt-3">
+                            <h5 class="mb-0 fw-700">RATE YOUR EXPERIENCE</h5>
+                            <div id="review-msg"></div>
+                            <div class="d-inline-flex justify-content-evenly gap-2 ms-2 mb-3">
+                                <div class="align-middle mt-2 bg-wine-berry rating-star score" data-score="1">
+                                    <i class="fas fa-star text-white"></i>
+                                </div>
+                                <div class="align-middle mt-2 bg-wine-berry rating-star inactive score" data-score="2">
+                                    <i class="fas fa-star text-white"></i>
+                                </div>
+                                <div class="align-middle mt-2 bg-wine-berry rating-star inactive score" data-score="3">
+                                    <i class="fas fa-star text-white"></i>
+                                </div>
+                                <div class="align-middle mt-2 bg-wine-berry rating-star inactive score" data-score="4">
+                                    <i class="fas fa-star text-white"></i>
+                                </div>
+                                <div class="align-middle mt-2 bg-wine-berry rating-star inactive score" data-score="5">
+                                    <i class="fas fa-star text-white"></i>
+                                </div>
+                            </div>
+
+                            <form id="rating-form" class="d-flex flex-column gap-3 mb-3" method="POST">
+                                <input type="hidden" name="rating" id="rating" value="1">
+                                <textarea rows="3" name="comment"></textarea>
+                                <div class="d-block">
+                                    {% if request.user.is_authenticated %}
+                                    <button type="submit"
+                                        class="btn btn-sm bg-wine-berry text-white fw-700">Submit</button>
+                                    {% else %}
+                                    <button class="btn btn-sm bg-wine-berry text-white fw-700" type="button"
+                                        data-toggle="modal" data-target="#signinModal">Submit</button>
+                                    {% endif %}
+                                </div>
+                            </form>
+                        </div>
+
+                        <h5 class="mt-5 fw-700">School Reviews</h5>
+                        <div id="reviews-card"></div>
+
+                        <div class="text-center" id="load-more">
+                            <button class="btn btn-sm btn-primary rounded-pill" id="btn-load-more">Load more</button>
+                        </div>
+                        {% comment %}
+                        {% for obj in object.school_reviews.all %}
+                        {% if obj.status %}
+                        <div class="review-card shadow-sm p-3 bg-light rounded mb-3">
+                            <div class="d-flex gap-2 mb-2">
+                                <div class="align-middle bg-placeholder rounded" style="height: 70px; width: 70px;">
+                                    <h2 class="fw-700 m-0 p-0">{{ obj.user.email|make_list|first}}</h2>
+                                </div>
+                                <div>
+                                    <h5 class="mb-0">{{obj.user.email}}</h5>
+                                    <small class="fw-500 text-muted">Wropte on {{ obj.created_at }}</small>
+                                    <p class="mb-0">{{ obj.comment }}</p>
+                                </div>
+                            </div>
+
+                            <div class="d-inline-flex justify-content-evenly gap-2">
+                                <div
+                                    class="align-middle mt-2 bg-wine-berry rating-star {% if obj.rating < 1 %}inactive{% endif %}">
+                                    <i class="fas fa-star text-white"></i>
+                                </div>
+                                <div
+                                    class="align-middle mt-2 bg-wine-berry rating-star {% if obj.rating < 2 %}inactive{% endif %}">
+                                    <i class="fas fa-star text-white"></i>
+                                </div>
+                                <div
+                                    class="align-middle mt-2 bg-wine-berry rating-star {% if obj.rating < 3 %}inactive{% endif %}">
+                                    <i class="fas fa-star text-white"></i>
+                                </div>
+                                <div
+                                    class="align-middle mt-2 bg-wine-berry rating-star {% if obj.rating < 4 %}inactive{% endif %}">
+                                    <i class="fas fa-star text-white"></i>
+                                </div>
+                                <div
+                                    class="align-middle mt-2 bg-wine-berry rating-star {% if obj.rating < 5 %}inactive{% endif %}">
+                                    <i class="fas fa-star text-white"></i>
+                                </div>
+                            </div>
+                        </div>
+                        {% else %}
+                        <p>No reviews :(</p>
+                        {% endif %}
+                        {% empty %}
+                        <p>No reviews :(</p>
+                        {% endfor %}
+                        {% endcomment %}
+                    </div>
+                    <div class="col-12 col-md-4 d-flex flex-column justify-content-end">
+                        <img src="{% static 'assets/school-name-page/school-review.png' %}" alt="school-reviews"
+                            class="mb-5">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- admission tab ends -->
+
+        <!-- about tab starts -->
+        <div class="tab-pane fade" id="about" role="tabpanel" aria-labelledby="about-tab">
+            <section class="p-0">
+                <div style="background: #FFF4E3;" class="py-5 px-4">
+                    <p class="fw-500">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores temporibus
+                        sequi quas
+                        voluptatem iste accusantium. Perspiciatis illo non explicabo, reprehenderit odio corrupti
+                        aperiam eius! Molestiae, nam? Aut hic error a.
+                        Ullam quae quasi earum quam incidunt nulla qui doloremque totam porro atque quia odit,
+                        praesentium eligendi laborum soluta nesciunt magni dolore ad est repudiandae similique
+                        inventore amet maxime beatae! Eveniet!
+                        Laboriosam, saepe? Labore ea nulla facilis assumenda expedita adipisci ratione est
+                        blanditiis officiis asperiores? Quae voluptatibus facilis deleniti voluptas ea perferendis
+                        accusantium asperiores beatae. Ipsam nam neque ipsum deleniti laudantium!
+                    </p>
+
+                    <h5 class="fw-700 mt-5">Basic facts about School Name</h5>
+                    <div class="grid-3 mb-4">
+
+                        <!-- school owner -->
+                        <div class="d-flex flex-row gap-3 align-items-center my-2">
+                            <img height="48px" width="48px"
+                                src="{% static 'assets/school-name-page/school-type.svg' %}">
+                            <div>
+                                <h6 class="fw-700 text-muted">Ownership</h6>
+                                <h6 class="fw-700">{{ object.school.ownership }} School</h6>
+                            </div>
+                        </div>
+
+                        <!-- Board -->
+                        <div class="d-flex flex-row gap-3 align-items-center my-2">
+                            <img height="48px" width="48px"
+                                src="{% static 'assets/school-name-page/establish-badge.svg' %}">
+                            <div>
+                                <h6 class="fw-700 text-muted">Board</h6>
+                                <h6 class="fw-700">
+                                    {{ object.school.board}}
+                                </h6>
+                            </div>
+                        </div>
+
+                        <!-- Established Year -->
+                        <div class="d-flex flex-row gap-3 align-items-center my-2">
+                            <img height="48px" width="48px"
+                                src="{% static 'assets/school-name-page/establish-badge.svg' %}">
+                            <div>
+                                <h6 class="fw-700 text-muted">Established Year</h6>
+                                <h6 class="fw-700">{{ object.year_of_establishment }}</h6>
+                            </div>
+                        </div>
+
+                        <!-- co-ed status -->
+                        <div class="d-flex flex-row gap-3 align-items-center my-2">
+                            <img height="48px" width="48px"
+                                src="{% static 'assets/school-name-page/establish-badge.svg' %}">
+                            <div>
+                                <h6 class="fw-700 text-muted">co Ed-Status</h6>
+                                <h6 class="fw-700">{{ object.school.co_ed_status }}</h6>
+                            </div>
+                        </div>
+
+                        <!-- campus size -->
+                        <div class="d-flex flex-row gap-3 align-items-center my-2">
+                            <img height="48px" width="48px" src="{% static 'assets/school-name-page/management.svg' %}">
+                            <div>
+                                <h6 class="fw-700 text-muted">campus size</h6>
+                                <h6 class="fw-700">{{object.campus_size}}</h6>
+                            </div>
+                        </div>
+
+                        <!-- campus type -->
+                        <div class="d-flex flex-row gap-3 align-items-center my-2">
+                            <img height="48px" width="48px"
+                                src="{% static 'assets/school-name-page/establish-badge.svg' %}">
+                            <div>
+                                <h6 class="fw-700 text-muted">Campus Type</h6>
+                                <h6 class="fw-700">{{ object.campus_type }}</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="fw-500">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores temporibus
+                        sequi quas
+                        voluptatem iste accusantium. Perspiciatis illo non explicabo, reprehenderit odio corrupti
+                        aperiam eius! Molestiae, nam? Aut hic error a.
+                        Ullam quae quasi earum quam incidunt nulla qui doloremque totam porro atque quia odit,
+                        praesentium eligendi laborum soluta nesciunt magni dolore ad est repudiandae similique
+                        inventore amet maxime beatae! Eveniet!
+                        Laboriosam, saepe? Labore ea nulla facilis assumenda expedita adipisci ratione est
+                        blanditiis officiis asperiores? Quae voluptatibus facilis deleniti voluptas ea perferendis
+                        accusantium asperiores beatae. Ipsam nam neque ipsum deleniti laudantium!
+                    </p>
+                </div>
+            </section>
+        </div>
+        <!-- about tab ends -->
+
+        <!-- admission tab starts -->
+        <div class="tab-pane fade" id="admission" role="tabpanel" aria-labelledby="admission-tab">
+            <section class="p-0">
+                <div style="background: #FFF4E3;" class="py-5 px-4">
+                    <h4 class="fw-700 text-center">ADMISSION DETAILS</h4>
+
+                    <p class="fw-500">
+                        The School has students enrolled from Nursery to !2 . Find below the admission schedule,
+                        procedure, Contact Details, documents required and instructions for parents for SCHOOL NAME,
+                        City Admission.
+                        <br><br>
+                        In this section, we will answer the common questions like What is the admission process like
+                        and what are the key dates? Is their any admission test? Will School also hold an interview
+                        or an interaction? What is the age criterion for admission to SCHOOL NAME, CIty for the
+                        upcoming academic year?
+                    </p>
+
+                    <h5 class="fw-700">Age Criteria</h5>
+                    <p class="fw-500">Age criteria of various programs offered at school. Each program has a
+                        specific age criteria and it is as follows</p>
+                    <ul>
+                        <li>Lorem ipsum dolor sit amet</li>
+                        <li>Lorem ipsum dolor sit amet</li>
+                        <li>Lorem ipsum dolor sit amet</li>
+                        <li>Lorem ipsum dolor sit amet</li>
+                        <li>Lorem ipsum dolor sit amet</li>
+                    </ul>
+
+                    <h4 class="fw-700 text-center mt-5">FEES DETAILS</h4>
+                    <p class="fw-500">SCHOOL NAME Fees: Fee Structure & Details
+                        Refer below for SCHOOL NAME, CITY fee structure and current fees</p>
+                </div>
+            </section>
+        </div>
+        <!-- admission tab ends -->
+
+        <!-- infrastrucure tab starts -->
+        <div class="tab-pane fade" id="infrastrucure" role="tabpanel" aria-labelledby="infrastrucure-tab">
+            <section class="p-0">
+                <div style="background: #FFF4E3;" class="py-5 px-4">
+                    <p class="fw-500">
+                        The Sri Venkateshwara Kids, Ayanavaram campus is spread over acres of land in Ayanavaram
+                        area of
+                        Chennai, Tamil Nadu. The School is a Day School. The School's infrastructure includes but is
+                        not
+                        limited to:
+                    </p>
+
+                    <!-- class facilities start -->
+                    <div class="features my-5">
+                        <div class="features-title d-flex justify-content-between align-items-center">
+                            <h5 class="fw-700">CLASS FACILITIES</h5>
+                            <!-- <h5>(2/4)</h5> -->
+                        </div>
+                        <div class="feature-border"></div>
+                        <div class="feature-list mt-4 grid-responsive">
+                            {% for obj in object.class_type|str_to_arr %}
+                            <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
+                                {% if obj %}
+                                <img src="{% static 'assets/school-name-page/available.svg' %}">
+                                <span class="fw-500">{{obj}}</span>
+                                {% else %}
+                                <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
+                                <span class="fw-500">N/A</span>
+                                {% endif %}
+                            </div>
+                            {% empty %}
+                            <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
+                                <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
+                                <span class="fw-500">N/A</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <!-- class facilities end -->
+
+                    <!-- boarding facilities start -->
+                    <div class="features my-5">
+                        <div class="features-title d-flex justify-content-between align-items-center">
+                            <h5 class="fw-700">BOARDING FACILITIES</h5>
+                            <!-- <h5>(2/4)</h5> -->
+                        </div>
+                        <div class="feature-border"></div>
+                        <div class="feature-list mt-4 grid-responsive">
+                            {% for obj in object.boarding|str_to_arr %}
+                            <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
+                                {% if obj %}
+                                <img src="{% static 'assets/school-name-page/available.svg' %}">
+                                <span class="fw-500">{{obj}}</span>
+                                {% else %}
+                                <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
+                                <span class="fw-500">N/A</span>
+                                {% endif %}
+                            </div>
+                            {% empty %}
+                            <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
+                                <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
+                                <span class="fw-500">N/A</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <!-- boarding facilities start -->
+
+                    <!-- infrastructure facilities start -->
+                    <div class="features my-5">
+                        <div class="features-title d-flex justify-content-between align-items-center">
+                            <h5 class="fw-700">INFRASTRUCTURE</h5>
+                            <!-- <h5>(2/4)</h5> -->
+                        </div>
+                        <div class="feature-border"></div>
+                        <div class="feature-list mt-4 grid-responsive">
+                            {% for obj in object.infrasturcure|str_to_arr %}
+                            <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
+                                {% if obj %}
+                                <img src="{% static 'assets/school-name-page/available.svg' %}">
+                                <span class="fw-500">{{obj}}</span>
+                                {% else %}
+                                <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
+                                <span class="fw-500">N/A</span>
+                                {% endif %}
+                            </div>
+                            {% empty %}
+                            <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
+                                <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
+                                <span class="fw-500">N/A</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <!-- infrastructure facilities start -->
+
+                    <!-- Safty and security facilities start -->
+                    <div class="features my-5">
+                        <div class="features-title d-flex justify-content-between align-items-center">
+                            <h5 class="fw-700">SAFTY & SECURITY</h5>
+                            <!-- <h5>(2/4)</h5> -->
+                        </div>
+                        <div class="feature-border"></div>
+                        <div class="feature-list mt-4 grid-responsive">
+                            {% for obj in object.safty_and_security|str_to_arr %}
+                            <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
+                                {% if obj %}
+                                <img src="{% static 'assets/school-name-page/available.svg' %}">
+                                <span class="fw-500">{{obj}}</span>
+                                {% else %}
+                                <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
+                                <span class="fw-500">N/A</span>
+                                {% endif %}
+                            </div>
+                            {% empty %}
+                            <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
+                                <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
+                                <span class="fw-500">N/A</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <!-- Safty and security facilities start -->
+
+                    <!-- ADVANCED FACILITIES facilities start -->
+                    <div class="features my-5">
+                        <div class="features-title d-flex justify-content-between align-items-center">
+                            <h5 class="fw-700">ADVANCED FACILITIES</h5>
+                            <!-- <h5>(2/4)</h5> -->
+                        </div>
+                        <div class="feature-border"></div>
+                        <div class="feature-list mt-4 grid-responsive">
+                            {% for obj in object.advance_facilities|str_to_arr %}
+                            <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
+                                {% if obj %}
+                                <img src="{% static 'assets/school-name-page/available.svg' %}">
+                                <span class="fw-500">{{obj}}</span>
+                                {% else %}
+                                <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
+                                <span class="fw-500">N/A</span>
+                                {% endif %}
+                            </div>
+                            {% empty %}
+                            <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
+                                <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
+                                <span class="fw-500">N/A</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <!-- ADVANCED FACILITIES facilities start -->
+
+
+                    <!-- Extra curricular facilities start -->
+                    <div class="features my-5">
+                        <div class="features-title d-flex justify-content-between align-items-center">
+                            <h5 class="fw-700">EXTRA CURRIULAR</h5>
+                            <!-- <h5>(2/4)</h5> -->
+                        </div>
+                        <div class="feature-border"></div>
+                        <div class="feature-list mt-4 grid-responsive">
+                            {% for obj in object.extra_curricular|str_to_arr %}
+                            <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
+                                {% if obj %}
+                                <img src="{% static 'assets/school-name-page/available.svg' %}">
+                                <span class="fw-500">{{obj}}</span>
+                                {% else %}
+                                <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
+                                <span class="fw-500">N/A</span>
+                                {% endif %}
+                            </div>
+                            {% empty %}
+                            <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
+                                <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
+                                <span class="fw-500">N/A</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <!-- Extra curricular facilities start -->
+
+                    <!-- sports facilities start -->
+                    <div class="features my-5">
+                        <div class="features-title d-flex justify-content-between align-items-center">
+                            <h5 class="fw-700">SPORTS</h5>
+                            <!-- <h5>(2/4)</h5> -->
+                        </div>
+                        <div class="feature-border"></div>
+
+                        <div class="feature-list mt-4 grid-responsive">
+                            {% for obj in object.sports_and_fitness|str_to_arr %}
+                            <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
+                                {% if obj %}
+                                <img src="{% static 'assets/school-name-page/available.svg' %}">
+                                <span class="fw-500">{{obj}}</span>
+                                {% else %}
+                                <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
+                                <span class="fw-500">N/A</span>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <!-- sports facilities end -->
+
+                    <!-- Lab facilities start -->
+                    <div class="features my-5">
+                        <div class="features-title d-flex justify-content-between align-items-center">
+                            <h5 class="fw-700">LAB</h5>
+                            <!-- <h5>(2/4)</h5> -->
+                        </div>
+                        <div class="feature-border"></div>
+
+                        <div class="feature-list mt-4 grid-responsive">
+                            {% for obj in object.lab|str_to_arr %}
+                            <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
+                                {% if obj %}
+                                <img src="{% static 'assets/school-name-page/available.svg' %}">
+                                <span class="fw-500">{{obj}}</span>
+                                {% else %}
+                                <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
+                                <span class="fw-500">N/A</span>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <!-- Lab facilities end -->
+
+                    <!-- Disabled friendly facilities start -->
+                    <div class="features my-5">
+                        <div class="features-title d-flex justify-content-between align-items-center">
+                            <h5 class="fw-700">DISABLED FRIENDLY</h5>
+                            <!-- <h5>(2/4)</h5> -->
+                        </div>
+                        <div class="feature-border"></div>
+
+                        <div class="feature-list mt-4 grid-responsive">
+                            {% for obj in object.disabled_friendly|str_to_arr %}
+                            <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
+                                {% if obj %}
+                                <img src="{% static 'assets/school-name-page/available.svg' %}">
+                                <span class="fw-500">{{obj}}</span>
+                                {% else %}
+                                <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
+                                <span class="fw-500">N/A</span>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <!-- Disabled friendly facilities end -->
+
+                </div>
+            </section>
+        </div>
+        <!-- infrastrucure tab ends -->
+
+        <!-- extra tab starts -->
+        <div class="tab-pane fade" id="extra" role="tabpanel" aria-labelledby="extra-tab">
+            <section class="p-0">
+                <div style="background: #FFF4E3;" class="py-5 px-4">
+                    <p class="fw-500">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fringilla consectetur purus nulla
+                        massa nibh. Arcu, facilisis cras elit massa porttitor posuere quam faucibus vulputate.
+                        Tempus, porttitor et, nulla consequat, lobortis diam fermentum. Ante volutpat turpis turpis
+                        pulvinar mauris, vel. Pharetra, vulputate bibendum dignissim egestas iaculis sit. Eu enim,
+                        in bibendum elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fringilla
+                        consectetur purus nulla massa nibh. Arcu, facilisis cras elit massa porttitor posuere quam
+                        faucibus vulputate. Tempus, porttitor et, nulla consequat, lobortis diam fermentum. Ante
+                        volutpat turpis turpis pulvinar mauris, vel. Pharetra, vulputate bibendum dignissim egestas
+                        iaculis sit. Eu enim, in bibendum elit.
+                    </p>
+
+                    <div class="grid-responsive">
+                        <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
+                            <img src="{% static 'assets/school-name-page/available.svg' %}">
+                            <span class="fw-500">Arobics</span>
+                        </div>
+                        <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
+                            <img src="{% static 'assets/school-name-page/available.svg' %}">
+                            <span class="fw-500">Arobics</span>
+                        </div>
+                        <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
+                            <img src="{% static 'assets/school-name-page/available.svg' %}">
+                            <span class="fw-500">Arobics</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <!-- extra tab ends -->
+
+        <!-- academics tab starts -->
+        <div class="tab-pane fade" id="academics" role="tabpanel" aria-labelledby="academics-tab">
+            <section class="p-0">
+                <div style="background: #FFF4E3;" class="py-5 px-4">
+                    <div class="d-flex justify-content-between mb-5">
+                        <div>
+                            <h5 class="fw-700 m-0">
+                                School Timings and Vacation
+                            </h5>
+                            <p class="fw-500">lorem ipsum dolor sit amut</p>
+                        </div>
+                        <div>
+                            <div class="d-flex gap-3">
+                                <img src="{% static 'assets/school-name-page/language-icon.svg' %}" height="64px"
+                                    width="64px">
+                                <div>
+                                    <h5 class="fw-700 m-0">
+                                        School Timings and Vacation
+                                    </h5>
+                                    <p class="fw-500">lorem ipsum dolor sit amut</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h5 class="fw-700 m-0">
+                        School Senior Secondary Streams
+                    </h5>
+                    <p class="fw-700 m-0 mb-2">
+                        School Level & Classes
+                    </p>
+                    <p class="fw-500">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fringilla consectetur purus nulla
+                        massa nibh. Arcu, facilisis cras elit massa porttitor posuere quam faucibus vulputate.
+                        Tempus, porttitor et, nulla consequat, lobortis diam fermentum. Ante volutpat turpis turpis
+                        pulvinar mauris, vel. Pharetra, vulputate bibendum dignissim egestas iaculis sit. Eu enim,
+                        in bibendum elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fringilla
+                        consectetur purus nulla massa nibh. Arcu, facilisis cras elit massa porttitor posuere quam
+                        faucibus vulputate. Tempus, porttitor et, nulla consequat, lobortis diam fermentum. Ante
+                        volutpat turpis turpis pulvinar mauris, vel. Pharetra, vulputate bibendum dignissim egestas
+                        iaculis sit. Eu enim, in bibendum elit.
+                    </p>
+
+                    <h5 class="fw-700 mt-5">
+                        School Senior Secondary Streams
+                    </h5>
+                    <p class="fw-500">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fringilla consectetur purus nulla
+                        massa nibh. Arcu, facilisis cras elit massa porttitor posuere quam faucibus vulputate.
+                        Tempus, porttitor et, nulla consequat, lobortis diam fermentum. Ante volutpat turpis turpis
+                        pulvinar mauris, vel. Pharetra, vulputate bibendum dignissim egestas iaculis sit. Eu enim,
+                        in bibendum elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fringilla
+                        consectetur purus nulla massa nibh. Arcu, facilisis cras elit massa porttitor posuere quam
+                        faucibus vulputate. Tempus, porttitor et, nulla consequat, lobortis diam fermentum. Ante
+                        volutpat turpis turpis pulvinar mauris, vel. Pharetra, vulputate bibendum dignissim egestas
+                        iaculis sit. Eu enim, in bibendum elit.
+                    </p>
+                </div>
+        </div>
+        <!-- academics tab ends -->
+
+        <!-- contact tab starts -->
+        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+            <section class="p-0">
+                <div style="background: #FFF4E3;" class="py-5 px-4">
+                    <div class="d-flex gap-3 mb-3">
+                        <div class="contact-icon shadow">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <div class="d-flex flex-column">
+                            <h6 class="fw-700 m-0">Phone Number</h6>
+                            <p class="fw-500">1234567890</p>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-3 mb-3">
+                        <div class="contact-icon shadow">
+                            <i class="fas fa-at"></i>
+                        </div>
+                        <div class="d-flex flex-column">
+                            <h6 class="fw-700 m-0">Email</h6>
+                            <p class="fw-500">school@gmail.com</p>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-3 mb-3">
+                        <div class="contact-icon shadow">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <div class="d-flex flex-column">
+                            <h6 class="fw-700 m-0">Website</h6>
+                            <p class="fw-500">www.website.com</p>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-3 mb-3">
+                        <div class="contact-icon shadow">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="d-flex flex-column">
+                            <h6 class="fw-700 m-0">Location</h6>
+                            <p class="fw-500" style="width: 50%;">Lorem ipsum dolor sit amet, consectetur adipiscing
+                                elit. Fringilla
+                                consectetur purus nulla massa nibh. Arcu, facilisis cras elit massa </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <!-- contact tab ends -->
+    </div>
+</div>
+<!-- tabs end -->
+{% endblock %}
+
+{% block extrascript %}
+
+<script>
+    const ratingStars = document.querySelectorAll('.score')
+    const ratingInput = document.querySelector('#rating')
+
+    let review_list = []
+    let reivew_page = 1
+    let review_url = "{% url 'school_reviews' object.id %}"
+    let userId = '{{ request.user.email }}'
+
+    const handleSelect = (num) => {
+        ratingInput.value = num;
+        for (let i = 0; i < num; i++) {
+            ratingStars[i].classList.remove('inactive')
+        }
+        for (let i = num; i < ratingStars.length; i++) {
+            ratingStars[i].classList.add('inactive')
+        }
+    }
+    ratingStars.forEach(ele => {
+        ele.addEventListener('mouseover', (e) => {
+            let score = e.target.dataset.score
+            handleSelect(score)
+        })
+    })
+
+    $('#rating-form').submit(function (e) {
+        e.preventDefault()
+        let data = $(this).serialize()
+        console.log(data)
+        $.ajax({
+            type: 'POST',
+            url: '{% url "school_details" object.id  %}',
+            data: $(this).serialize(),
+            headers: { 'X-CSRFToken': '{{ csrf_token }}' },
+            success: function (response) {
+                $('#review-msg').html(
+                    ` <small class="d-block alert alert-info alert-dismissible fade show mb-2" role="alert">
+                        ${response.message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </small>
+                    `)
+                $('#rating-form').trigger('reset')
+                handleSelect(0)
+                review_list = []
+                getReviews(review_url + '?page=' + 1)
+            },
+            error: function (response) {
+                $('#rating-form').trigger('reset')
+                handleSelect(0)
+                $('#review-msg').html(
+                    ` <small class="d-block alert alert-danger alert-dismissible fade show mb-2" role="alert">
+                        ${response.responseJSON.message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </small>
+                    `)
+            }
+        })
+    })
+
+    $('#btn-load-more').on('click', () => {
+        reivew_page += 1
+        getReviews(`${review_url}?page=${reivew_page}`)
+    })
+
+
+    function getReviews(url) {
+        $('#btn-load-more').text('Loading...').prop('disabled', true)
+
+        $.ajax({
+            type: 'GET',
+            url: url,
+            success: function (res) {
+                $('#btn-load-more').text('Load more').prop('disabled', false)
+
+                let data = JSON.parse(res)
+
+                let reviews = data.map(obj => {
+                    if (obj.fields.status) {
+                        obj.fields.created_at = new Date(obj.fields.created_at).toDateString()
+                        console.log(obj.pk)
+                        let delete_review_url = `${review_url}delete/${obj.pk}`
+                        // obj.fields.created_at.toLocaleDateString()
+                        return `
+                                <div class="review-card shadow-sm p-3 bg-light rounded mb-3">
+                                    ${
+                                        (userId === obj.fields.user[0]) &&
+                                        `<button data-review-id=${delete_review_url} class="btn btn-sm btn-info del-review-btn">
+                                            <i class="fas fa-trash"></i>
+                                        </button>`
+                                    }
+                                    <div class="d-flex gap-2 mb-2">
+                                        <div class="align-middle bg-placeholder rounded" style="height: 70px; width: 70px;">
+                                            <h2 class="fw-700 m-0 p-0">${obj.fields.user[0][0]}</h2>
+                                        </div>
+                                        <div>
+                                            <h5 class="mb-0">${obj.fields.user[0]}</h5>
+                                            <small class="fw-500 text-muted">Wropte on ${obj.fields.created_at}</small>
+                                            <p class="mb-0">${obj.fields.comment}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-inline-flex justify-content-evenly gap-2">
+                                        <div
+                                            class="align-middle mt-2 bg-wine-berry rating-star ${(obj.fields.rating < 1) ? 'inactive' : ''}">
+                                            <i class="fas fa-star text-white"></i>
+                                        </div>
+                                        <div
+                                            class="align-middle mt-2 bg-wine-berry rating-star ${(obj.fields.rating < 2) ? 'inactive' : ''}">
+                                            <i class="fas fa-star text-white"></i>
+                                        </div>
+                                        <div
+                                            class="align-middle mt-2 bg-wine-berry rating-star ${(obj.fields.rating < 3) ? 'inactive' : ''}">
+                                            <i class="fas fa-star text-white"></i>
+                                        </div>
+                                        <div
+                                            class="align-middle mt-2 bg-wine-berry rating-star ${(obj.fields.rating < 4) ? 'inactive' : ''}">
+                                            <i class="fas fa-star text-white"></i>
+                                        </div>
+                                        <div
+                                            class="align-middle mt-2 bg-wine-berry rating-star ${(obj.fields.rating < 5) ? 'inactive' : ''}">
+                                            <i class="fas fa-star text-white"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                    }
+                })
+                review_list.push(reviews.join(''))
+
+                if (review_list > 0 || review_list[0] == "") {
+                    $('#reviews-card').html('<p>No reviews :(</p>')
+                    $('#btn-load-more').addClass('d-none')
+                } else {
+                    $('#reviews-card').html(review_list)
+                }
+            },
+            error: function (res) {
+                $('#load-more').html(res.responseJSON.message)
+                $('#btn-load-more').text('Load more').prop('disabled', false)
+            }
+        })
+    }
+
+    function deleteReview(url) {
+        $.ajax({
+            type: 'GET',
+            url: url,
+            success: function (res) {
+                
+            },
+            error: function (res) {
+
+            }
+        })
+    }
+    getReviews(review_url + '?page=' + reivew_page)
+</script>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'school_dashboard/base.html' %}
+{% block title %}School Gallery{% endblock %}
+
+<!-- {% load crispy_forms_tags %} -->
+{% block style %}
+<style>
+    .school-img {
+        position: relative;
+    }
+
+    .img-btn {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: .250em
+    }
+</style>
+{% endblock %}
+
+{% block main_content %}
+
+<form class="d-flex mb-5" action="{% url 'school_gallery' %}" method="POST" enctype="multipart/form-data"
+    style="max-width: 500px;">
+    {% csrf_token %}
+    <div class="custom-file">
+        <input type="file" class="custom-file-input" name="school-img" id="customFile" accept="image/png, image/jpeg">
+        <label class="custom-file-label rounded-pill" for="customFile">Choose file</label>
+    </div>
+    <button class="btn btn-sm btn-primary rounded-pill ml-3" type="submit">Upload</button>
+</form>
+
+<div class="row">
+    {% for img in school_gallery %}
+    <div class="col-12 col-md-3 mb-3">
+        <div class="card shadow">
+            <img src="{{img.school_img.url}}" height="150" class="rounded school-img">
+            <a href="{% url 'school_img_del' img.id %}" class="img-btn btn btn-light rounded-circle m-2" >
+                <span class="ti-trash"></span>
+            </a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

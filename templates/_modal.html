@@ -1,0 +1,156 @@
+{% load account socialaccount %}
+{% get_providers as socialaccount_providers %}
+<!-- SignIn Modal Start -->
+<div class="modal fade fm-quicksand fw-500 mt-0 mt-md-3" id="signinModal" tabindex="-1" role="dialog"
+    aria-labelledby="signinModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content mt-5 pt-5">
+            <div class="modal-header rounded">
+                <ul class="nav nav-pills text-center" id="pills-tab" role="tablist" style="width: 100%;">
+                    <li class="nav-item flex-grow-1" role="presentation">
+                        <a class="nav-link  active" id="pills-login-tab" data-bs-toggle="pill"
+                            data-bs-target="#pills-login" type="button" role="tab" aria-controls="pills-login"
+                            aria-selected="true">Login</a>
+                    </li>
+                    <li class="nav-item flex-grow-1" role="presentation">
+                        <a class="nav-link" id="pills-signup-tab" data-bs-toggle="pill" data-bs-target="#pills-signup"
+                            type="button" role="tab" aria-controls="pills-signup" aria-selected="false">Signup</a>
+                    </li>
+                </ul>
+                <!-- <h5 class="modal-title" id="signinModalLabel">Sign In</h5>
+                <button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button> -->
+            </div>
+            <div class="modal-body">
+                <div class="tab-content" id="pills-tabContent">
+                    <div class="d-flex flex-column">
+                        <a href="{% provider_login_url 'google' %}" role="button"
+                            class="btn google-btn d-flex align-items-center mb-3" %}">
+                            <i class="fab fa-google text-white mx-2 mx-md-3"></i>
+                            <span class="mx-1 mx-md-3 text-white ">Continue with google</span></a>
+                        </a>
+                    </div>
+
+                    <!-- Login Modal Start -->
+                    <div class="tab-pane fade show active" id="pills-login" role="tabpanel"
+                        aria-labelledby="pills-login-tab">
+                        <form class="d-flex flex-column mb-2 needs-validation" id="login-form" method="POST"
+                            action="{% url 'login' %}" novalidate>
+                            <div id="msg"></div>
+                            <div class="form-group mb-3">
+                                <label for="emailInput" class="form-label"><b>Email address</b></label>
+                                <input type="email" name="email" class="form-control" id="email" required
+                                    pattern="^([_\-\.0-9a-zA-Z]+)@([_\-\.0-9a-zA-Z]+)\.([a-zA-Z]){1,7}$">
+                                <div class="invalid-feedback">
+                                    Your email must be a valid email.
+                                </div>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="passwordInput"><b>Password</b></label>
+
+                                <div class="input-group" id="show_hide_password">
+                                    <input type="password" name="password" class="form-control" id="password" required
+                                        minlength="6">
+                                    <div class="input-group-append d-flex" onclick="showPassword('show_hide_password')">
+                                        <span class="input-group-text"><i class="fa fa-eye-slash"
+                                                aria-hidden="true"></i></span>
+                                    </div> 
+                                    <div class="invalid-feedback">
+                                        Password must contians minimum 6 characters
+                                    </div>
+                                </div>
+                                <div class="text-end"><a href="{% url 'password_reset' %}"> Forget password </a></div>
+                            </div>
+
+                            <div class="mb-2">
+                                <div class="form-check">
+                                    <input type="checkbox" name="rememberme" class="form-check-input" id="Check1">
+                                    <label class="form-check-label" for="Check1">Remember Me</label>
+                                </div>
+                                <small class="text-muted">
+                                    By signing in, you agree to our Terms and confirm you have read our Privacy Policy.
+                                </small>
+                            </div>
+                            <button type="submit" class="btn bg-wine-berry text-white" id="login-btn">Login</button>
+                        </form>
+                    </div>
+                    <!-- Login Modal End -->
+
+
+
+                    <!-- Signup Modal Start -->
+                    <div class="tab-pane fade" id="pills-signup" role="tabpanel" aria-labelledby="pills-signup-tab">
+                        <form class="d-flex flex-column mb-2 needs-validation" method="POST" action="{% url 'signup' %}"
+                            id="signup-form" novalidate>
+                            <div id="msg2"></div>
+
+                            <div class="form-group mb-3">
+                                <label for="email2"><b>Email address</b></label>
+                                <input type="email" name="email" class="form-control" id="email2"
+                                    aria-describedby="email2" autocomplete="off" required
+                                    pattern="^([_\-\.0-9a-zA-Z]+)@([_\-\.0-9a-zA-Z]+)\.([a-zA-Z]){1,7}$">
+                                <div class="invalid-feedback">
+                                    Your email must be a valid email.
+                                </div>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="password1"><b>Password</b></label>
+                                <div class="input-group" id="show_hide_password1">
+                                    <input type="password" name="password1" class="form-control" id="password1"
+                                        autocomplete="off" required minlength="6">
+
+                                    <div class="input-group-append d-flex"
+                                        onclick="showPassword('show_hide_password1')">
+                                        <span class="input-group-text"><i class="fa fa-eye-slash"
+                                                aria-hidden="true"></i></span>
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        Password must contians minimum 6 characters
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="password2"><b>Confirm Password</b></label>
+                                <div class="input-group" id="show_hide_password2">
+                                    <input type="password" name="password2" class="form-control" id="password2"
+                                        autocomplete="off" required minlength="6" oninput="check(this)">
+
+                                    <div class="input-group-append d-flex"
+                                        onclick="showPassword('show_hide_password2')">
+                                        <span class="input-group-text"><i class="fa fa-eye-slash"
+                                                aria-hidden="true"></i></span>
+                                    </div>
+
+                                    <div class="invalid-feedback" id="pass2err">
+                                        Password didn't matched!
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="mb-2">
+                                <div class="form-check">
+                                    <input type="checkbox" name="rememberme" class="form-check-input" id="Check2">
+                                    <label class="form-check-label" for="Check2">Remember Me</label>
+                                </div>
+                                <small class="">
+                                    By signing in, you agree to our Terms and confirm you have read our Privacy
+                                    Policy.
+                                </small>
+                            </div>
+
+                            <button type="submit" class="btn bg-wine-berry text-white" id="signup-btn">Signup</button>
+                        </form>
+                    </div>
+                    <!-- Signup Modal End -->
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- SignIn Modal End -->

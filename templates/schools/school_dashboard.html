@@ -1,0 +1,252 @@
+{% extends 'student_parents/base.html' %}
+{% block title %}School Dashboard{% endblock %}
+{% block main_content %}
+
+<div class="container">
+    <form action="" method="post" class="rounded shadow px-4 my-3 d-flex flex-column">
+
+        <h3 class="mt-4 mb-3">School details</h3>
+
+        <div class="row">
+            <!-- school Name -->
+            <div class="forn-group col-12 mb-4">
+                <label for="school-name">School Name:</label>
+                {{ data.school_name }}
+                <div class="invalid-feedback">
+                    This field is required!
+                </div>
+            </div>
+
+            <!-- school board -->
+            <div class="form-group col-12 col-md-3 mb-4">
+                <label for="board">Select Board</label>
+                <select name="board" id="board"  class="form-control form-control-sm">
+
+                    <option value="state">{{ data.board.value }}</option>
+                    <option value="state">State board</option>
+                    <option value="cbse">CBSE</option>
+                    <option value="ieyc">IEYC</option>
+                </select>
+            </div>
+
+            <!-- ownership Status -->
+            <div class="form-group col-12 col-md-3 mb-4">
+                <label for="ownership">Ownership</label>
+                <select name="ownership" id="ownership" class="form-control form-control-sm">
+                    <option value="private">Private</option>
+                    <option value="private adied">Pravate aided</option>
+                </select>
+            </div>
+
+
+            <!-- co-ed Status -->
+            <div class="form-group col-12 col-md-3 mb-4">
+                <label for="co-ed">Co-Ed Status</label>
+                <select name="co-ed" id="co-ed" class="form-control form-control-sm">
+                    <option value="girls only">Girls Only</option>
+                    <option value="co-education">Co-Education</option>
+                </select>
+            </div>
+
+            <!-- class-offered -->
+            <div class="form-group col-12 col-md-3 mb-4">
+                <label for="class-offered">Class offered</label>
+                <select name="" id="class-offered" class="form-control form-control-sm">
+                    <option value="girls only">Girls Only</option>
+                    <option value="co-education">Co-Education</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- school address -->
+        <div class="forn-group">
+            <label for="school-name">School Name:</label>
+            <textarea rows="2" name="school-name" id="school-name" class="form-control form-control-sm"></textarea>
+            <div class="invalid-feedback">
+                This field is required!
+            </div>
+        </div>
+
+        <div class="my-3">
+            <button class="btn btn-sm btn-primary">Submit</button>
+        </div>
+    </form>
+
+    <form class="rounded shadow px-4 d-flex flex-column mt-5">
+
+        <h3 class="mt-4 mb-3">Other details</h3>
+
+        <div class="row">
+
+            <!-- school Name -->
+            <div class="forn-group col-12 col-md-4 mb-4">
+                <label for="ct">Campus type:</label>
+                <input type="text" name="ct" id="ct" class="form-control form-control-sm">
+                <div class="invalid-feedback">
+                    This field is required!
+                </div>
+            </div>
+
+            <!-- school Name -->
+            <div class="forn-group col-12 col-md-4 mb-4">
+                <label for="cs">Campus size:</label>
+                <input type="text" name="cs" id="cs" class="form-control form-control-sm">
+                <div class="invalid-feedback">
+                    This field is required!
+                </div>
+            </div>
+
+            <!-- school Name -->
+            <div class="forn-group col-12 col-md-4 mb-4">
+                <label for="yoe">Year of Establishment:</label>
+                <input type="date" name="yoe" id="yoe" class="form-control form-control-sm">
+                <div class="invalid-feedback">
+                    This field is required!
+                </div>
+            </div>
+
+            <!-- school Name -->
+            <div class="forn-group col-12 col-md-3 mb-4">
+                <label for="cl">Class type:</label>
+                <input type="text" name="cl" id="cl" class="form-control form-control-sm">
+                <div class="invalid-feedback">
+                    This field is required!
+                </div>
+            </div>
+            
+            <!-- school Name -->
+            <div class="forn-group col-12 col-md-3 mb-4">
+                <label for="infrastructure">Infrastructure:</label>
+                <input type="text" name="infrastructure" id="infrastructure" class="form-control form-control-sm">
+                <div class="invalid-feedback">
+                    This field is required!
+                </div>
+            </div>
+
+            
+            <!-- school Name -->
+            <div class="forn-group col-12 col-md-3 mb-4">
+                <label for="lab">Labs:</label>
+                <input type="text" name="lab" id="lab" class="form-control form-control-sm">
+                <div class="invalid-feedback">
+                    This field is required!
+                </div>
+            </div>
+
+            <!-- school Name -->
+            <div class="forn-group col-12 col-md-3 mb-4">
+                <label for="bt">Boarding type:</label>
+                <input type="text" name="bt" id="bt" class="form-control form-control-sm">
+                <div class="invalid-feedback">
+                    This field is required!
+                </div>
+            </div>
+
+
+            <!-- school Name -->
+            <div class="forn-group col-12 col-md-3 mb-4">
+                <label for="ss">Safty Security:</label>
+                <input type="text" name="ss" id="ss" class="form-control form-control-sm">
+                <div class="invalid-feedback">
+                    This field is required!
+                </div>
+            </div>
+
+            <!-- school Name -->
+            <div class="forn-group col-12 col-md-3 mb-4">
+                <label for="af">Advanced Facilities:</label>
+                <input type="text" name="af" id="af" class="form-control form-control-sm">
+                <div class="invalid-feedback">
+                    This field is required!
+                </div>
+            </div>
+
+            <!-- school Name -->
+            <div class="forn-group col-12 col-md-3 mb-4">
+                <label for="ec">Extra curricular:</label>
+                <input type="text" name="ec" id="ec" class="form-control form-control-sm">
+                <div class="invalid-feedback">
+                    This field is required!
+                </div>
+            </div>
+
+            <!-- school Name -->
+            <div class="forn-group col-12 col-md-3 mb-4">
+                <label for="sf">Sports & Fitness:</label>
+                <input type="text" name="sf" id="sf" class="form-control form-control-sm">
+                <div class="invalid-feedback">
+                    This field is required!
+                </div>
+            </div>
+
+
+            <!-- school Name -->
+            <div class="forn-group col-12 col-md-3 mb-4">
+                <label for="df">Disabled friendly</label>
+                <input type="text" name="df" id="df" class="form-control form-control-sm">
+                <div class="invalid-feedback">
+                    This field is required!
+                </div>
+            </div>
+
+
+            <!-- school Name -->
+            <div class="forn-group col-12 col-md-3 mb-4">
+                <label for="hof">Hall of fame:</label>
+                <input type="text" name="hof" id="hof" class="form-control form-control-sm">
+                <div class="invalid-feedback">
+                    This field is required!
+                </div>
+            </div>
+
+
+            <!-- school Name -->
+            <div class="forn-group col-12 col-md-3 mb-4">
+                <label for="galley">Gallery:</label>
+                <input type="text" name="galley" id="galley" class="form-control form-control-sm">
+                <div class="invalid-feedback">
+                    This field is required!
+                </div>
+            </div>
+        </div>
+
+
+        <span class="text-muted mb-2 mt-3">Contact information:</span>
+        <div class="row">
+            <!-- school Name -->
+            <div class="forn-group col-12 col-md-4 mb-4">
+                <label for="website">Website:</label>
+                <input type="text" name="website" id="website" class="form-control form-control-sm">
+                <div class="invalid-feedback">
+                    This field is required!
+                </div>
+            </div>
+
+            <!-- Email Name -->
+            <div class="forn-group col-12 col-md-4 mb-4">
+                <label for="email">Email:</label>
+                <input type="text" name="email" id="email" class="form-control form-control-sm">
+                <div class="invalid-feedback">
+                    This field is required!
+                </div>
+            </div>
+
+            <!-- school Name -->
+            <div class="forn-group col-12 col-md-4 mb-4">
+                <label for="phone">Phone number:</label>
+                <input type="text" name="phone" id="phone" class="form-control form-control-sm">
+                <div class="invalid-feedback">
+                    This field is required!
+                </div>
+            </div>
+
+        </div>
+
+        <div>
+            <button type="submit"class="btn btn-primary btn-sm mb-3">Submit</button>
+        </div>
+
+    </form>
+
+</div>
+{% endblock %}

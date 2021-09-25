@@ -1,0 +1,205 @@
+{% extends 'school_dashboard/base.html' %}
+{% block title %}School Hall of Fame{% endblock %}
+
+{% load crispy_forms_tags %}
+
+{% block style %}
+<style>
+    #fc-form .form-group {
+        margin-bottom: 0;
+    }
+</style>
+{% endblock %}
+
+{% block main_content %}
+
+<div class="rouned py-3 px-4 shadow">
+    <h3 class="mt-4 mb-3">Hall of fame</h3>
+
+    <form class=needs-validation " 
+        id="fame-form" novalidate>
+        <div class="form-group flex-grow-1 mb-0">
+            <input type="hidden" name="fame-id" id="fame-id">
+            <!-- <label for="fame-title">Fame Title: </label> -->
+            <input type="text" name="fame-title" id="fame-title" class="form-control form-control-sm rounded-pill"
+                placeholder="Fame title" required>
+            <div class="invalid-feedback">
+                This field is reuqired
+            </div>
+        </div>
+        <div>
+            <button type="button" class="btn rounded-pill btn-sm btn-warning mt-2 d-none cancel-btn">Cancel</button>
+            <button type="submit" class="btn rounded-pill btn-sm btn-primary mt-2">Submit</button>
+        </div>
+    </form>
+
+    <div class="rounded border p-2 mt-4">
+        <div class="table-responsive" style="max-height: 350px;">
+            <table class="table table-striped table-sm" id="fee">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Fame Title</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extrascript %}
+
+<script>
+
+    /* 
+     * Global data
+    */
+    const fame_list = []
+
+    const tableBody = document.querySelector('tbody')
+    const form = document.querySelector('#fame-form')
+    const fameId = document.querySelector('#fame-id')
+    const fameTitle = document.querySelector('#fame-title')
+
+    /*
+     * Rendering data to UI
+    */
+    function renderData() {
+        tableBody.innerHTML = ''
+
+        if (fame_list.length > 0) {
+
+            const fame_list_html = fame_list.map((data, i) => {
+                return `
+                <tr>
+                    <td>${i + 1}</td>
+                    <td>${data.fame_title}</td>
+                    <td>
+                        <button class="btn btn-sm btn-warning" 
+                            onclick="editData(${i})">
+                            <span class="ti-pencil"></span>
+                        </button>
+                        <button class="btn btn-sm btn-danger" 
+                            onclick="deleteData(${i})">
+                            <span class="ti-trash"></span>
+                        </button>
+                    </td>
+                </tr>`
+            })
+            tableBody.innerHTML = fame_list_html.join("")
+        } else {
+            tableBody.innerHTML = '<div class="mt-2" colspan="4">No data</div>'
+        }
+    }
+
+    /*
+     * Fetching data from server
+    */
+    async function getData(url) {
+        tableBody.innerHTML = '<div class="mt-2" colspan="4">Loading...</div>'
+        res = await fetch(url)
+        json = await res.json()
+        return JSON.parse(json.data)
+    }
+
+    /*
+     * Editing data
+    */
+    function editData(index) {
+        $('.cancel-btn').removeClass('d-none')
+        fameTitle.focus();
+        fameId.value = fame_list[index].id;
+        fameTitle.value = fame_list[index].fame_title;
+    }
+
+
+    $('.cancel-btn').on('click', function () {
+        $('#fame-form').trigger("reset");
+        console.log('sfs')
+        $('#fame-form').removeClass('was-validated')
+        fameId.value = ''
+        $('.cancel-btn').addClass('d-none')
+    })
+
+    /*
+     * Update or add new data
+    */
+    function upsert(array, item) { // (1)
+        const i = array.findIndex(_item => _item.id === item.id);
+        console.log(i)
+        if (i > -1) array[i] = item; // (2)
+        else array.push(item);
+    }
+
+    /*
+    * Deleting data
+    */
+    function deleteData(i) {
+        $.ajax({
+            url: "{% url 'school_fame_delete' %}",
+            method: "POST",
+            data: { id: fame_list[i].id },
+            headers: { 'X-CSRFToken': '{{ csrf_token }}' },
+            success: function (res) {
+                console.log(res.message);
+                fame_list.splice(i, 1)
+                renderData()
+            },
+            error: function (res) {
+                console.log(res)
+            }
+        })
+    }
+
+
+    getData("{% url 'school_fame_add' %}").then(d => {
+        d.forEach(element => {
+            fame_list.push({
+                id: element.pk,
+                fame_title: element.fields.title
+            })
+        });
+        renderData();
+    })
+
+
+    /* 
+    * Submitting Form
+    */
+    $("#fame-form").submit(function (e) {
+        e.preventDefault()
+        if (form.checkValidity()) {
+            $.ajax({
+                url: "{% url 'school_fame_add' %}",
+                method: "POST",
+                data: $(this).serialize(),
+                headers: { 'X-CSRFToken': '{{ csrf_token }}' },
+                success: function (res) {
+                    let d = JSON.parse(res.data)
+
+                    let obj = {
+                        id: d[0].pk,
+                        fame_title: d[0].fields.title,
+                    }
+
+                    upsert(fame_list, obj)
+                    renderData()
+                },
+                error: function (res) {
+                    console.log(res)
+                }
+            })
+            $('#fame-form').trigger("reset");
+            $('.cancel-btn').addClass('d-none')
+            $('#fame-form').removeClass('was-validated')
+            fameId.value = ''
+        }
+    })
+</script>
+{% endblock %}

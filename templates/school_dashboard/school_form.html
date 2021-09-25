@@ -1,0 +1,272 @@
+{% extends 'school_dashboard/base.html' %}
+{% block title %}School details{% endblock %}
+
+{% load crispy_forms_tags %}
+
+{% block style %}
+<style>
+    #fc-form .form-group {
+        margin-bottom: 0;
+    }
+</style>
+{% endblock %}
+
+{% block main_content %}
+
+{% crispy school_form %}
+
+
+<div class="rouned my-5 p-4 shadow">
+    <h3>Fee details</h3>
+
+    <div class="row mt-4">
+        <div class="col-12 col-md-4">
+            <form class="rounded p-3 border d-flex flex-column needs-validation" id="fee-form" novalidate>
+                <input type="hidden" name="fee-id" id="fee-id">
+                <div class="form-group">
+                    <label for="fee-name">Select Class: </label>
+                    <select name="standard" id="standard" class="form-control form-control-sm select custom-select form-select" required>
+                        <option value="0">Class Nursery</option>
+                        <option value="1">Class 1st</option>
+                        <option value="2">Class 2nd</option>
+                        <option value="3">Class 3rd</option>
+                        <option value="4">Class 4th</option>
+                        <option value="5">Class 5th</option>
+                        <option value="6">Class 6th</option>
+                        <option value="7">Class 7th</option>
+                        <option value="8">Class 8th</option>
+                        <option value="9">Class 9th</option>
+                        <option value="10">Class 10th</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="fee-name">Fee Type: </label>
+                    <input type="text" name="fee-name" id="fee-name" class="form-control form-control-sm"
+                        placeholder="computer fee, development fee" required>
+                    <div class="invalid-feedback">
+                        This field is reuqired
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="fee-amount">Fee amount: </label>
+                    <input type="number" name="fee-amount" id="fee-amount" class="form-control form-control-sm"
+                        placeholder="1234" required>
+                    <div class="invalid-feedback">
+                        This field is reuqired
+                    </div>
+                </div>
+                
+                <div>
+                    <button type="button" class="btn btn-sm btn-warning cancel-btn d-none">Cancel</button>
+                    <button type="submit" class="btn btn-sm btn-primary">Add</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-12 col-md-8 mt-4 mt-md-0">
+            <div class="form-group">
+                <label for="fee-name">Select Class: </label>
+                <select name="standard" id="standard-filter" class="form-control form-control-sm select custom-select form-select" required style="border-radius: 999px;">
+                    <option value="0">Class Nursery</option>
+                    <option value="1">Class 1st</option>
+                    <option value="2">Class 2nd</option>
+                    <option value="3">Class 3rd</option>
+                    <option value="4">Class 4th</option>
+                    <option value="5">Class 5th</option>
+                    <option value="6">Class 6th</option>
+                    <option value="7">Class 7th</option>
+                    <option value="8">Class 8th</option>
+                    <option value="9">Class 9th</option>
+                    <option value="10">Class 10th</option>
+                </select>
+            </div>
+            <div class="rounded border p-2">
+                <div class="table-responsive" style="max-height: 350px;">
+                    <table class="table table-striped table-sm" id="fee">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Fees Type</th>
+                                <th scope="col">Fees Amount</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extrascript %}
+
+<script>
+
+    /* 
+     * Global data
+    */
+    const fees_list = []
+
+    let std_list = []
+
+    const tableBody = document.querySelector('tbody')
+    const form = document.querySelector('#fee-form')
+    const feeId = document.querySelector('#fee-id')
+    const feeName = document.querySelector('#fee-name')
+    const feeAmount = document.querySelector('#fee-amount')
+    const standard = document.querySelector('#standard')
+    const standardFilter = document.querySelector('#standard-filter')
+
+    /*
+     * Rendering data to UI
+    */
+    function renderData() {
+        tableBody.innerHTML = ''
+        std_list = fees_list.filter(ele => ele.standard === standardFilter.value)
+
+        if (std_list.length > 0) {
+
+            const fees_list_html = std_list.map((data, i) => {
+                return `
+                <tr>
+                    <td>${i + 1}</td>
+                    <td>${data.fee_name}</td>
+                    <td>${data.fee_amount}</td>
+                    <td>
+                        <button class="btn btn-sm btn-warning" 
+                            onclick="editData(${i})">
+                            <span class="ti-pencil"></span>
+                        </button>
+                        <button class="btn btn-sm btn-danger" 
+                            onclick="deleteData(${i})">
+                            <span class="ti-trash"></span>
+                        </button>
+                    </td>
+                </tr>`
+            })
+            tableBody.innerHTML = fees_list_html.join("")
+        } else {
+            tableBody.innerHTML = '<div class="mt-2" colspan="4">No data</div>'
+        }
+    }
+
+    /*
+     * Fetching data from server
+    */
+    async function getData(url) {
+        tableBody.innerHTML = '<div class="mt-2" colspan="4">Loading...</div>'
+        res = await fetch(url)
+        json = await res.json()
+        return JSON.parse(json.data)
+    }
+
+    /*
+     * Editing data
+    */
+    function editData(index) {
+        $('.cancel-btn').removeClass('d-none')
+        feeName.focus();
+        feeId.value = std_list[index].id;
+        standard.value = std_list[index].standard;
+        feeName.value = std_list[index].fee_name;
+        feeAmount.value = std_list[index].fee_amount;
+    }
+
+    $('.cancel-btn').on('click', function () {
+        $('#fee-form').trigger("reset");
+        $('#fee-form').removeClass('was-validated')
+        feeId.value = ''
+        $('.cancel-btn').addClass('d-none')
+    })
+
+    /*
+     * Update or add new data
+    */
+    function upsert(array, item) { // (1)
+        const i = array.findIndex(_item => _item.id === item.id);
+        if (i > -1) array[i] = item; // (2)
+        else array.push(item);
+    }
+
+    /*
+    * Deleting data
+    */
+    function deleteData(i) {
+        $.ajax({
+            url: "{% url 'school_fee_delete' %}",
+            method: "POST",
+            data: { id: fees_list[i].id },
+            headers: { 'X-CSRFToken': '{{ csrf_token }}' },
+            success: function (res) {
+                console.log(res.message);
+                fees_list.splice(i, 1)
+                renderData()
+            },
+            error: function (res) {
+                console.log(res)
+            }
+        })
+    }
+
+    /*
+    * Filter by standard
+    */
+    standardFilter.addEventListener('change', (e) => {
+        std_list = fees_list.filter(ele => ele.standard === e.target.value)
+        console.log(e.target.value)
+        renderData()
+    })
+
+    getData("{% url 'school_fee_add' %}").then(d => {
+        d.forEach(element => {
+            fees_list.push({
+                id: element.pk,
+                standard: element.fields.standard,
+                fee_name: element.fields.fee_name,
+                fee_amount: element.fields.fee_amount
+            })
+        });
+        renderData();
+    })
+
+
+    /* 
+    * Submitting Form
+    */
+    $("#fee-form").submit(function (e) {
+        e.preventDefault()
+        if (form.checkValidity()) {
+            $.ajax({
+                url: "{% url 'school_fee_add' %}",
+                method: "POST",
+                data: $(this).serialize(),
+                headers: { 'X-CSRFToken': '{{ csrf_token }}' },
+                success: function (res) {
+                    let d = JSON.parse(res.data)
+
+                    let obj = {
+                        id: d[0].pk,
+                        standard: d[0].fields.standard,
+                        fee_name: d[0].fields.fee_name,
+                        fee_amount: d[0].fields.fee_amount
+                    }
+
+                    upsert(fees_list, obj)
+                    renderData()
+                },
+                error: function (res) {
+                    console.log(res)
+                }
+            })
+            $('#fee-form').trigger("reset");
+            $('.cancel-btn').addClass('d-none')
+            $('#fee-form').removeClass('was-validated')
+            feeId.value = ''
+        }
+    })
+</script>
+{% endblock %}

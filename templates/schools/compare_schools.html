@@ -1,0 +1,364 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Compare Schools{% endblock %}
+
+{% block body %}
+
+<section class="fm-quicksand fw-500 pb-0">
+
+    <div class="container">
+
+        <h4 class="fw-700">Compare School</h4>
+
+        <div class="row">
+            <div class="col-6 col-lg-3 my-3">
+                <div class="cmp-card active align-middle d-flex flex-column p-3" data-toggle="modal"
+                    data-target="#cmp-Modal">
+                    <button class="plus-btn align-middle m-3">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <h6 class="text-muted m-0">
+                        Add School
+                    </h6>
+                </div>
+            </div>
+
+            <div class="col-6 col-lg-3 my-3">
+                <div class="cmp-card align-middle d-flex flex-column p-3 disabled">
+                    <button class="plus-btn align-middle m-3">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <h6 class="text-muted m-0">
+                        Add School
+                    </h6>
+                </div>
+            </div>
+
+            <div class="col-3 d-none d-lg-block">
+                <div class="cmp-card align-middle d-flex flex-column p-3 m-3 disabled">
+                    <button class="plus-btn align-middle m-3">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <h6 class="text-muted m-0">
+                        Add School
+                    </h6>
+                </div>
+            </div>
+
+            <div class="col-3 d-none d-lg-block">
+                <div class="cmp-card align-middle d-flex flex-column p-3 m-3 disabled">
+                    <button class="plus-btn align-middle m-3">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <h6 class="text-muted m-0">
+                        Add School
+                    </h6>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-5">
+            <button class="btn bg-pizza fw-700 text-white" style="width: 300px;">Compare Now</button>
+        </div>
+
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="cmp-Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Select School</h5>
+                    <button type="button" class="close btn btn-sm" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><i class="fas fa-times"></i></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="schoolname">Enter School Name</label>
+                        <input type="text" class="form-control" name="schoolname" id="schoolname">
+                        <div class="search-result"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="add-school" data-dismiss="modal">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="fm-quicksand fw-500 background-svg">
+    <div class="container">
+
+        <!-- desktop only -->
+        <div class="d-none d-lg-block">
+            <!-- compare result Start -->
+            <!-- key status start -->
+            <div class="bg-white p-3 rounded shadow-sm mb-5">
+                <div class="cmp-title">
+                    <h5 class="fw-700">Key Status</h5>
+                </div>
+                <table class="table mt-4">
+                    <tbody>
+                        <tr>
+                            <th>Status</th>
+                            <th class="text-center">School Name 1</th>
+                            <th class="text-center">School Name 2</th>
+                            <th class="text-center">School Name 3</th>
+                            <th class="text-center">School Name 4</th>
+                        </tr>
+                        <tr>
+                            <td>Ownership</td>
+                            <td class="text-center">Private</td>
+                            <td class="text-center">Private</td>
+                            <td class="text-center">Private</td>
+                            <td class="text-center">Private</td>
+                        </tr>
+                        <tr>
+                            <td>Year of establishment</td>
+                            <td class="text-center">Private</td>
+                            <td class="text-center">Private</td>
+                            <td class="text-center">Private</td>
+                            <td class="text-center">Private</td>
+                        </tr>
+                        <tr>
+                            <td>Board</td>
+                            <td class="text-center">Private</td>
+                            <td class="text-center">Private</td>
+                            <td class="text-center">Private</td>
+                            <td class="text-center">Private</td>
+                        </tr>
+                        <tr>
+                            <td>Co-ed status</td>
+                            <td class="text-center">Private</td>
+                            <td class="text-center">Private</td>
+                            <td class="text-center">Private</td>
+                            <td class="text-center">Private</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <!-- key status end -->
+
+
+            <!-- fees structure start -->
+            <div class="bg-white p-3 rounded shadow-sm mb-5">
+                <div class="cmp-title">
+                    <h5 class="fw-700">Fees</h5>
+                </div>
+                <table class="table mt-4">
+                    <tbody>
+                        <tr>
+                            <th>Fees</th>
+                            <th class="text-center">School Name 1</th>
+                            <th class="text-center">School Name 2</th>
+                            <th class="text-center">School Name 3</th>
+                            <th class="text-center">School Name 4</th>
+                        </tr>
+                        <tr>
+                            <td>Registration fees </td>
+                            <td class="text-center">Amount</td>
+                            <td class="text-center">Amount</td>
+                            <td class="text-center">Amount</td>
+                            <td class="text-center">Amount</td>
+                        </tr>
+                        <tr>
+                            <td>Monthly fees</td>
+                            <td class="text-center">Amount</td>
+                            <td class="text-center">Amount</td>
+                            <td class="text-center">Amount</td>
+                            <td class="text-center">Amount</td>
+                        </tr>
+                        <tr>
+                            <td>Annual fees</td>
+                            <td class="text-center">Amount</td>
+                            <td class="text-center">Amount</td>
+                            <td class="text-center">Amount</td>
+                            <td class="text-center">Amount</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- fees structure end -->
+
+
+            <!-- Academics Stats start -->
+            <div class="bg-white p-3 rounded shadow-sm mb-5">
+                <div class="cmp-title">
+                    <h5 class="fw-700">Academics Stats</h5>
+                </div>
+                <table class="table mt-4">
+                    <tbody>
+                        <tr>
+                            <th>Stats</th>
+                            <th class="text-center">School Name 1</th>
+                            <th class="text-center">School Name 2</th>
+                            <th class="text-center">School Name 3</th>
+                            <th class="text-center">School Name 4</th>
+                        </tr>
+                        <tr>
+                            <td>Grades </td>
+                            <td class="text-center">Amount</td>
+                            <td class="text-center">Amount</td>
+                            <td class="text-center">Amount</td>
+                            <td class="text-center">Amount</td>
+                        </tr>
+                        <tr>
+                            <td>Language of instruction</td>
+                            <td class="text-center">Amount</td>
+                            <td class="text-center">Amount</td>
+                            <td class="text-center">Amount</td>
+                            <td class="text-center">Amount</td>
+                        </tr>
+                        <tr>
+                            <td>Annual Fees</td>
+                            <td class="text-center">Amount</td>
+                            <td class="text-center">Amount</td>
+                            <td class="text-center">Amount</td>
+                            <td class="text-center">Amount</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Academics end -->
+            <!-- compare result End -->
+        </div>
+
+
+        <!-- mobile only -->
+        <div class="d-block d-lg-none">
+            <!-- key status start -->
+            <div class="bg-white p-3 rounded shadow-sm mb-5">
+                <div class="cmp-title">
+                    <h5 class="fw-700">Key Status</h5>
+                </div>
+
+                <div class="text-center mt-3">
+                    <small class="text-muted">Ownership</small>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span>Private</span>
+                        <span>Private</span>
+                    </div>
+                </div>
+                <div class="text-center mt-2">
+                    <small class="text-muted">Year of establishment</small>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span>Private</span>
+                        <span>Private</span>
+                    </div>
+                </div>
+                <div class="text-center mt-2">
+                    <small class="text-muted">Board</small>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span>Private</span>
+                        <span>Private</span>
+                    </div>
+                </div>
+                <div class="text-center mt-2">
+                    <small class="text-muted">Co-ed status</small>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span>Private</span>
+                        <span>Private</span>
+                    </div>
+                </div>
+            </div>
+            <!-- key status end -->
+            
+            <!-- Fees structure start -->
+            <div class="bg-white p-3 rounded shadow-sm mb-5">
+                <div class="cmp-title">
+                    <h5 class="fw-700">Fees</h5>
+                </div>
+
+                <div class="text-center mt-3">
+                    <small class="text-muted">Registration fees </small>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span>Amount</span>
+                        <span>Amount</span>
+                    </div>
+                </div>
+                <div class="text-center mt-2">
+                    <small class="text-muted">Monthly fees</small>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span>Amount</span>
+                        <span>Amount</span>
+                    </div>
+                </div>
+                <div class="text-center mt-2">
+                    <small class="text-muted">Annual fees</small>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span>Amount</span>
+                        <span>Amount</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Fees strucutre end -->
+
+
+            <!-- Academics Stats start -->
+            <div class="bg-white p-3 rounded shadow-sm mb-5">
+                <div class="cmp-title">
+                    <h5 class="fw-700">Academics Stats</h5>
+                </div>
+
+                <div class="text-center mt-3">
+                    <small class="text-muted">Grades </small>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span>Amount</span>
+                        <span>Amount</span>
+                    </div>
+                </div>
+                <div class="text-center mt-2">
+                    <small class="text-muted">Language of instruction</small>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span>Amount</span>
+                        <span>Amount</span>
+                    </div>
+                </div>
+                <div class="text-center mt-2">
+                    <small class="text-muted">Annual fees</small>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span>Amount</span>
+                        <span>Amount</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Academics Stats end -->
+
+
+        </div>
+    </div>
+
+</section>
+
+{% endblock %}
+{% block extrascript %}
+<script>
+    const compareList = [];
+
+    const addButton = document.querySelector('#add-school');
+    const cmpCard = document.querySelectorAll('.cmp-card.active');
+
+    document.addEventListener("DOMContentLoaded", () => {
+    })
+
+    addButton.addEventListener('click', () => {
+        const schoolName = document.querySelector('#schoolname');
+        if (schoolName.value !== '') {
+            compareList.push(schoolName.value);
+            schoolName.value = '';
+        }
+        console.log(compareList)
+    })
+
+    // addSchoolBtn.addEventListener('click', () => {
+    //     // alert("Hii")
+    // })
+</script>
+{% endblock %}

@@ -1,0 +1,135 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}{% endblock %}</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="{% static 'student_parents/vendors/feather/feather.css' %}">
+    <link rel="stylesheet" href="{% static 'student_parents/vendors/ti-icons/css/themify-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'student_parents/vendors/css/vendor.bundle.base.css' %}">
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <link rel="stylesheet" href="{% static 'student_parents/vendors/datatables.net-bs4/dataTables.bootstrap4.css' %}">
+    <link rel="stylesheet" href="{% static 'student_parents/vendors/ti-icons/css/themify-icons.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'student_parents/js/select.dataTables.min.css' %}">
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="{% static 'student_parents/css/vertical-layout-light/style.css' %}">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="{% static 'student_parents/images/favicon.png' %}" />
+
+    <style>
+        .sidebar-profile {
+            height: 150px;
+            position: relative;
+        }
+
+        .sidebar-profile-circle {
+            position: absolute;
+            bottom: 50px;
+            display: grid;
+            place-items: center;
+            height: 48px;
+            width: 48px;
+            border-radius: 50%;
+            text-align: center;
+            font-size: 2em;
+            padding-bottom: 10px;
+            margin: 5px 10px;
+        }
+
+        .sidebar-profile-email {
+            position: absolute;
+            bottom: 0;
+            font-size: 1em;
+            width: 100%;
+            padding: 10px;
+            color: wheat;
+        }
+
+        #profileDropdown {
+            height: 45px;
+            width: 45px;
+            background: #4B49AC;
+            z-index: 99;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-align-items: center;
+            align-items: center;
+            -webkit-justify-content: center;
+            justify-content: center;
+            border-radius: 100%;
+            color: wheat;
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        @media (min-width: 992px) {
+            .sidebar-profile {
+                display: none;
+            }
+        }
+    </style>
+
+    {% block style %}
+    {%endblock%}
+</head>
+
+<body>
+    <div class="container-scroller">
+        {% block body %}
+        {% endblock %}
+    </div>
+    <!-- plugins:js -->
+    <script src="{% static 'student_parents/vendors/js/vendor.bundle.base.js' %}"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page -->
+    <script src="{% static 'student_parents/vendors/chart.js/Chart.min.js' %}"></script>
+    <script src="{% static 'student_parents/vendors/datatables.net/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'student_parents/vendors/datatables.net-bs4/dataTables.bootstrap4.js' %}"></script>
+    <script src="{% static 'student_parents/js/dataTables.select.min.js' %}"></script>
+
+    <!-- End plugin js for this page -->
+    <!-- inject:js -->
+    <script src="{% static 'student_parents/js/off-canvas.js' %}"></script>
+    <script src="{% static 'student_parents/js/hoverable-collapse.js' %}"></script>
+    <script src="{% static 'student_parents/js/template.js' %}"></script>
+    <script src="{% static 'student_parents/js/settings.js' %}"></script>
+    <script src="{% static 'student_parents/js/todolist.js' %}"></script>
+    <!-- endinject -->
+    <!-- Custom js for this page-->
+    <script src="{% static 'student_parents/js/dashboard.js' %}"></script>
+    <script src="{% static 'student_parents/js/Chart.roundedBarCharts.js' %}"></script>
+    <!-- End custom js for this page-->
+
+    <script>
+        function validateForm() {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.querySelectorAll('.needs-validation')
+
+            // Loop over them and prevent submission
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        }
+
+        validateForm()
+    </script>
+    {% block extrascript %}
+    {% endblock %}
+</body>
+
+</html>

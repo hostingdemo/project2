@@ -1,0 +1,17 @@
+{% extends 'base1.html' %}
+
+{% block body %}
+{% include 'school_dashboard/_topnav.html' %}
+
+<div class="container-fluid page-body-wrapper">
+
+  {% include 'school_dashboard/_sidenav.html' %}
+
+  <div class="main-panel">
+    <div class="content-wrapper">
+      {% block main_content %}
+      {% endblock %}
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,21 @@
+<!-- partial:partials/_sidebar.html -->
+<nav class="sidebar sidebar-offcanvas" id="sidebar">
+    {% if user.is_authenticated %}
+    {% endif %}
+    <ul class="nav">
+        <li class="nav-item {{dashboard}}">
+            <a class="nav-link" href="{% url 'cms_dashboard' %}">
+                <i class="icon-grid menu-icon"></i>
+                <span class="menu-title">Dashboard</span>
+            </a>
+        </li>
+
+        <li class="nav-item ">
+            <a class="nav-link" href="{% url 'upload_csv' %}">
+                <i class="icon-grid menu-icon"></i>
+                <span class="menu-title">Upload CSV</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+<!-- partial -->

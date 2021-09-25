@@ -1,0 +1,664 @@
+{% extends 'student_parents/base.html'%}
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+{% block main_content %}
+
+<div class="">
+
+    <div class="row">
+
+        {% if student_list %}
+
+        <div class="col-md-12">
+            <h4>Manage child</h4>
+
+            <div class="rounded shadow-sm" style="overflow: hidden;">
+            <table class="table table-striped">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Full Name</th>
+                        <th>Previous School</th>
+                        <th>Admission No</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for i in student_list %}
+                    <tr>
+                        <td>{{ i.firstname }} {{i.lastname}}</td>
+                        <td>{{ i.privious_school}}</td>
+                        <td>{{ i.admission_Number}}</td>
+
+                        <td>
+                            <button class="btn btn-sm btn-light" data-toggle="dropdown" id="{{ i }}">
+                                <i class="ti-more-alt"></i>
+                            </button>
+                            <div class="dropdown-menu mt-2 shadow dropdown-menu-right border-0"
+                                aria-labelledby="{{ i }}">
+
+                                <a href="{% url 'detail_view' i.student_id %}" class="dropdown-item">
+                                    <i class="ti-eye mr-2"></i> View details
+                                </a>
+                                <a href="{% url 'update'  i.student_id  %}" class="dropdown-item">
+                                    <i class="ti-pencil-alt mr-2"></i> Edit information
+                                </a>
+                                <a href="{% url 'delete'  i.student_id  %}" class="dropdown-item">
+                                    <i class="ti-trash mr-2"></i> Delete child
+                                </a>
+                            </div>
+
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+            </div>
+
+            <div class="row justify-content-center mt-4">
+                <button type="button" onclick="myFunction()" style="display:block;" id="action"
+                    class="btn btn-primary m-1">
+                    Add child
+                </button>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <form method="POST" action="{% url 'register_child' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div id="block1" style="display:none; overflow: hidden;" class="card shadow-sm border-0 my-5">
+                    <div class="card-header">Student Information</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12 col-lg-3 col-md-6 form-group">
+                                <label for="email_address">First-Name</label>
+                                {{studentform.firstname}}
+                            </div>
+                            <div class="col-12 col-lg-3 col-md-6 form-group">
+                                <label for="email_address">Last-Name</label>
+                                {{studentform.lastname}}
+                            </div>
+                            <div class="col-12 col-lg-3 col-md-6 form-group">
+                                <label for="email_address" class="form-label">Gender</label>
+                                {{studentform.gender}}
+                            </div>
+                            <div class="col-12 col-lg-3 col-md-6 form-group">
+                                <label for="email_address" class="form-label">DOB</label>
+                                {{studentform.DOB}}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-6 form-group">
+                                <label for="email_address" class="form-label ">Religion</label>
+                                {{studentform.religion}}
+                            </div>
+
+                            <div class="col-12 col-md-6 form-group">
+                                <label for="email_address" class="form-label">Caste</label>
+                                {{studentform.caste}}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-6 form-group">
+                                <label for="email_address" class="form-label">AdmissionNo.</label>
+                                {{studentform.admission_Number}}
+                            </div>
+                            <div class="col-12 col-md-6 form-group">
+                                <label for="email_address" class="form-label">Aadhar No.</label>
+                                {{studentform.aadhar}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="block2" style="display:none; overflow: hidden;" class="card shadow-sm border-0">
+                    <div class="card-header">Additional Information</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12 col-md-6 form-group">
+                                <label for="email_address" class="form-label">PriviousSchool</label>
+                                {{additionalform.privious_school}}
+                            </div>
+                            <div class="col-12 col-md-6 form-group">
+                                <label for="email_address" class="form-label">TransferCertificate No</label>
+                                {{additionalform.transfer_certificate_no}}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-lg-3 col-md-6 form-group">
+                                <label for="email_address" class="form-label">Stoppage Name</label>
+                                {{additionalform.stoppage_name}}
+                            </div>
+                            <div class="col-12 col-lg-3 col-md-6 form-group">
+                                <label for="email_address" class="form-label">Shift</label>
+                                {{additionalform.shift}}
+                            </div>
+                            <div class="col-12 col-lg-3 col-md-6 form-group">
+                                <label for="email_address" class="form-label">RoutCode</label>
+                                {{additionalform.route_code}}
+                            </div>
+                            <div class="col-12 col-lg-3 col-md-6 form-group">
+                                <label for="email_address" class="form-label">fee Waiver Category</label>
+                                {{additionalform.fee_waiver_category}}
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row justify-content-center">
+                    <button type="submit" style="display:none;" id="add_button" class="btn btn-primary m-5 ">
+                        Add child
+                    </button>
+                </div>
+
+            </form>
+        </div>
+        {% else %}
+
+        <div class="col-12">
+            <h3>Add child details</h3>
+            <form method="POST" action="{% url 'register_student' %}" class="needs-validation"
+                enctype="multipart/form-data" id="add-child-form" novalidate>
+                {% csrf_token %}
+                <!-- Student Form Starts -->
+                <div style="overflow: hidden;" class="card shadow-sm border-0 mt-3 mb-5">
+                    <div class="card-header">Student Information</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12 col-lg-3 col-md-6 form-group">
+                                <label for="email_address">First-Name</label>
+                                {{studentform.firstname}}
+                                <div class="invalid-feedback">
+                                    This field is required!
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-3 col-md-6 form-group">
+                                <label for="email_address">Last-Name</label>
+                                {{studentform.lastname}}
+                                <div class="invalid-feedback">
+                                    This field is required!
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-3 col-md-6 form-group">
+                                <label for="email_address" class="form-label">Gender</label>
+                                {{studentform.gender}}
+                                <div class="invalid-feedback">
+                                    This field is required!
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-3 col-md-6 form-group">
+                                <label for="email_address" class="form-label">DOB</label>
+                                {{studentform.DOB}}
+                                <div class="invalid-feedback">
+                                    This field is required!
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-6 form-group">
+                                <label for="email_address" class="form-label ">Religion</label>
+                                {{studentform.religion}}
+                                <div class="invalid-feedback">
+                                    This field is required!
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-6 form-group">
+                                <label for="email_address" class="form-label">Caste</label>
+                                {{studentform.caste}}
+                                <div class="invalid-feedback">
+                                    This field is required!
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-6 form-group">
+                                <label for="email_address" class="form-label">AdmissionNo.</label>
+                                {{studentform.admission_Number}}
+                                <div class="invalid-feedback">
+                                    This field is required!
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 form-group">
+                                <label for="email_address" class="form-label">Aadhar No.</label>
+                                {{studentform.aadhar}}
+                                <div class="invalid-feedback">
+                                    This field is required!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Student Form Ends -->
+
+                <!-- Parent Form Starts -->
+                <div style="overflow: hidden;" class="card shadow-sm border-0 my-5">
+                    <div class="card-header">Parent / Guardian Information</div>
+
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12 col-md-4 form-group">
+                                <label for="email_address" class="form-label">Father Name</label>
+                                {{parentform.father_name}}
+                                <div class="invalid-feedback">
+                                    This field is required!
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4 form-group">
+                                <label for="email_address" class="form-label">Father DOB</label>
+                                {{parentform.father_dob}}
+                                <div class="invalid-feedback">
+                                    This field is required!
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4 form-group">
+                                <label for="email_address" class="form-label">Father Qualification</label>
+                                {{parentform.father_quali}}
+                                <div class="invalid-feedback">
+                                    This field is required!
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 col-md-4 form-group">
+                                <label for="email_address" class="form-label">Mother Name</label>
+                                {{parentform.mother_name}}
+                                <div class="invalid-feedback">
+                                    This field is required!
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4 form-group">
+                                <label for="email_address" class="form-label">Mother DOB</label>
+                                {{parentform.mother_dob}}
+                                <div class="invalid-feedback">
+                                    This field is required!
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4 form-group">
+                                <label for="email_address" class="form-label">Mother Qualification</label>
+                                {{parentform.mother_quali}}
+                                <div class="invalid-feedback">
+                                    This field is required!
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 col-md-6 form-group">
+                                <label for="email_address" class="form-label">Email</label>
+                                {{parentform.email}}
+                                <div class="invalid-feedback">
+                                    This field is required!
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 form-group">
+                                <label for="email_address" class="form-label">Phone no.</label>
+                                {{parentform.phone_no}}
+                                <div class="invalid-feedback">
+                                    This field is required!
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email_address" class="form-label text-md-right">Annual Income</label>
+                            {{parentform.family_annual_income}}
+                            <div class="invalid-feedback">
+                                This field is required!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Parent Form Ends -->
+
+                <!-- Contact Form Starts -->
+                <div style="overflow: hidden;" class="card shadow-sm border-0 my-5">
+                    <div class="card-header">Contact Information</div>
+                    <div class="card-body d-flex flex-column flex-lg-row">
+
+                        <div class="mb-4 mb-md-0 mr-md-3">
+                            <small class="text-muted d-block mb-3"><b>Current Address</b></small>
+                            <div class="border rounded px-3 pt-3">
+                                <div class="row">
+                                    <div class="col-12 col-md-6 form-group">
+                                        <label for="email_address" class="form-label">Address 1</label>
+                                        {{contactform.current_addr}}
+                                        <div class="invalid-feedback">
+                                            This field is required!
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6 form-group">
+                                        <label for="email_address" class="form-label">Address 2</label>
+                                        {{contactform.current_addr2}}
+                                        <div class="invalid-feedback">
+                                            This field is required!
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12 col-md-4 form-group">
+                                        <label for="email_address" class="form-label">State</label>
+                                        {{contactform.state}}
+                                        <div class="invalid-feedback">
+                                            This field is required!
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-4 form-group">
+                                        <label for="email_address" class="form-label">City</label>
+                                        {{contactform.city}}
+                                        <div class="invalid-feedback">
+                                            This field is required!
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-4 form-group">
+                                        <label for="email_address" class="form-label">Pincode</label>
+                                        {{contactform.pincode}}
+                                        <div class="invalid-feedback">
+                                            This field is required!
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ml-lg-3 mt-md-5 mt-lg-0">
+                            <small class="text-muted d-block mb-3"><b>Parmanent Address</b></small>
+                            <div class="border rounded px-3 pt-3">
+                                <div class="row">
+                                    <div class="col-12 col-md-6 form-group">
+                                        <label for="email_address" class="form-label">Address 1</label>
+                                        {{contactform.permanent_addr}}
+                                        <div class="invalid-feedback">
+                                            This field is required!
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6 form-group">
+                                        <label for="email_address" class="form-label">Address 2</label>
+                                        {{contactform.permanent_addr2}}
+                                        <div class="invalid-feedback">
+                                            This field is required!
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12 col-md-4 form-group">
+                                        <label for="email_address" class="form-label">State</label>
+                                        {{contactform.permanent_state}}
+                                        <div class="invalid-feedback">
+                                            This field is required!
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-4 form-group">
+                                        <label for="email_address" class="form-label">City</label>
+                                        {{contactform.permanent_city}}
+                                        <div class="invalid-feedback">
+                                            This field is required!
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-4 form-group">
+                                        <label for="email_address" class="form-label">Pincode</label>
+                                        {{contactform.permanent_pincode}}
+                                        <div class="invalid-feedback">
+                                            This field is required!
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input ml-0" type="checkbox" value="" id="checkb">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    <i>Same as Current Address</i>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Contact Form Ends -->
+
+                <!-- Additional Form Starts -->
+                <div style="overflow: hidden;" class="card shadow-sm border-0 my-5">
+                    <div class="card-header">Additional Information</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12 col-md-6 form-group">
+                                <label for="email_address" class="form-label">PriviousSchool</label>
+                                {{additionalform.privious_school}}
+                                <div class="invalid-feedback">
+                                    This field is required!
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 form-group">
+                                <label for="email_address" class="form-label">TransferCertificate No</label>
+                                {{additionalform.transfer_certificate_no}}
+                                <div class="invalid-feedback">
+                                    This field is required!
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-lg-3 col-md-6 form-group">
+                                <label for="email_address" class="form-label">Stoppage Name</label>
+                                {{additionalform.stoppage_name}}
+                                <div class="invalid-feedback">
+                                    This field is required!
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-3 col-md-6 form-group">
+                                <label for="email_address" class="form-label">Shift</label>
+                                {{additionalform.shift}}
+                                <div class="invalid-feedback">
+                                    This field is required!
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-3 col-md-6 form-group">
+                                <label for="email_address" class="form-label">RoutCode</label>
+                                {{additionalform.route_code}}
+                                <div class="invalid-feedback">
+                                    This field is required!
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-3 col-md-6 form-group">
+                                <label for="email_address" class="form-label">fee Waiver Category</label>
+                                {{additionalform.fee_waiver_category}}
+                                <div class="invalid-feedback">
+                                    This field is required!
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- Additional Form Ends -->
+
+
+                <!-- Upload Form Starts -->
+                <div style="overflow: hidden;" class="card shadow-sm border-0 my-5">
+                    <div class="card-header">Upload Documents</div>
+                    <div class="card-body">
+
+                        <div class="row">
+                            <div class="col-12 col-md-3 text-center mb-3 border rounded mx-md-3 py-3">
+                                <b>Upload Photo</b>
+                                <div class="pri p-4" style="justify-content: center; display: flex;">
+                                    <span class="priview"
+                                        style="width: 200px; height: 200px;display: flex; background-color:snow; justify-content: center;">
+                                        <img src="{% static 'student_parents/studentreg/img/200x200.jpg' %}"
+                                            style="width: 200px; height: 200px;" id="priviewphoto" alt="Blank"></span>
+                                </div>
+                                {{documentsform.photo}}
+                            </div>
+
+                            <div class="col-12 col-md-3 text-center mb-3 border rounded mx-md-3 py-3">
+                                <b>Upload ID Proof</b>
+                                <div class="pri p-4" style="justify-content: center; display: flex;">
+                                    <span class="priview "
+                                        style="width: 200px; height: 200px;display: flex; background-color: snow; justify-content: center;"><img
+                                            src="{% static 'student_parents/studentreg/img/200x200.jpg' %}"
+                                            style="width: 200px; height: 200px;" id="priviewID" alt="Blank"></span>
+                                </div>
+                                {{documentsform.id_proof}}
+                            </div>
+
+                            <div class="col-12 col-md-3 text-center mb-3 border rounded mx-md-3 py-3">
+                                <b>Caste Certificate</b>
+                                <div class="pri p-4" style="justify-content: center; display: flex;">
+                                    <span class=" priview " style=" width: 200px; height: 200px;display: flex; background-color: snow;
+                                    justify-content: center;"><img
+                                            src="{% static 'student_parents/studentreg/img/200x200.jpg' %}"
+                                            style="width: 200px; height: 200px;" id="priviewCastCerti"
+                                            alt="Blank"></span>
+                                </div>
+                                {{documentsform.caste_certificate}}
+                            </div>
+
+                            <div class="col-12 col-md-3 text-center mb-3 border rounded mx-md-3 py-3">
+                                <b>Upload Character Certificate</b>
+                                <div class="pri p-4" style="justify-content: center; display: flex;">
+                                    <span class="priview"
+                                        style="width: 200px; height: 200px;display: flex; background-color: snow; justify-content: center;">
+                                        <img src="{% static 'student_parents/studentreg/img/200x200.jpg' %}"
+                                            style="width: 200px; height: 200px;" id="priviewCharacterCerti"
+                                            alt="Blank"></span>
+                                </div>
+                                {{documentsform.character_certificate}}
+                            </div>
+
+                            <div class="col-12 col-md-3 text-center mb-3 border rounded mx-md-3 py-3">
+                                <b>Upload Domicile</b>
+                                <div class="pri p-4" style="justify-content: center; display: flex;">
+                                    <span class="priview "
+                                        style="width: 200px; height: 200px;display: flex; background-color: snow; justify-content: center;"><img
+                                            src="{% static 'student_parents/studentreg/img/200x200.jpg' %}"
+                                            style="width: 200px; height: 200px;" id="priviewDomicile"
+                                            alt="Blank"></span>
+                                </div>
+                                {{documentsform.domicile}}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-center">
+                        <button type="submit" class="btn btn-primary btn mb-5">
+                            Submit
+                        </button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+        {% endif %}
+
+
+
+        {% comment %} script for add child {% endcomment %}
+
+        <script>
+
+            // const currStateSelect = document.querySelector('#id_state')
+            // const permStateSelect = document.querySelector('#id_permanent_state')
+
+            // const currCitySelect = document.querySelector('#id_city')
+            // const permCitySelect = document.querySelector('#id_permanent_city')
+
+            // let url = "{% static 'student_parents/states-and-districts.json'%}"
+
+            // let data = null;
+            // currStateSelect.innerHTML = "<option selected>Loading...</option>";
+            // permStateSelect.innerHTML = "<option selected>Loading...</option>";
+
+            // const showOptions = (event) => {
+            //     // currCitySelect.removeAttribute("disabled");
+            //     let s = event.target
+            //     setSelectOptions(
+            //         data[s[s.selectedIndex].dataset.id].districts,
+            //         document.getElementById(s.id.slice(0, -5) + 'city')
+            //     );
+            // }
+
+            // function setSelectOptions(data, ele) {
+            //     if (data) {
+            //         let options = data
+            //             .map((element, index) => {
+            //                 return element.state
+            //                     ? `<option value="${element.state}" data-id="${index}">${element.state}</option>`
+            //                     : `<option value="${element}" data-id="${index}">${element}</option>`;
+            //             })
+            //             .join("");
+
+            //         ele.innerHTML = `<option selected>Choose...</option> ${options}`;
+            //     }
+            // }
+
+            // async function getData(url) {
+            //     let res = await fetch(url)
+            //     let data = await res.json()
+            //     if (!res.ok)
+            //         throw console.log('Data not found')
+            //     return data
+            // }
+
+            // getData(url)
+            //     .then(d => {
+            //         data = d;
+            //         setSelectOptions(d, currStateSelect)
+            //         setSelectOptions(d, permStateSelect)
+            //     })
+            //     .catch(e => console.log(e))
+
+            // currStateSelect.addEventListener('change', showOptions)
+            // permStateSelect.addEventListener('change', showOptions)
+
+            function myFunction() {
+                var b = document.getElementById("action");
+                var x = document.getElementById("block1");
+                var y = document.getElementById("block2");
+                var z = document.getElementById("add_button");
+
+
+                b.style.display = "none";
+                x.style.display = "block";
+                y.style.display = "block";
+                z.style.display = "block";
+
+            }
+
+            // function validateForm() {
+            //     // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            //     var forms = document.querySelectorAll('.needs-validation')
+
+            //     // Loop over them and prevent submission
+            //     Array.prototype.slice.call(forms)
+            //         .forEach(function (form) {
+            //             form.addEventListener('submit', function (event) {
+            //                 if (!form.checkValidity()) {
+            //                     event.preventDefault()
+            //                     event.stopPropagation()
+            //                 }
+
+            //                 form.classList.add('was-validated')
+            //             }, false)
+            //         })
+            // }
+
+            // validateForm()
+
+
+
+            // document.querySelector('#add-child-form')
+            //     .addEventListener('submit', e => {
+            //         e.preventDefault()
+            //         alert('d')
+            //     })
+        </script>
+
+
+        {% endblock main_content %}
