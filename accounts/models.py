@@ -13,7 +13,7 @@ User = settings.AUTH_USER_MODEL
 
 class MyUserManager(BaseUserManager):
 
-    def create_user(self, email, password=None):
+    def create_user(self, email, password=None, is_staff=None):
         """
         Creates and saves a User with the given email.
         """
@@ -23,6 +23,8 @@ class MyUserManager(BaseUserManager):
         user = self.model(email=self.normalize_email(email))
 
         user.set_password(password)
+        if is_staff:
+            user.is_staff = True
         user.save(using=self._db)
         return user
 

@@ -22,6 +22,6 @@ class UserAdminConfig(UserAdmin):
         ('Permissions', {'fields': ('is_staff', 'is_superuser', 'is_school')}),
     )
 
-admin.site.register(User, UserAdminConfig)
+admin.site.register(User)
 admin.site.unregister(Group)
 admin.site.register(emails_record)

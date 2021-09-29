@@ -18,7 +18,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.contrib import messages #import messages
 from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.shortcuts import render, redirect
-
+from django.contrib.auth.models import Permission
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text, DjangoUnicodeDecodeError
 from django.core.mail import send_mail
@@ -285,7 +285,93 @@ def send_school_activation_mail(request, uid):
     return HttpResponseRedirect(reverse('school_requests'))
 
 
+def create_employee(request):
 
+    if request.user.is_authenticated:
+        return redirect('home')
+        
+    if request.method == "POST":
+        email = request.POST.get('email')
+        password1 = request.POST.get('password1')
+        password2 = request.POST.get('password2')
+     
+
+        if email == '' or password1 == '' or password2 == '':
+            print('Please provide valid inputs')
+            return HttpResponseRedirect(reverse('create_employee'))
+
+                
+        if len(password1) < 6:
+            print("Password is to short")
+            return HttpResponseRedirect(reverse('create_employee'))
+
+
+        if User.objects.filter(email=email).exists():
+            print("User already exists")
+            return HttpResponseRedirect(reverse('create_employee'))
+
+        else:
+            if password1 == password2:
+                # data = {'email':email, 'password2':password2, 'password1':password1}
+                account = User.objects.create_user(email=email, password=password1, is_staff = True)
+                account.save()
+
+                permission1 = Permission.objects.get(name='Can view school')
+                permission2 = Permission.objects.get(name='Can delete school')
+                permission3 = Permission.objects.get(name='Can change school')
+                permission4 = Permission.objects.get(name='Can add school')
+                permission5 = Permission.objects.get(name='Can add school detail')
+                permission6 = Permission.objects.get(name='Can change school detail')
+                permission7 = Permission.objects.get(name='Can delete school detail')
+                permission8 = Permission.objects.get(name='Can view school detail')
+                permission9 = Permission.objects.get(name='Can change school facilities')
+                permission10 = Permission.objects.get(name='Can add school facilities')
+                permission11 = Permission.objects.get(name='Can view school facilities')
+                permission12 = Permission.objects.get(name='Can delete school facilities')
+                permission13 = Permission.objects.get(name='Can change school fee')
+                permission14 = Permission.objects.get(name='Can add school fee')
+                permission15 = Permission.objects.get(name='Can view school fee')
+                permission16 = Permission.objects.get(name='Can delete school fee')
+                permission17 = Permission.objects.get(name='Can change school gallery')
+                permission18 = Permission.objects.get(name='Can add school gallery')
+                permission19 = Permission.objects.get(name='Can delete school gallery')
+                permission20 = Permission.objects.get(name='Can view school gallery')
+
+                user = User.objects.get(email=email)
+                print(user)
+            
+                user.user_permissions.add(permission1)
+                user.user_permissions.add(permission2)
+                user.user_permissions.add(permission3)
+                user.user_permissions.add(permission4)
+                user.user_permissions.add(permission5)
+                user.user_permissions.add(permission6)
+                user.user_permissions.add(permission7)
+                user.user_permissions.add(permission8)
+                user.user_permissions.add(permission9)
+                user.user_permissions.add(permission10)
+                user.user_permissions.add(permission11)
+                user.user_permissions.add(permission12)
+                user.user_permissions.add(permission13)
+                user.user_permissions.add(permission14)
+                user.user_permissions.add(permission15)
+                user.user_permissions.add(permission16)
+                user.user_permissions.add(permission17)
+                user.user_permissions.add(permission18)
+                user.user_permissions.add(permission19)
+                user.user_permissions.add(permission20)
+            
+                print("done")
+                return HttpResponseRedirect(reverse('create_employee'))
+               
+            else:
+                print("password didn't matched")
+                return HttpResponseRedirect(reverse('create_employee'))
+
+      
+
+    else:
+        return render(request, 'accounts/add_employee.html')
 
 
 
