@@ -3,7 +3,6 @@ from django.shortcuts import redirect, render
 from django.views.generic import View
 from django.contrib import messages
 import csv, io, ast
-from schools.models import *
 
 from schools.models import HallofFame, School, SchoolDetail, SchoolFacilities
 
@@ -185,47 +184,3 @@ class UploadCsv(View):
         except Exception as e:
             print(e)
         return redirect('upload_csv')
-
-
-def employee_dashbaord(request):
-
-    data = School.objects.all()
-
-    return render(request, 'employee/main_dashboard.html', {'data':data})
-
-
-
-def detail_view(request, school_id):
-
-    school_id = School.objects.get(id=school_id)
-
-    data1 = SchoolDetail.objects.filter(school=school_id)
-    data2 = SchoolFacilities.objects.filter(school=school_id)
-    data3 = HallofFame.objects.filter(school=school_id)
-    data4 = SchoolFee.objects.filter(school=school_id)
-    data5 = SchoolRegistration.objects.filter(school=school_id)
-    data6 = SchoolGallery.objects.filter(school=school_id)
-
-    context = {
-
-        'data1' : data1,
-        'data2' : data2,
-        'data3' : data3,
-        'data4' : data4,
-        'data5' : data5,
-        'data6' : data6,
-
-    }
-
-    return render(request, 'employee/detail_view.html', context)
-
-
-
-
-
-
-    
-    
-
-
-    

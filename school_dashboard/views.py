@@ -6,6 +6,10 @@ from schools.forms import school_addForm, school_fc_Form
 from django.shortcuts import redirect, render
 from django.core import serializers
 from django.views.generic import View
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseForbidden
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 from schools.models import *
 
@@ -20,48 +24,25 @@ def dashboard(request):
         return HttpResponse('You are not authorized!')
 
 
-def school_info(request, school_id=None):
-    if school_id:
-
-        if request.method == 'POST':
+def school_info(request):
+    if request.method == 'POST':
+        instance = School.objects.get(owner=request.user)
+        form = school_addForm(request.POST, instance=instance)
+        if form.is_valid():
+            form.save()
             instance = School.objects.get(owner=request.user)
-            form = school_addForm(request.POST, instance=instance)
-            if form.is_valid():
-                form.save()
-                instance = School.objects.get(owner=request.user)
-                form = school_addForm(instance=instance)
-                fee_data = SchoolFee.objects.filter(school=instance)
-                return render(request, 'school_dashboard/school_form.html', {'school_form': form, 'instance': instance, 'fee_data': fee_data})
-        else:
-            try:
-                instance = School.objects.get(id=school_id)
-                fee_data = SchoolFee.objects.filter(school=instance)
-                form = school_addForm(instance=instance)
-                return render(request, 'school_dashboard/school_form.html', {'school_form': form, 'instance': instance, 'fee_data': fee_data})
-            except Exception as e:
-                print(e)
-                return HttpResponse('You are not authorized!')
-
+            form = school_addForm(instance=instance)
+            fee_data = SchoolFee.objects.all(school=instance)
+            return render(request, 'school_dashboard/school_form.html', {'school_form': form, 'instance': instance, 'fee_data': fee_data})
     else:
-
-        if request.method == 'POST':
+        try:
             instance = School.objects.get(owner=request.user)
-            form = school_addForm(request.POST, instance=instance)
-            if form.is_valid():
-                form.save()
-                instance = School.objects.get(owner=request.user)
-                form = school_addForm(instance=instance)
-                fee_data = SchoolFee.objects.filter(school=instance)
-                return render(request, 'school_dashboard/school_form.html', {'school_form': form, 'instance': instance, 'fee_data': fee_data})
-        else:
-            try:
-                instance = School.objects.get(owner=request.user)
-                fee_data = SchoolFee.objects.filter(school=instance)
-                form = school_addForm(instance=instance)
-                return render(request, 'school_dashboard/school_form.html', {'school_form': form, 'instance': instance, 'fee_data': fee_data})
-            except Exception as e:
-                print(e)
-                return HttpResponse('You are not authorized!')
+            fee_data = SchoolFee.objects.filter(school=instance)
+            form = school_addForm(instance=instance)
+            return render(request, 'school_dashboard/school_form.html', {'school_form': form, 'instance': instance, 'fee_data': fee_data})
+        except Exception as e:
+            print(e)
+            return HttpResponse('You are not authorized!')
 
     
 def school_facilities(request):
@@ -188,18 +169,26 @@ class HallofFameDelete(View):
         except Exception as e:
             return JsonResponse({'message': 'Server error'}, status=400)
 
-
-class SchoolGalleryView(View):
+class SchoolGalleryView(LoginRequiredMixin, View):
     def get(self, request):
-        school_gallery = SchoolGallery.objects.all()
-        return render(request, 'school_dashboard/school_gallery.html', {'school_gallery': school_gallery})
+        try:
+            school_instance = School.objects.get(owner=request.user)
+            school_gallery = SchoolGallery.objects.filter(school=school_instance)
+            ct = {
+                'school_gallery': school_gallery,
+                'school': school_instance
+            }
+            return render(request, 'school_dashboard/school_gallery.html', context=ct)
+        except Exception as e:
+            print(e)
+            return HttpResponse(f"Error form SchoolGalleryView: {e}")
 
     def post(self, request):
         try:
             school_instance = School.objects.get(owner=request.user)
-            img = request.FILES['school-img']
+            img = request.FILES.get('school-img')
 
-            if not img:
+            if img is None:
                 return HttpResponse('img not provied')
             instance = SchoolGallery(school=school_instance, school_img=img)
             instance.save()
@@ -209,11 +198,31 @@ class SchoolGalleryView(View):
             return HttpResponse('You are not authorized!')
 
 
-from django.http import HttpResponseForbidden
+@login_required()
 def delete_img(request, pk):
-    if not request.user:
-        return HttpResponseForbidden()
-    SchoolGallery.objects.get(pk=pk).delete()
+    instance = SchoolGallery.objects.get(pk=pk)
+    instance.delete()
     return redirect('school_gallery')
 
-    
+
+@login_required()
+def set_school_logo(request):
+    if request.method == "POST":
+        try:
+            school_instance = School.objects.get(owner=request.user)
+            img = request.FILES.get('school-img')
+            if img is None:
+                return HttpResponse('img not provied')
+            school_instance.school_logo = img
+            school_instance.save()
+            return redirect('school_gallery')
+        except Exception as e:
+            print(e)
+            return HttpResponse(e)
+    return HttpResponse('Method not allowed!')
+
+@login_required()
+def delete_school_logo(request, pk):
+    instance = School.objects.get(pk=pk)
+    instance.school_logo.delete(save=True)
+    return redirect('school_gallery')

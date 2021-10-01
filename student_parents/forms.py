@@ -1,80 +1,166 @@
 
-from django import forms
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import HTML, Column, Div, Layout, Row, Field, Submit
 from django.forms import ModelForm
-from .models import (Documents, 
-                     Student,
-                     ParentDetails,
-                     ContactDetails,
-                     AdditionalDetails)
-from django.forms.widgets import DateInput, Select
+from bootstrap_modal_forms.forms import BSModalModelForm
+from django.forms.widgets import DateInput
+
+from .models import (Child, CommonForm)
 
 
-
-class StudentFrom(ModelForm):
+## 
+# child form
+##
+class ChildForm(BSModalModelForm):
     class Meta:
-        model = Student
-        exclude = ['user', 'create_at', 'student_id']
+        model = Child
+        exclude = ['user']
         widgets = {
-            'DOB': DateInput(attrs={'type': 'date'})
+            'date_of_birth': DateInput(attrs={'type': 'date'})
         }
 
     def __init__(self, *args, **kwargs):
-        super(StudentFrom, self).__init__(*args, **kwargs)
+        super(ChildForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
-            field.widget.attrs['class'] = 'form-control'
+            field.widget.attrs['class'] = 'form-control form-control-sm'
 
 
-class DocumentsFrom(ModelForm):
+## 
+# child info form
+##
+class CommonFormForm(ModelForm):
     class Meta:
-        model = Documents
-        exclude = ['user', 'create_at', 'student_id']
+        model = CommonForm
+        exclude = ['student_id', 'child']
 
     def __init__(self, *args, **kwargs):
-        super(DocumentsFrom, self).__init__(*args, **kwargs)
+        super(CommonFormForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
-            field.widget.attrs['class'] = 'form-control pb-4'
+            field.widget.attrs['class'] = 'form-control form-control-sm'
 
+        self.helper = FormHelper()
+        self.helper.form_class = ""
+        self.helper.attrs = {"novalidate": ''}
+        self.helper.layout = Layout(
+            ## 
+            # Child Details
+            ##
+            HTML('<div style="overflow: hidden;" class="card shadow-sm border-0 mt-3 mb-5">'),
+            HTML('<div class="card-header">Child Details</div>'),
+            HTML('<div class="card-body">'),
+            Row(
+                Column(Field('blood_group', wrapper_class='mr-2'), css_class='col-12 col-md-2'),
+                Column(Field('religion', wrapper_class='mx-2'), css_class='col-12 col-md-4'),
+                Column(Field('category', wrapper_class='mx-2'), css_class='col-12 col-md-4'),
+                Column(Field('minority', wrapper_class='ml-2'), css_class='col-12 col-md-2'),
+                css_class='row',
+            ), 
+            Row(
+                Column(Field('aadhar_no', wrapper_class='mr-2'), css_class='col-12 col-md-6'),
+                Column(Field('admission_number', wrapper_class='ml-2'), css_class='col-12 col-md-6'),
+            ),
+            Row(
+                Field('single_child', wrapper_class='mr-2 mr-md-3'),
+                Field('adopted_child', wrapper_class='mr-2 mr-md-3'),
+                Field('orphan_child', wrapper_class='mr-2 mr-md-3'),
+                Field('child_with_needs', wrapper_class='mr-2 mr-md-3'),
+                css_class='ml-2'
+            ),
+            HTML('</div>'),
+            HTML('</div>'),
 
-class ParentDetailsFrom(ModelForm):
-    class Meta:
-        model = ParentDetails
-        exclude = ['user', 'create_at', 'student_id']
-        widgets = {
-            'father_dob': DateInput(attrs={'type': 'date'}),
-            'mother_dob': DateInput(attrs={'type': 'date'})
-        }
+            ## 
+            # Contact Details
+            ##
+            HTML('<div style="overflow: hidden;" class="card shadow-sm border-0 mt-3 mb-5">'),
+            HTML('<div class="card-header">Contact Details</div>'),
+            HTML('<div class="card-body">'),
+            Div(
+                Div(
+                    Row(
+                        Column(Field('current_address_line_1', wrapper_class='mr-2'), css_class='col-12 col-md-6'),
+                        Column(Field('current_address_line_2', wrapper_class='ml-2'), css_class='col-12 col-md-6'),
+                        Column(Field('state'), css_class='col-12 col-md-4'),
+                        Column(Field('city'), css_class='col-12 col-md-4'),
+                        Column(Field('pincode'), css_class='col-12 col-md-4'),
+                    ),
+                    css_class='border rounded p-3'
+                ),
+                Div(
+                    Row(
+                        Column(Field('permanent_address_line_1', wrapper_class='mr-2'), css_class='col-12 col-md-6'),
+                        Column(Field('permanent_address_line_2', wrapper_class='ml-2'), css_class='col-12 col-md-6'),
+                        Column(Field('permanent_state'), css_class='col-12 col-md-4'),
+                        Column(Field('permanent_city'), css_class='col-12 col-md-4'),
+                        Column(Field('permanent_pincode'), css_class='col-12 col-md-4'),
+                    ),
+                    css_class='border rounded p-3'
+                ),
+                css_class='address'
+            ), 
+            HTML('</div>'),
+            HTML('</div>'),
 
-    def __init__(self, *args, **kwargs):
-        super(ParentDetailsFrom, self).__init__(*args, **kwargs)
-        for field_name, field in self.fields.items():
-            field.widget.attrs['class'] = 'form-control'
+            ## 
+            # Parents/ Gardian Details
+            ##
+            HTML('<div style="overflow: hidden;" class="card shadow-sm border-0 mt-3 mb-5">'),
+            HTML('<div class="card-header">Parents/ Gardian Details</div>'),
+            HTML('<div class="card-body">'),
+            Row(
+                Column(Field('fathers_name', wrapper_class='mr-2'), css_class='col-12 col-md-4'),
+                Column(Field('fathers_dob', wrapper_class='mx-2'), css_class='col-12 col-md-4'),
+                Column(Field('fathers_qualification', wrapper_class='ml-2'), css_class='col-12 col-md-4'),
+                
+                Column(Field('mothers_name', wrapper_class='mr-2'), css_class='col-12 col-md-4'),
+                Column(Field('mothers_dob', wrapper_class='mx-2'), css_class='col-12 col-md-4'),
+                Column(Field('mothers_qualification', wrapper_class='ml-2'), css_class='col-12 col-md-4'),
+                
+                Column(Field('email', wrapper_class='mr-2'), css_class='col-12 col-md-4'),
+                Column(Field('phone_no', wrapper_class='mx-2'), css_class='col-12 col-md-4'),
+                Column(Field('alternate_phone_no', wrapper_class='ml-2'), css_class='col-12 col-md-4'),
 
+                Column(Field('family_annual_income'), css_class='col-12'),
+            ),
+            HTML('</div>'),
+            HTML('</div>'),
 
-class ContactDetailsFrom(ModelForm):
-    class Meta:
-        model = ContactDetails
-        exclude = ['user', 'create_at', 'student_id']
-        CHOICES = [('1', 'First'), ('2', 'Second')]
-        widgets = {
-            'state': Select(attrs={'class':'form-select'}),
-            'city': Select(attrs={'class':'form-select'}),
-            'permanent_state':Select(attrs={'class':'form-control'}),
-            'permanent_city':Select(attrs={'class':'form-control'}),
-        }
+            ## 
+            # Additional Details
+            ##
+            HTML('<div style="overflow: hidden;" class="card shadow-sm border-0 mt-3 mb-5">'),
+            HTML('<div class="card-header">Additional Details</div>'),
+            HTML('<div class="card-body">'),
+            Row(
+                Column(Field('privious_school', wrapper_class='mr-2'), css_class='col-12'),
+                Column(Field('transfer_certificate_no', wrapper_class='mx-2'), css_class='col-12 col-md-3'),
+                Column(Field('route_code', wrapper_class='ml-2'), css_class='col-12 col-md-3'),
+                Column(Field('shift', wrapper_class='mr-2'), css_class='col-12 col-md-3'),
+                Column(Field('stoppage_name', wrapper_class='mx-2'), css_class='col-12 col-md-3'),
+            ),
+            HTML('</div>'),
+            HTML('</div>'),
 
+            ## 
+            # Documents Details
+            ##
+            HTML('<div style="overflow: hidden;" class="card shadow-sm border-0 mt-3 mb-5">'),
+            HTML('<div class="card-header">Documents Details</div>'),
+            HTML('<div class="card-body">'),
+            HTML('<table>'),
+            Div(
+                Field('photo', wrapper_class='m-0'),
+                Field('id_proof', wrapper_class='m-0'),
+                Field('caste_certificate', wrapper_class='m-0'),
+                Field('domicile', wrapper_class='m-0'),
+                Field('transfer_certificate', wrapper_class='m-0'),
+                Field('character_certificate', wrapper_class='m-0'),
+            ),
+            HTML('</table>'),
+            HTML('</div>'),
+            HTML('</div>'),
 
-    def __init__(self, *args, **kwargs):
-        super(ContactDetailsFrom, self).__init__(*args, **kwargs)
-        for field_name, field in self.fields.items():
-            field.widget.attrs['class'] = 'form-control'
-
-
-class AdditionalDetailsFrom(ModelForm):
-    class Meta:
-        model = AdditionalDetails
-        exclude = ['user', 'create_at', 'student_id']
-
-    def __init__(self, *args, **kwargs):
-        super(AdditionalDetailsFrom, self).__init__(*args, **kwargs)
-        for field_name, field in self.fields.items():
-            field.widget.attrs['class'] = 'form-control'
+            HTML('<div class="text-center">'),
+            Submit('submit', 'Submit'),
+            HTML('</div>'),
+        )

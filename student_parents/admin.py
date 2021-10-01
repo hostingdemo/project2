@@ -1,15 +1,9 @@
 from django.contrib import admin
 
 from student_parents.models import (
-    Student, 
-    ContactDetails,
-    ParentDetails, 
-    AdditionalDetails,
-    Documents
+    Child,
+    CommonForm
 )
 
-admin.site.register(Student)
-admin.site.register(ContactDetails)
-admin.site.register(ParentDetails)
-admin.site.register(AdditionalDetails)
-admin.site.register(Documents)
+admin.site.register(Child)
+admin.site.register(CommonForm)

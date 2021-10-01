@@ -50,24 +50,16 @@ def login_view(request):
         user=authenticate(request, username=username, password=password)
 
         if user is not None:
-            print('here2')
+            login(request, user)
 
             if user.is_staff:
-                login(request, user)
                 return HttpResponseRedirect(reverse('employee_dashboard'))
 
             elif user.is_school:
-                print('here3')
-                login(request, user)
-
                 return HttpResponseRedirect(reverse('school_dashboard'))
 
-
             else:
-                print('here4')
-
-                login(request, user)
-                rotate_token(request)
+                # rotate_token(request)
                 return HttpResponseRedirect(reverse('my_account'))
 
         else:

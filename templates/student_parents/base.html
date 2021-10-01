@@ -2,9 +2,14 @@
 
 {% block body %}
 
-  {% include 'student_parents/_topnav.html' %}
+{% include 'student_parents/_topnav.html' %}
 
 <div class="container-fluid page-body-wrapper">
+  <div class="modal fade" tabindex="-1" role="dialog" id="modal">
+    <div class="modal-dialog mt-3" role="document">
+      <div class="modal-content"></div>
+    </div>
+  </div>
 
   {% include 'student_parents/_sidenav.html' %}
 

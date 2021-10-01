@@ -4,7 +4,7 @@ from . import views
 
 urlpatterns = [
     path('dashboard/', views.dashboard, name="school_dashboard"),
-    path('school-info/<school_id>', views.school_info, name="school_info"),
+    path('school-info/', views.school_info, name="school_info"),
     path('school-facilities/', views.school_facilities, name="school_facilities"),
 
     #school fee
@@ -19,4 +19,8 @@ urlpatterns = [
     #school gallery
     path('school-gallery/', views.SchoolGalleryView.as_view(), name="school_gallery"),
     path('school-gallery/delete/<int:pk>', views.delete_img, name="school_img_del"),
+
+    #school logo
+    path('school-logo/', views.set_school_logo, name="school_logo"),
+    path('school-logo/delete/<int:pk>', views.delete_school_logo, name="school_logo_del"),
 ]
