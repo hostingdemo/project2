@@ -36,6 +36,7 @@ from django.middleware.csrf import rotate_token
 
 def login_view(request):
     if request.is_ajax and request.method == "POST":
+        print('i am here')
         username = request.POST.get('email')
         password = request.POST.get('password')
         remember_me = request.POST.get('rememberme')
@@ -47,10 +48,28 @@ def login_view(request):
             return JsonResponse({'message': 'Please  provide email and password'}, status=400)
         
         user=authenticate(request, username=username, password=password)
+
         if user is not None:
-            login(request, user)
-            rotate_token(request)
-            return JsonResponse({"message": f"Login Success {user.is_active}"}, status=200)
+            print('here2')
+
+            if user.is_staff:
+                login(request, user)
+                return HttpResponseRedirect(reverse('employee_dashboard'))
+
+            elif user.is_school:
+                print('here3')
+                login(request, user)
+
+                return HttpResponseRedirect(reverse('school_dashboard'))
+
+
+            else:
+                print('here4')
+
+                login(request, user)
+                rotate_token(request)
+                return HttpResponseRedirect(reverse('my_account'))
+
         else:
             return JsonResponse({
                     "message": "Please enter a correct email and password. Note that both fields may be case-sensitive"
@@ -173,6 +192,7 @@ class VerificationView(View):
             if user.is_active:
                 return redirect('login')
             user.is_active = True
+            user.is_school = True
             user.save()
 
             print('5')
@@ -372,6 +392,9 @@ def create_employee(request):
 
     else:
         return render(request, 'accounts/add_employee.html')
+
+
+
 
 
 

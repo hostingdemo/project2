@@ -4,7 +4,7 @@ from . import views
 
 urlpatterns = [
     path('dashboard/', views.dashboard, name="school_dashboard"),
-    path('school-info/', views.school_info, name="school_info"),
+    path('school-info/<school_id>', views.school_info, name="school_info"),
     path('school-facilities/', views.school_facilities, name="school_facilities"),
 
     #school fee

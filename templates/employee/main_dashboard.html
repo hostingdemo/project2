@@ -1,0 +1,11 @@
+{% extends 'student_parents/base.html' %}
+{% block title %}School Dashboard{% endblock %}
+{% block main_content %}
+
+    {% for i in data %}
+
+    <a href="{% url 'detail_view1212' i.id %}"><label>{{ i.school_name }}</label></a><br>
+
+    {% endfor %}
+
+{% endblock %}

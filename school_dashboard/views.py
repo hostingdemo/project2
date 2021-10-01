@@ -20,25 +20,48 @@ def dashboard(request):
         return HttpResponse('You are not authorized!')
 
 
-def school_info(request):
-    if request.method == 'POST':
-        instance = School.objects.get(owner=request.user)
-        form = school_addForm(request.POST, instance=instance)
-        if form.is_valid():
-            form.save()
+def school_info(request, school_id=None):
+    if school_id:
+
+        if request.method == 'POST':
             instance = School.objects.get(owner=request.user)
-            form = school_addForm(instance=instance)
-            fee_data = SchoolFee.objects.all(school=instance)
-            return render(request, 'school_dashboard/school_form.html', {'school_form': form, 'instance': instance, 'fee_data': fee_data})
+            form = school_addForm(request.POST, instance=instance)
+            if form.is_valid():
+                form.save()
+                instance = School.objects.get(owner=request.user)
+                form = school_addForm(instance=instance)
+                fee_data = SchoolFee.objects.filter(school=instance)
+                return render(request, 'school_dashboard/school_form.html', {'school_form': form, 'instance': instance, 'fee_data': fee_data})
+        else:
+            try:
+                instance = School.objects.get(id=school_id)
+                fee_data = SchoolFee.objects.filter(school=instance)
+                form = school_addForm(instance=instance)
+                return render(request, 'school_dashboard/school_form.html', {'school_form': form, 'instance': instance, 'fee_data': fee_data})
+            except Exception as e:
+                print(e)
+                return HttpResponse('You are not authorized!')
+
     else:
-        try:
+
+        if request.method == 'POST':
             instance = School.objects.get(owner=request.user)
-            fee_data = SchoolFee.objects.filter(school=instance)
-            form = school_addForm(instance=instance)
-            return render(request, 'school_dashboard/school_form.html', {'school_form': form, 'instance': instance, 'fee_data': fee_data})
-        except Exception as e:
-            print(e)
-            return HttpResponse('You are not authorized!')
+            form = school_addForm(request.POST, instance=instance)
+            if form.is_valid():
+                form.save()
+                instance = School.objects.get(owner=request.user)
+                form = school_addForm(instance=instance)
+                fee_data = SchoolFee.objects.filter(school=instance)
+                return render(request, 'school_dashboard/school_form.html', {'school_form': form, 'instance': instance, 'fee_data': fee_data})
+        else:
+            try:
+                instance = School.objects.get(owner=request.user)
+                fee_data = SchoolFee.objects.filter(school=instance)
+                form = school_addForm(instance=instance)
+                return render(request, 'school_dashboard/school_form.html', {'school_form': form, 'instance': instance, 'fee_data': fee_data})
+            except Exception as e:
+                print(e)
+                return HttpResponse('You are not authorized!')
 
     
 def school_facilities(request):
