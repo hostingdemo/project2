@@ -14,6 +14,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from schools.models import *
 
 # Create your views here.
+@login_required(login_url='/')
 def dashboard(request):
     try:
         instance = School.objects.get(owner=request.user)

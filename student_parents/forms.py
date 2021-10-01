@@ -3,7 +3,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import HTML, Column, Div, Layout, Row, Field, Submit
 from django.forms import ModelForm
 from bootstrap_modal_forms.forms import BSModalModelForm
-from django.forms.widgets import DateInput
+from django.forms.widgets import DateInput, Select
 
 from .models import (Child, CommonForm)
 
@@ -32,6 +32,16 @@ class CommonFormForm(ModelForm):
     class Meta:
         model = CommonForm
         exclude = ['student_id', 'child']
+        widgets = {
+            'fathers_dob': DateInput(attrs={'type': 'date'}),
+            'mothers_dob': DateInput(attrs={'type': 'date'}),
+            'state': Select(),
+            'city': Select(),
+            'pincode': Select(),
+            'parmanent_state': Select(),
+            'parmanent_city': Select(),
+            'parmanent_pincode': Select(),
+        }
 
     def __init__(self, *args, **kwargs):
         super(CommonFormForm, self).__init__(*args, **kwargs)
