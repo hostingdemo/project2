@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'bootstrap_modal_forms',
+    'django_tables2',
     
     #local
     'schools',

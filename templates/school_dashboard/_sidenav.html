@@ -16,28 +16,35 @@
             </a>
         </li>
 
-        <li class="nav-item ">
+        <li class="nav-item {{applications}}">
+            <a class="nav-link" href="{% url 'applications' %}">
+                <i class="icon-grid menu-icon"></i>
+                <span class="menu-title">Student Applications</span>
+            </a>
+        </li>
+
+        <li class="nav-item {{school_info}}">
             <a class="nav-link" href="{% url 'school_info' %}">
                 <i class="icon-grid menu-icon"></i>
                 <span class="menu-title">School Information</span>
             </a>
         </li>
 
-        <li class="nav-item">
+        <li class="nav-item {{school_facilities}}">
             <a class="nav-link" href="{% url 'school_facilities' %}">
                 <i class="icon-grid menu-icon"></i>
                 <span class="menu-title">School Facilities</span>
             </a>
         </li>
 
-        <li class="nav-item">
+        <li class="nav-item {{school_fame}}">
             <a class="nav-link" href="{% url 'school_fame' %}">
                 <i class="icon-grid menu-icon"></i>
                 <span class="menu-title">Hall of fame</span>
             </a>
         </li>
 
-        <li class="nav-item">
+        <li class="nav-item {{school_gallery}}">
             <a class="nav-link" href="{% url 'school_gallery' %}">
                 <i class="icon-grid menu-icon"></i>
                 <span class="menu-title">School Gallery</span>

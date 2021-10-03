@@ -1,73 +1,186 @@
 import json
-from django.http import request
-from schools.models import School, SchoolFee
-from django.http.response import HttpResponse, HttpResponseRedirect, JsonResponse
-from schools.forms import school_addForm, school_fc_Form
-from django.shortcuts import redirect, render
-from django.core import serializers
+from django.views.generic.base import TemplateView
+from django.views.generic.edit import UpdateView
+from django.views.generic.list import ListView
 from django.views.generic import View
-from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseForbidden
+
+from django.http.response import HttpResponse, JsonResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import get_object_or_404, redirect, render
+from django.contrib.auth.decorators import login_required
+from django.urls.base import reverse_lazy
+from django.core import serializers
 
+from collections import OrderedDict
+from typing import List
 
+from django_tables2 import Column, SingleTableMixin, Table
+from django_tables2 import SingleTableView
+
+from school_dashboard.models import Application
 from schools.models import *
-
-# Create your views here.
-@login_required(login_url='/')
-def dashboard(request):
-    try:
-        instance = School.objects.get(owner=request.user)
-        data = school_addForm(instance=instance)
-        return render(request, 'school_dashboard/index1.html', {'dashboard': 'active', 'data':data})
-    except Exception as e:
-        print(e)
-        return HttpResponse('You are not authorized!')
+from student_parents.models import Child
+from .tables import ApplicationTable
+from schools.forms import school_addForm, school_fc_Form
 
 
-def school_info(request):
-    if request.method == 'POST':
-        instance = School.objects.get(owner=request.user)
-        form = school_addForm(request.POST, instance=instance)
-        if form.is_valid():
-            form.save()
-            instance = School.objects.get(owner=request.user)
-            form = school_addForm(instance=instance)
-            fee_data = SchoolFee.objects.all(school=instance)
-            return render(request, 'school_dashboard/school_form.html', {'school_form': form, 'instance': instance, 'fee_data': fee_data})
-    else:
-        try:
-            instance = School.objects.get(owner=request.user)
-            fee_data = SchoolFee.objects.filter(school=instance)
-            form = school_addForm(instance=instance)
-            return render(request, 'school_dashboard/school_form.html', {'school_form': form, 'instance': instance, 'fee_data': fee_data})
-        except Exception as e:
-            print(e)
-            return HttpResponse('You are not authorized!')
 
+
+class TableViewMixin(SingleTableMixin):
+    # disable pagination to retrieve all data
+    table_pagination = False
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # build list of columns and convert it to an
+        # ordered dict to retain ordering of columns
+        # the dict maps from column name to its header (verbose name)
+        table: Table = self.get_table()
+        table_columns: List[Column] = [
+            column
+            for column in table.columns
+        ]
+
+        # retain ordering of columns
+        columns_tuples = [(column.name, column.header) for column in table_columns]
+        columns: OrderedDict[str, str] = OrderedDict(columns_tuples)
+
+        context['columns'] = columns
+
+        return context
+
+    def get(self, request, *args, **kwargs):
+        # trigger filtering to update the resulting queryset
+        # needed in case of additional filtering being done
+        response = super().get(self, request, *args, **kwargs)
+        
+        if 'json' in request.GET:
+            table: Table = self.get_table()
+
+            data = [
+                {column.name: cell for column, cell in row.items()}
+                for row in table.paginated_rows
+            ]
+
+            return JsonResponse(data, safe=False)
+        else:
+            return response
+
+class SomeView(TableViewMixin, ListView):
+    template_name = 'school_dashboard/student_applications.html'
+    table_class = ApplicationTable
+    queryset = Application.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['applications'] = 'active'
+        return context
+
+
+"""
+School Dashboard Tab
+"""
+class SchoolDashboard(LoginRequiredMixin, TemplateView):
+    template_name = 'school_dashboard/index1.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['dashboard'] = 'active'
+        return context
+
+
+"""
+Student Appliaction TemplateView
+"""
+class StudentApplicationsAjax(LoginRequiredMixin, SingleTableView):
+    template_name = 'school_dashboard/student_applications.html'
+
+
+
+"""
+Student Appliaction JSON Response
+"""
+class StudentApplicationView(LoginRequiredMixin, SingleTableView):
+    model = Application
+    table_class = ApplicationTable
+    template_name = 'school_dashboard/student_applications.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['applications'] = 'active'
+        return context
+
+    # def get_queryset(self):
+    #     school = School.objects.get(owner=self.request.user)
+    #     application = Application.objects.filter(school=school)
+    #     return application
+
+    # def get(self, request, *args, **kwargs):
+    #     return super().get_context_data(**kwargs)
+    #     queryset = self.get_queryset()
+    #     application_list = []
+    #     for ele in queryset:
+    #         application_list.append({
+    #             'app_id': ele.application_id, 
+    #             'student_name': f"{ele.child.first_name} {ele.child.last_name}",
+    #             'dob' : ele.child.date_of_birth,
+    #             'app_date': ele.created_at,
+    #             'viewed' : ele.viewed,
+    #             'status' : ele.status
+    #         })
+    #     return JsonResponse(application_list, safe=False, status=200)
+
+
+"""
+School Info Tab
+"""
+class SchoolInfoCreateOrUpdate(LoginRequiredMixin, UpdateView):
+    template_name = 'school_dashboard/school_form.html'
+    form_class = school_addForm
+    success_url = reverse_lazy('school_info')
+
+    def get_object(self, queryset=None):
+        obj, created = School.objects.get_or_create(owner=self.request.user)
+        return obj
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['school_info'] = 'active'
+        return context
     
-def school_facilities(request):
-    if request.method == 'POST':
-        try:
-            instance = School.objects.get(owner=request.user)
-            form = school_fc_Form(request.POST)
-            if form.is_valid():
-                return redirect('school_facilities')
-        except Exception as e:
-            print(e)
-            return HttpResponse('You are not authorized!')
-    else:
-        try:
-            instance = School.objects.get(owner=request.user)
-            school_facilities = SchoolFacilities.objects.get(school=instance)
-            form = school_fc_Form(instance=school_facilities)
-            return render(request, 'school_dashboard/school_facilities.html', {'school_fc_form': form})
-        except Exception as e:
-            print(e)
-            return HttpResponse('You are not authorized!')
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
 
-class SchoolFeesView(View):
+"""
+School Facilities Tab
+"""
+class SchoolFacilitiesCreateOrUpdate(LoginRequiredMixin, UpdateView):
+    template_name = 'school_dashboard/school_facilities.html'
+    form_class = school_fc_Form
+    success_url = reverse_lazy('school_facilities')
+
+    def get_object(self, queryset=None):
+        self.school = get_object_or_404(School, owner=self.request.user)
+        obj, created = SchoolFacilities.objects.get_or_create(school=self.school)
+        return obj
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['school_facilities'] = 'active'
+        return context
+    
+    def form_valid(self, form):
+        form.instance.school = self.school
+        return super().form_valid(form)
+
+
+"""
+School Fees GET, POST Ajax
+"""
+class SchoolFeesView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         try:
             school_instance = School.objects.get(owner=request.user)
@@ -106,7 +219,10 @@ class SchoolFeesView(View):
             return JsonResponse({'message': 'Server error'}, status=400)
 
 
-class SchoolFeeDelete(View):
+"""
+School Fees DELETE AJAX
+"""
+class SchoolFeeDelete(LoginRequiredMixin, View):
     def post(self, request):
         _id = request.POST.get('id')
         try:
@@ -116,18 +232,22 @@ class SchoolFeeDelete(View):
             return JsonResponse({'message': 'Server error'}, status=400)
 
 
+"""
+School Hall of Fame TemplateView
+"""
+class SchoolFameView(LoginRequiredMixin, TemplateView):
+    template_name = 'school_dashboard/hall_of_fame.html'
 
-## Hall of fame
-class SchoolFameView(View):
-    def get(self, request):
-        try:
-            school_instance = School.objects.get(owner=request.user)
-            return render(request, "school_dashboard/hall_of_fame.html", {})
-        except Exception as e:
-            print(e)
-            return HttpResponse('You are not authorized!')
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['school_fame'] = 'active'
+        return context
 
-class HallofFameAdd(View):
+
+"""
+School Hall of Fame GET, POST AJAX
+"""
+class HallofFameAdd(LoginRequiredMixin, View):
     def get(self, request):
         try:
             school_instance = School.objects.get(owner=request.user)
@@ -161,7 +281,10 @@ class HallofFameAdd(View):
             return JsonResponse({'message': 'Server error'}, status=400)
 
 
-class HallofFameDelete(View):
+"""
+School Hall of Fame DELETE AJAX
+"""
+class HallofFameDelete(LoginRequiredMixin, View):
     def post(self, request):
         _id = request.POST.get('id')
         try:
@@ -170,6 +293,10 @@ class HallofFameDelete(View):
         except Exception as e:
             return JsonResponse({'message': 'Server error'}, status=400)
 
+
+"""
+School School Gallery GET, POST and DELETE view
+"""
 class SchoolGalleryView(LoginRequiredMixin, View):
     def get(self, request):
         try:
@@ -177,7 +304,8 @@ class SchoolGalleryView(LoginRequiredMixin, View):
             school_gallery = SchoolGallery.objects.filter(school=school_instance)
             ct = {
                 'school_gallery': school_gallery,
-                'school': school_instance
+                'school': school_instance,
+                'school_gallery': 'active'
             }
             return render(request, 'school_dashboard/school_gallery.html', context=ct)
         except Exception as e:
@@ -206,6 +334,9 @@ def delete_img(request, pk):
     return redirect('school_gallery')
 
 
+"""
+School logo POST and DELETE view
+"""
 @login_required()
 def set_school_logo(request):
     if request.method == "POST":

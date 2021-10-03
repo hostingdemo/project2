@@ -21,8 +21,8 @@
             <tr>
                 <th scope="col" class="text-center ">#</th>
                 <th scope="col">School Name</th>
-                <th scope="col">Id</th>
-                <th scope="col" class="text-center ">Status</th>
+                <th scope="col">Email</th>
+                <th scope="col" class="text-center">Verified</th>
             </tr>
         </thead>
         <tbody>
@@ -30,7 +30,7 @@
             <tr>
                 <td class="text-center ">{{ forloop.counter }}</td>
                 <td>{{ school.school_name }}</td>
-                <td>{{ school.id }}</td>
+                <td>{{ school.school.get.email }}</td>
                 <td class="text-center">
                     <div class="form-check form-switch mt-0">
                         <input class="form-check-input m-0" id="flexSwitchCheckChecked" type="checkbox" 
