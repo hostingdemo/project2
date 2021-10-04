@@ -53,12 +53,14 @@ def profile(request):
         if is_update_available:
             context = {
                 'is_update_available':True,
-                'is_student_detail_show':False
+                'is_student_detail_show':False,
+                'profile_active': 'active'
             }
     except:
         context = {
             'is_update_available':False,
-            'is_student_detail_show':True
+            'is_student_detail_show':True,
+            'profile_active': 'active'
         }
     return render(request, 'student_parents/user_profile.html',context=context)
 
@@ -141,6 +143,7 @@ class CommonFormCreateOrUpdate(LoginRequiredMixin, UpdateView):
     def get_object(self, queryset=None):
         child = get_object_or_404(Child, id=self.kwargs['pk'])
         obj, created = CommonForm.objects.get_or_create(child=child)
+        print(created)
         return obj
 
     def get_context_data(self, **kwargs):
