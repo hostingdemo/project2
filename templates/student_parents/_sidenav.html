@@ -23,10 +23,17 @@
             </a>
         </li>
 
-        <li class="nav-item {{ register_student }}">
-            <a class="nav-link" href="{% url 'register_student'%}">
+        <li class="nav-item {{ manage_child }}">
+            <a class="nav-link" href="{% url 'manage_child'%}">
                 <i class="ti-receipt menu-icon"></i>
                 <span class="menu-title">Manage Child</span>
+            </a>
+        </li>
+
+        <li class="nav-item {{ common_form }}">
+            <a class="nav-link" href="{% url 'common_form_view'%}">
+                <i class="ti-receipt menu-icon"></i>
+                <span class="menu-title">Common Form</span>
             </a>
         </li>
 
