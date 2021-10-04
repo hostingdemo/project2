@@ -10,39 +10,34 @@
     {% endif %}
     <ul class="nav">
         <li class="nav-item {{dashboard}}">
-            <a class="nav-link" href="{% url 'school_dashboard' %}">
+            <a class="nav-link" href="{% url 'employee_dashbaord' %}">
                 <i class="icon-grid menu-icon"></i>
                 <span class="menu-title">Dashboard</span>
             </a>
         </li>
 
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'school_info'  %}">
+        <li class="nav-item ">
+            <a class="nav-link" href="{% url 'employee_school_info' instance.id %}">
                 <i class="icon-grid menu-icon"></i>
                 <span class="menu-title">School Information</span>
             </a>
         </li>
 
         <li class="nav-item">
-            <a class="nav-link" href="{% url 'school_facilities'  %}">
+            <a class="nav-link" href="{% url 'employee_school_facilities' instance.id  %}">
                 <i class="icon-grid menu-icon"></i>
                 <span class="menu-title">School Facilities</span>
             </a>
         </li>
 
         <li class="nav-item">
-            <a class="nav-link" href="{% url 'school_fame' %}">
+            <a class="nav-link" href="{% url 'employee_school_fame' instance.id %}">
                 <i class="icon-grid menu-icon"></i>
                 <span class="menu-title">Hall of fame</span>
             </a>
         </li>
 
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'school_gallery' %}">
-                <i class="icon-grid menu-icon"></i>
-                <span class="menu-title">School Gallery</span>
-            </a>
-        </li>
+        
 
     </ul>
 </nav>

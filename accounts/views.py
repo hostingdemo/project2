@@ -59,8 +59,8 @@ def login_view(request):
             elif user.is_school:
                 print('here3')
                 login(request, user)
-
-                return HttpResponseRedirect(reverse('school_dashboard'))
+                rotate_token(request)
+                return redirect('school_dashboard')
 
 
             else:
@@ -68,6 +68,7 @@ def login_view(request):
 
                 login(request, user)
                 rotate_token(request)
+
                 return HttpResponseRedirect(reverse('my_account'))
 
         else:
