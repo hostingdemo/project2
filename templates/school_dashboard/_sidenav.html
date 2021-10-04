@@ -16,28 +16,40 @@
             </a>
         </li>
 
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'school_info'  %}">
+        <li class="nav-item {{applications}}">
+            <a class="nav-link" href="{% url 'applications' %}">
+                <i class="icon-grid menu-icon"></i>
+                <span class="menu-title">Student Applications</span>
+            </a>
+        </li>
+
+        <li class="nav-item {{school_info}}">
+            <a class="nav-link" href="{% url 'school_info' %}">
                 <i class="icon-grid menu-icon"></i>
                 <span class="menu-title">School Information</span>
             </a>
         </li>
 
+<<<<<<< HEAD
         <li class="nav-item">
             <a class="nav-link" href="{% url 'school_facilities'  %}">
+=======
+        <li class="nav-item {{school_facilities}}">
+            <a class="nav-link" href="{% url 'school_facilities' %}">
+>>>>>>> 9e410ced19c5abb25a65112a20e0491962e3e3b1
                 <i class="icon-grid menu-icon"></i>
                 <span class="menu-title">School Facilities</span>
             </a>
         </li>
 
-        <li class="nav-item">
+        <li class="nav-item {{school_fame}}">
             <a class="nav-link" href="{% url 'school_fame' %}">
                 <i class="icon-grid menu-icon"></i>
                 <span class="menu-title">Hall of fame</span>
             </a>
         </li>
 
-        <li class="nav-item">
+        <li class="nav-item {{school_gallery}}">
             <a class="nav-link" href="{% url 'school_gallery' %}">
                 <i class="icon-grid menu-icon"></i>
                 <span class="menu-title">School Gallery</span>

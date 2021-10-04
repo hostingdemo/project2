@@ -355,3 +355,4 @@ class SchoolGalleryView(View):
             print(e)
             return HttpResponse('You are not authorized!')
 
+        return redirect('upload_csv')
