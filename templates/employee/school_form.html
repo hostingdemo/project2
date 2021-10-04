@@ -1,4 +1,4 @@
-{% extends 'school_dashboard/base.html' %}
+{% extends 'employee/base.html' %}
 {% block title %}School details{% endblock %}
 
 {% load crispy_forms_tags %}
@@ -13,16 +13,19 @@
 
 {% block main_content %}
 
-{% crispy form %}
+{% crispy school_form %}
 
 
 <div class="rouned my-5 p-4 shadow">
     <h3>Fee details</h3>
 
+
     <div class="row mt-4">
         <div class="col-12 col-md-4">
             <form class="rounded p-3 border d-flex flex-column needs-validation" id="fee-form" novalidate>
                 <input type="hidden" name="fee-id" id="fee-id">
+                <input type="hidden" name="school_id" value="{{ instance.id }}" id="school_id">
+
                 <div class="form-group">
                     <label for="fee-name">Select Class: </label>
                     <select name="standard" id="standard" class="form-control form-control-sm select custom-select form-select" required>
@@ -120,6 +123,7 @@
     const feeAmount = document.querySelector('#fee-amount')
     const standard = document.querySelector('#standard')
     const standardFilter = document.querySelector('#standard-filter')
+    const school_id = document.querySelector('#school_id')
 
     /*
      * Rendering data to UI
@@ -158,6 +162,8 @@
      * Fetching data from server
     */
     async function getData(url) {
+        console.log(url)
+
         tableBody.innerHTML = '<div class="mt-2" colspan="4">Loading...</div>'
         res = await fetch(url)
         json = await res.json()
@@ -197,7 +203,7 @@
     */
     function deleteData(i) {
         $.ajax({
-            url: "{% url 'school_fee_delete' %}",
+            url: "{% url 'employee_school_fee_delete' %}",
             method: "POST",
             data: { id: fees_list[i].id },
             headers: { 'X-CSRFToken': '{{ csrf_token }}' },
@@ -220,8 +226,8 @@
         console.log(e.target.value)
         renderData()
     })
-
-    getData("{% url 'school_fee_add' %}").then(d => {
+    
+    getData("{% url 'employee_school_fee_add' instance.id %}").then(d => {
         d.forEach(element => {
             fees_list.push({
                 id: element.pk,
@@ -241,7 +247,7 @@
         e.preventDefault()
         if (form.checkValidity()) {
             $.ajax({
-                url: "{% url 'school_fee_add' %}",
+                url: "{% url 'employee_school_fee_add' instance.id %}",
                 method: "POST",
                 data: $(this).serialize(),
                 headers: { 'X-CSRFToken': '{{ csrf_token }}' },

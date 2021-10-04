@@ -105,6 +105,7 @@ class School(models.Model):
     owner = models.OneToOneField(User, on_delete=models.CASCADE, blank=True, null = True)
     school_name = models.CharField(max_length=500)
     school_image = models.CharField(max_length=999, blank=True)
+    school_logo = models.ImageField(upload_to="school-logos", null=True, blank=True)
     address = models.TextField(max_length=250)
     board = models.CharField(max_length=5, choices=BOARD_TYPE_CHOICES, default=STATE_BOARD)
     co_ed_status = models.CharField(max_length=100, choices=CO_ED_CHOICES)
@@ -231,7 +232,7 @@ class SchoolRegistration(models.Model):
 
 class SchoolGallery(models.Model):
     school = models.ForeignKey(School , on_delete=models.CASCADE)
-    school_img = models.ImageField(upload_to='images/')
+    school_img = models.ImageField(upload_to='images/', null=True, blank=True)
 
     def __str__(self):
         return f"{self.school.school_name}"

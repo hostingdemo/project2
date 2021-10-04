@@ -1,0 +1,97 @@
+{% extends 'employee/base.html'%}
+{% load static %}
+{% block main_content %}
+
+<div class="row">
+  <div class="col-md-12 grid-margin">
+    <div class="row">
+      <div class="col-12 col-xl-8 mb-4 mb-xl-0">
+        {% if request.user.first_name %}
+        <h3 class="font-weight-bold">Welcome {{request.user.first_name}}</h3>
+        {% else %}
+        <h3 class="font-weight-bold">Welcome {{request.user.email}}</h3>
+        {% endif %}
+        <!-- <h6 class="font-weight-normal mb-0">All systems are running smoothly! You have <span class="text-primary">3
+            unread alerts!</span></h6> -->
+      </div>
+      <div class="col-12 col-xl-4">
+        <div class="justify-content-end d-flex">
+          <div class="btn btn-sm btn-light bg-white" type="button" id="dropdownMenuDate2" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="true">
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3 mb-4">
+    <div class="card card-tale">
+      <div class="card-body">
+        <h3 class="mb-4"><i class="ti-home"></i></h3>
+        <p class="fs-30 mb-2">1477</p>
+        <p>Explore Schools</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3 mb-4">
+    <div class="card card-dark-blue">
+      <div class="card-body">
+        <h3 class="mb-4"><i class="ti-write"></i></h3>
+        <p class="fs-30 mb-2">-</p>
+        <p>Form started</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3 mb-4">
+    <div class="card card-light-blue">
+      <div class="card-body">
+        <h3 class="mb-4"><i class="ti-receipt"></i></h3>
+        <p class="fs-30 mb-2">-</p>
+        <p>Payment done</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3 mb-4">
+    <div class="card card-light-danger">
+      <div class="card-body">
+        <h3 class="mb-4"><i class="ti-archive"></i></h3>
+        <p class="fs-30 mb-2">-</p>
+        <p>Applications Started</p>
+      </div>
+    </div>
+  </div>
+
+  <section class="col-12 mt-4">
+    <div class="bg-white p-4 px-5">
+      <h6 class="h6">Congratulations on taking this first step in the school application journey!</h6>
+      <p>Here are a few tips to get you started!!!</p>
+      <ul class="p-0">
+        <li>This tab is your dashboard and after you complete payment for a school, you will be able to see the
+          application progress here.</li>
+        <li>To apply to a school, head over to <a href="{% url 'explore' %}"><ins>explore
+              school</ins></a> tab.</li>
+      </ul>
+      <p class="mb-4">We're here to help you at every step! If you have any questions or need some help to proceed
+        further you can <a href="/contact-us/"><ins>contact us</ins></a> anytime.</p>
+    </div>
+
+    <div class="alert alert-primary d-flex align-items-center mt-4">
+      <span class="ti-info rounded-circle mr-2 border border-primary p-1"></span>
+      <span>
+        <span class="underline">Facing any issues</span> call us at -
+        <a href="tel:9999999999" class="font-weight-semibold">+91-9999999999</a> or write us -
+        <a href="mailto:support@gmail.com" class="font-weight-semibold">support@gmail.com</a>
+      </span>
+    </div>
+  </section>
+</div>
+{% endblock main_content %}
+
+{% block extrascript %}
+<script>
+  const todayDate = new Date()
+  $('#dropdownMenuDate2').text(todayDate.toDateString())
+
+</script>
+{% endblock %}
