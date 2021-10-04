@@ -82,7 +82,7 @@ class CommonForm(models.Model):
         (False, 'No')
     ]
 
-    def validate_digit_length(aadhar):
+    def validate_digit_length(self, aadhar):
         if not (aadhar.isdigit() and len(aadhar) == 12):    
             raise ValidationError('must be 12 digits')
 

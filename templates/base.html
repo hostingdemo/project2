@@ -166,13 +166,9 @@
                     // $(`#${form_type}-form`).trigger('reset');
                     $('#login-btn').prop('disabled', false)
                     $('#signup-btn').prop('disabled', false)
-<<<<<<< HEAD
-                    
-=======
                     console.log(response)
                     if(response.is_school) window.location.href = 'school/dashboard'
                     else window.location.href = window.location.search.substr(6)
->>>>>>> 9e410ced19c5abb25a65112a20e0491962e3e3b1
                 },
                 error: function (response) {
                     $(`#${form_type}-form`).trigger('reset')
