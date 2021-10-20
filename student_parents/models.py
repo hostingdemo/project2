@@ -96,7 +96,7 @@ class CommonForm(models.Model):
     category = models.CharField(max_length=100, choices=CATEGORY_CHOICES)
     minority = models.BooleanField(default=False, choices=MINORITY_CHOICES)
     
-    aadhar_no = models.CharField(max_length=12, validators=[validate_digit_length], default='0')
+    aadhar_no = models.CharField(max_length=12, validators=[validate_digit_length])
 
     single_child = models.BooleanField(default=False)
     adopted_child = models.BooleanField(default=False)
@@ -144,6 +144,3 @@ class CommonForm(models.Model):
     domicile = models.FileField(upload_to="documents", blank=True, null=True)
     transfer_certificate = models.FileField(upload_to="documents", blank=True, null=True)
     character_certificate = models.FileField(upload_to="documents", blank=True, null=True)
-
-    def __str__(self):
-        return f"{self.child}"
