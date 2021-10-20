@@ -44,7 +44,7 @@ class MyUserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    def validate_digit_length(self, phone):
+    def validate_digit_length(phone):
         if not (phone.isdigit() and len(phone) == 10):    
             raise ValidationError('%(phone)s must be 10 digits', params={'phone': phone},)
 
