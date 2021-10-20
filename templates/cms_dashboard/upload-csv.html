@@ -9,7 +9,7 @@
     style="max-width: 500px;">
     {% csrf_token %}
     <div class="custom-file">
-        <input type="file" class="custom-file-input" name="csv-file" id="customFile">
+        <input type="file" class="custom-file-input" name="csv-file" id="customFile" required>
         <label class="custom-file-label rounded-pill" for="customFile">Choose file</label>
     </div>
     <button class="btn btn-sm btn-primary rounded-pill ml-3" type="submit">Upload</button>
