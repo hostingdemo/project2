@@ -8,6 +8,7 @@
         border-left: 5px solid green;
         border-right: 5px solid green;
     }
+
     .address {
         display: flex;
         gap: 1em;
@@ -42,11 +43,10 @@
 </div>
 
 {% comment %}
-<div class="col-12">
-    <form method="POST" class="" enctype="multipart/form-data" id="add-child-form" novalidate>
-        {% csrf_token %}
-        <!-- Student Form Starts -->
-        <div style="overflow: hidden;" class="card shadow-sm border-0 mt-3 mb-5">
+<!-- <div class="col-12"> -->
+<!-- <form method="POST" class="" enctype="multipart/form-data" id="add-child-form" novalidate> -->
+<!-- Student Form Starts -->
+<!-- <div style="overflow: hidden;" class="card shadow-sm border-0 mt-3 mb-5">
             <div class="card-header">Student Information</div>
             <div class="card-body">
                 <div class="row">
@@ -86,10 +86,10 @@
                 </div>
             </div>
         </div>
-        <!-- Student Form Ends -->
+        Student Form Ends -->
 
-        <!-- Parent Form Starts -->
-        <div style="overflow: hidden;" class="card shadow-sm border-0 my-5">
+<!-- Parent Form Starts -->
+<!-- <div style="overflow: hidden;" class="card shadow-sm border-0 my-5">
             <div class="card-header">Parent / Guardian Informtion</div>
 
             <div class="card-body">
@@ -131,10 +131,10 @@
                 </div>
             </div>
         </div>
-        <!-- Parent Form Ends -->
+        Parent Form Ends -->
 
-        <!-- Contact Form Starts -->
-        <div style="overflow: hidden;" class="card shadow-sm border-0 my-5">
+<!-- Contact Form Starts -->
+<!-- <div style="overflow: hidden;" class="card shadow-sm border-0 my-5">
             <div class="card-header">Contact Informtion</div>
             <div class="card-body d-flex flex-column flex-lg-row">
 
@@ -201,10 +201,10 @@
                 </div>
             </div>
         </div>
-        <!-- Contact Form Ends -->
+        Contact Form Ends -->
 
-        <!-- Additional Form Starts -->
-        <div style="overflow: hidden;" class="card shadow-sm border-0 my-5">
+<!-- Additional Form Starts -->
+<!-- <div style="overflow: hidden;" class="card shadow-sm border-0 my-5">
             <div class="card-header">Additional Informtion</div>
             <div class="card-body">
                 <div class="row">
@@ -231,12 +231,12 @@
 
                 </div>
             </div>
-        </div>
-        <!-- Additional Form Ends -->
+        </div> -->
+<!-- Additional Form Ends -->
 
 
-        <!-- Upload Form Starts -->
-        <div style="overflow: hidden;" class="card shadow-sm border-0 my-5">
+<!-- Upload Form Starts -->
+<!-- <div style="overflow: hidden;" class="card shadow-sm border-0 my-5">
             <div class="card-header">Upload Documents</div>
             <div class="card-body">
 
@@ -306,94 +306,65 @@
         </div>
 
     </form>
-</div>
+</div> -->
 {% endcomment %}
+
 {% crispy form %}
 {% comment %} script for add child {% endcomment %}
 
 <script>
 
-    // const currStateSelect = document.querySelector('#id_state')
-    // const permStateSelect = document.querySelector('#id_permanent_state')
+    const currStateSelect = document.querySelector('#id_state')
+    const currCitySelect = document.querySelector('#id_city')
 
-    // const currCitySelect = document.querySelector('#id_city')
-    // const permCitySelect = document.querySelector('#id_permanent_city')
+    const permStateSelect = document.querySelector('#id_permanent_state')
+    const permCitySelect = document.querySelector('#id_permanent_city')
 
-    // let url = "{% static 'student_parents/states-and-districts.json'%}"
+    let url = "{% static 'student_parents/states-and-districts.json'%}"
 
-    // let data = null;
-    // currStateSelect.innerHTML = "<option selected>Loading...</option>";
-    // permStateSelect.innerHTML = "<option selected>Loading...</option>";
+    let data = null;
+    currStateSelect.innerHTML = "<option selected>Loading...</option>";
+    permStateSelect.innerHTML = "<option selected>Loading...</option>";
 
-    // const showOptions = (event) => {
-    //     // currCitySelect.removeAttribute("disabled");
-    //     let s = event.target
-    //     setSelectOptions(
-    //         data[s[s.selectedIndex].dataset.id].districts,
-    //         document.getElementById(s.id.slice(0, -5) + 'city')
-    //     );
-    // }
+    function showOptions(event, element) {
+        let s = event.target
+        setSelectOptions(data[s[s.selectedIndex].dataset.id].districts, element)
+    }
 
-    // function setSelectOptions(data, ele) {
-    //     if (data) {
-    //         let options = data
-    //             .map((element, index) => {
-    //                 return element.state
-    //                     ? `<option value="${element.state}" data-id="${index}">${element.state}</option>`
-    //                     : `<option value="${element}" data-id="${index}">${element}</option>`;
-    //             })
-    //             .join("");
+    function setSelectOptions(data, ele) {
+        ele.removeAttribute('disabled')
+        if (data) {
+            let options = data.map((element, index) => {
+                return (element.state)
+                    ? `<option value="${element.state}" data-id="${index}">${element.state}</option>`
+                    : `<option value="${element}" data-id="${index}">${element}</option>`
+            }).join("")
 
-    //         ele.innerHTML = `<option selected>Choose...</option> ${options}`;
-    //     }
-    // }
+            ele.innerHTML = `<option selected>Select Your State</option> ${options}`;
+        }
+    }
 
-    // async function getData(url) {
-    //     let res = await fetch(url)
-    //     let data = await res.json()
-    //     if (!res.ok)
-    //         throw console.log('Data not found')
-    //     return data
-    // }
+    async function getData(url) {
+        let res = await fetch(url)
+        let data = await res.json()
+        if (!res.ok)
+            throw console.log('Data not found')
+        return data.states
+    }
 
-    // getData(url)
-    //     .then(d => {
-    //         data = d;
-    //         setSelectOptions(d, currStateSelect)
-    //         setSelectOptions(d, permStateSelect)
-    //     })
-    //     .catch(e => console.log(e))
+    getData(url).then(d => {
+        data = d
+        setSelectOptions(d, currStateSelect)
+        setSelectOptions(d, permStateSelect)
+    }).catch(e => console.log(e))
 
-    // currStateSelect.addEventListener('change', showOptions)
-    // permStateSelect.addEventListener('change', showOptions)
+    currStateSelect.addEventListener('change', (e) => showOptions(e, currCitySelect))
+    permStateSelect.addEventListener('change', (e) => showOptions(e, permCitySelect))
 
-            // function validateForm() {
-            //     // Fetch all the forms we want to apply custom Bootstrap validation styles to
-            //     var forms = document.querySelectorAll('.needs-validation')
-
-            //     // Loop over them and prevent submission
-            //     Array.prototype.slice.call(forms)
-            //         .forEach(function (form) {
-            //             form.addEventListener('submit', function (event) {
-            //                 if (!form.checkValidity()) {
-            //                     event.preventDefault()
-            //                     event.stopPropagation()
-            //                 }
-
-            //                 form.classList.add('was-validated')
-            //             }, false)
-            //         })
-            // }
-
-            // validateForm()
-
-
-
-            // document.querySelector('#add-child-form')
-            //     .addEventListener('submit', e => {
-            //         e.preventDefault()
-            //         alert('d')
-            //     })
+    document.querySelector('#common-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+    })
+    
 </script>
 
 
