@@ -31,7 +31,7 @@ class ChildForm(BSModalModelForm):
 class CommonFormForm(ModelForm):
     class Meta:
         model = CommonForm
-        exclude = ['student_id', 'child']
+        exclude = ['student_id', 'child' ]
         widgets = {
             'fathers_dob': DateInput(attrs={'type': 'date'}),
             'mothers_dob': DateInput(attrs={'type': 'date'}),
