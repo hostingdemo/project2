@@ -39,6 +39,7 @@ class CommonFormForm(ModelForm):
             'city': Select(attrs={'disabled': True}),
             'permanent_state': Select(),
             'permanent_city': Select(attrs={'disabled': True}),
+            
         }
 
     def __init__(self, *args, **kwargs):
