@@ -191,19 +191,7 @@ class UploadCsv(View):
         return redirect('upload_csv')
 
 
-def employee_dashbaord(request):
 
-    data = School.objects.all()
-
-    return render(request, 'employee/main_dashboard.html', {'data':data})
-
-def detail_view(request, school_id):
-
-    data = School.objects.get(id = school_id)
-
-    return render(request, 'employee/index1.html', {'data':data, 'instance':data})
-
- 
 
 def employee_school_info(request, school_id):
    
@@ -215,7 +203,7 @@ def employee_school_info(request, school_id):
             instance = School.objects.get(id=school_id)
             form = school_addForm(instance=instance)
             fee_data = SchoolFee.objects.filter(school=instance)
-            return render(request, 'employee/school_form.html', {'school_form': form, 'instance': instance, 'fee_data': fee_data})
+            return render(request, 'employee/school_form.html', {'school_form': form, 'instance': instance, 'fee_data': fee_data, 'School_Information' : 'active'})
     else:
       
         instance = School.objects.get(id=school_id)
@@ -238,7 +226,7 @@ def school_facilities(request, school_id):
         instance = School.objects.get(id=school_id)
         school_facilities = SchoolFacilities.objects.get(school=instance)
         form = school_fc_Form(instance=school_facilities)
-        return render(request, 'employee/school_facilities.html', {'school_fc_form': form, 'instance':instance})
+        return render(request, 'employee/school_facilities.html', {'school_fc_form': form, 'instance':instance, 'employee_school_facilities': 'active'})
     
 class SchoolFeesView(View):
     def get(self, request, *args, **kwargs ):
@@ -296,7 +284,7 @@ class SchoolFameView(View ):
     def get(self, request, school_id):
     
         instance = School.objects.get(id=school_id)
-        return render(request, "employee/hall_of_fame.html", {'instance':instance})
+        return render(request, "employee/hall_of_fame.html", {'instance':instance, 'employee_school_fame': 'active'})
     
 class HallofFameAdd(View):
     def get(self, request, school_id):
@@ -355,4 +343,4 @@ class SchoolGalleryView(View):
             print(e)
             return HttpResponse('You are not authorized!')
 
-        return redirect('upload_csv')
+       

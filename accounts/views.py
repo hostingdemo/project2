@@ -49,32 +49,8 @@ def login_view(request):
         user=authenticate(request, username=username, password=password)
 
         if user is not None:
-<<<<<<< HEAD
-            print('here2')
-
-            if user.is_staff:
-                login(request, user)
-                return HttpResponseRedirect(reverse('employee_dashboard'))
-
-            elif user.is_school:
-                print('here3')
-                login(request, user)
-                rotate_token(request)
-                return redirect('school_dashboard')
-
-
-            else:
-                print('here4')
-
-                login(request, user)
-                rotate_token(request)
-
-                return HttpResponseRedirect(reverse('my_account'))
-
-=======
             login(request, user)
             return JsonResponse({"is_school": user.is_school}, status=200)
->>>>>>> 9e410ced19c5abb25a65112a20e0491962e3e3b1
         else:
             return JsonResponse({
                     "message": "Please enter a correct email and password. Note that both fields may be case-sensitive"

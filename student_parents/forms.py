@@ -35,12 +35,12 @@ class CommonFormForm(ModelForm):
         widgets = {
             'fathers_dob': DateInput(attrs={'type': 'date'}),
             'mothers_dob': DateInput(attrs={'type': 'date'}),
-            'state': Select(),
-            'city': Select(),
-            'pincode': Select(),
-            'parmanent_state': Select(),
-            'parmanent_city': Select(),
-            'parmanent_pincode': Select(),
+            # 'state': Select(),
+            # 'city': Select(),
+            # 'pincode': Select(),
+            # 'parmanent_state': Select(),
+            # 'parmanent_city': Select(),
+            # 'parmanent_pincode': Select(),
         }
 
     def __init__(self, *args, **kwargs):
