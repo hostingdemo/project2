@@ -36,11 +36,9 @@ class CommonFormForm(ModelForm):
             'fathers_dob': DateInput(attrs={'type': 'date'}),
             'mothers_dob': DateInput(attrs={'type': 'date'}),
             'state': Select(),
-            'city': Select(),
-            'pincode': Select(),
-            'parmanent_state': Select(),
-            'parmanent_city': Select(),
-            'parmanent_pincode': Select(),
+            'city': Select(attrs={'disabled': True}),
+            'permanent_state': Select(),
+            'permanent_city': Select(attrs={'disabled': True}),
         }
 
     def __init__(self, *args, **kwargs):
@@ -49,7 +47,8 @@ class CommonFormForm(ModelForm):
             field.widget.attrs['class'] = 'form-control form-control-sm'
 
         self.helper = FormHelper()
-        self.helper.form_class = ""
+        self.helper.form_class = "needs-validation"
+        self.helper.form_id = 'common-form'
         self.helper.attrs = {"novalidate": ''}
         self.helper.layout = Layout(
             ## 
