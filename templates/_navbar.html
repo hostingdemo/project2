@@ -27,7 +27,7 @@
                     {% if request.user.is_superuser %}
                     <div class="dropdown-menu mt-2" aria-labelledby="dropdownMenuButton">
                         <a class="dropdown-item" href="{% url 'school_requests' %}">School requests</a>
-                        <a class="dropdown-item" href="{% url 'upload_csv' %}">Upload CSV</a>
+                        <a class="dropdown-item" href="{% url 'employee_dashbaord' %}">Upload CSV</a>
                         <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
                     </div>
                     {% else %}

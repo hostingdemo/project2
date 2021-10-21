@@ -17,10 +17,4 @@ urlpatterns = [
     path('school-fame/<school_id>', views.SchoolFameView.as_view(), name="employee_school_fame"),
     path('school-fame-add/<school_id>', views.HallofFameAdd.as_view(), name="employee_school_fame_add"),
     path('school-fame-delete/', views.HallofFameDelete.as_view(), name="employee_school_fame_delete"),
-
-
-    
-
-
-
 ]
