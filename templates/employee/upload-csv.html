@@ -5,7 +5,7 @@
 {% if request.user.is_superuser %}
 
 
-<form class="d-flex mb-4" action="{% url 'upload_csv' %}" method="POST" enctype="multipart/form-data"
+<form class="d-flex mb-4" action="{% url 'cms_dashboard' %}" method="POST" enctype="multipart/form-data"
     style="max-width: 500px;">
     {% csrf_token %}
     <div class="custom-file">

@@ -188,7 +188,7 @@ class UploadCsv(View):
                 print(row['school_name'])
         except Exception as e:
             print(e)
-        return redirect('upload_csv')
+        return redirect('cms_dashboard')
 
 
 
