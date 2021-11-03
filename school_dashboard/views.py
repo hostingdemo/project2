@@ -136,10 +136,7 @@ class StudentApplicationView(LoginRequiredMixin, SingleTableView):
 """
 School Info Tab
 """
-class SchoolInfoView(LoginRequiredMixin, DetailView):
-    pass
-
-class SchoolInfoCreate(LoginRequiredMixin, CreateView):
+class SchoolInfoCreateOrUpdate(LoginRequiredMixin, CreateView):
     template_name = 'school_dashboard/school_form.html'
     form_class = school_addForm
     success_url = reverse_lazy('school_info')
