@@ -94,7 +94,7 @@ class ManageChild(LoginRequiredMixin ,View):
     template_name = 'student_parents/manage-child.html'
 
     def get(self, request):
-        instance = Child.objects.all()
+        instance = Child.objects.filter(user=self.request.user)
         context = {'form': ChildForm, 'manage_child': "active", 'data': instance}
         return render(request, self.template_name, context)
 
@@ -102,6 +102,7 @@ class ManageChild(LoginRequiredMixin ,View):
 class ChildCreateView(BSModalCreateView):
     template_name = 'student_parents/_child-form.html'
     form_class = ChildForm
+    success_message = "Success: record was created successfully"
     success_url = reverse_lazy('manage_child')
 
     def form_valid(self, form):
@@ -113,12 +114,14 @@ class ChildUpdateView(BSModalUpdateView):
     model = Child
     template_name = 'student_parents/_child-form.html'
     form_class = ChildForm
+    success_message = "Success: record was updated successfully"
     success_url = reverse_lazy('manage_child')
 
 
 class ChildDeleteView(BSModalDeleteView):
     model = Child
     template_name = 'student_parents/_delete-child.html'
+    success_message = "Success: record was deleted successfully"
     success_url = reverse_lazy('manage_child')
 
 
@@ -128,11 +131,11 @@ class ChildDeleteView(BSModalDeleteView):
 class CommonFormView(LoginRequiredMixin, ListView):
     model = Child
     template_name = 'student_parents/common-form-view.html'
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['common_form'] = 'active'
-        return context
+
+    def get(self, request):
+        instance = Child.objects.filter(user=self.request.user)
+        context = {'common_form': "active", 'object_list': instance}
+        return render(request, self.template_name, context)
 
 
 class CommonFormCreateOrUpdate(LoginRequiredMixin, UpdateView):

@@ -128,6 +128,7 @@
         tableBody.innerHTML = ''
         std_list = fees_list.filter(ele => ele.standard === standardFilter.value)
 
+        console.log(std_list)
         if (std_list.length > 0) {
 
             const fees_list_html = std_list.map((data, i) => {
@@ -160,6 +161,7 @@
     async function getData(url) {
         tableBody.innerHTML = '<div class="mt-2" colspan="4">Loading...</div>'
         res = await fetch(url)
+        if(!res.ok) return []
         json = await res.json()
         return JSON.parse(json.data)
     }
