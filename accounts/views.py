@@ -50,6 +50,9 @@ def login_view(request):
 
         if user is not None:
             login(request, user)
+
+            if user.is_staff == True:
+                return JsonResponse({"is_staff": user.is_staff}, status=200)
             return JsonResponse({"is_school": user.is_school}, status=200)
         else:
             return JsonResponse({

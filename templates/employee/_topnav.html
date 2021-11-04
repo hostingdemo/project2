@@ -8,6 +8,7 @@
         <a class="navbar-brand brand-logo-mini" href="{% url 'home'%}"><img
                 src="{% static 'assets/logo-smartbachhe.svg' %}" alt="logo" /></a>
     </div>
+       
     <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end justify-content-md-between">
         <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
             <span class="icon-menu"></span>
@@ -15,22 +16,18 @@
 
         <div class="d-none d-md-block">
             <ul class="navbar-nav navbar-nav-right">
-                <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="{% url 'explore' %}">Explore Schools</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="#">Discover Localities</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="#">Admission Tracker</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="{% url 'compare_schools' %}">Compare Schools</a>
-                </li>
+                
                 <li class="nav-item nav-profile dropdown">
+        <a href="{% url 'employee_dashbaord' %}" style="margin: 0px 51px;
+        background: grey;
+        padding: 5px;
+        color: black;
+        border-radius: 10%;">select school</a>
+
                     <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
                         <span class="profile-dropdown">{{ request.user.email|make_list|first}}</span>
                     </a>
+
                     <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
                         <a class="dropdown-item" href="{% url  'logout' %}">
                             <i class="ti-power-off text-primary"></i>

@@ -3,21 +3,21 @@ from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.views.generic import View
 from django.contrib import messages
-import csv, io, ast
-from cms_dashboard.models import CSVFile
-from schools.models import *
 from django.core import serializers
 
+import csv, io, ast
+
+from cms_dashboard.models import CSVFile
+from schools.models import *
 from schools.forms import *
 
-from schools.models import HallofFame, School, SchoolDetail, SchoolFacilities
-
-
+## cms view only
 class CmsDashboard(View):
     def get(self, request):
         return render(request, 'cms_dashboard/index1.html', {'dashboard': 'active'})
 
 
+## upload csv
 class UploadCsv(View):
     template_name = 'cms_dashboard/upload-csv.html'
     def get(self, request):
@@ -37,22 +37,8 @@ class UploadCsv(View):
         return redirect('upload_csv')
 
 
-def employee_dashbaord(request):
-
-    data = School.objects.all()
-
-    return render(request, 'employee/main_dashboard.html', {'data':data})
-
-def detail_view(request, school_id):
-
-    data = School.objects.get(id = school_id)
-
-    return render(request, 'employee/index1.html', {'data':data, 'instance':data})
-
- 
-
+## employee school info
 def employee_school_info(request, school_id):
-   
     if request.method == 'POST':
         instance = School.objects.get(id=school_id)
         form = school_addForm(request.POST, instance=instance)
@@ -61,43 +47,36 @@ def employee_school_info(request, school_id):
             instance = School.objects.get(id=school_id)
             form = school_addForm(instance=instance)
             fee_data = SchoolFee.objects.filter(school=instance)
-            return render(request, 'employee/school_form.html', {'school_form': form, 'instance': instance, 'fee_data': fee_data})
+            return render(request, 'employee/school_form.html', {'school_form': form, 'instance': instance, 'fee_data': fee_data, 'School_Information' : 'active'})
     else:
-      
         instance = School.objects.get(id=school_id)
         fee_data = SchoolFee.objects.filter(school=instance)
         form = school_addForm(instance=instance)
         return render(request, 'employee/school_form.html', {'school_form': form, 'instance': instance, 'fee_data': fee_data})
     
 
-    
+## school facilities
 def school_facilities(request, school_id):
     if request.method == 'POST':
-      
         instance = School.objects.get(id=school_id)
         form = school_fc_Form(request.POST)
         if form.is_valid():
             return redirect('employee_school_facilities')
-      
     else:
-      
         instance = School.objects.get(id=school_id)
         school_facilities = SchoolFacilities.objects.get(school=instance)
         form = school_fc_Form(instance=school_facilities)
-        return render(request, 'employee/school_facilities.html', {'school_fc_form': form, 'instance':instance})
+        return render(request, 'employee/school_facilities.html', {'school_fc_form': form, 'instance':instance, 'employee_school_facilities': 'active'})
     
+
+## school fees
 class SchoolFeesView(View):
     def get(self, request, *args, **kwargs ):
         school_id = self.kwargs['school_id']
-        
         school_instance = School.objects.get(id=school_id)
-
-        print(school_instance)
-        
         school_fee_instance = SchoolFee.objects.filter(school=school_instance)
         serialized_data = serializers.serialize('json', school_fee_instance)
         return JsonResponse({'data': serialized_data}, status=200)
-    
         
     def post(self, request, *args, **kwargs):
         print('in post')
@@ -129,10 +108,10 @@ class SchoolFeesView(View):
             return JsonResponse({'message': 'Server error'}, status=400)
 
 
+## school fees delete
 class SchoolFeeDelete(View):
     def post(self, request):
         _id = request.POST.get('id')
-      
         SchoolFee.objects.get(pk=_id).delete()
         return JsonResponse({'message': 'Deleted successfully'}, status=201)
     
@@ -140,13 +119,13 @@ class SchoolFeeDelete(View):
 ## Hall of fame
 class SchoolFameView(View ):
     def get(self, request, school_id):
-    
         instance = School.objects.get(id=school_id)
-        return render(request, "employee/hall_of_fame.html", {'instance':instance})
-    
+        return render(request, "employee/hall_of_fame.html", {'instance':instance, 'employee_school_fame': 'active'})
+
+
+## hall of fame add
 class HallofFameAdd(View):
     def get(self, request, school_id):
-        
         school_instance = School.objects.get(id=school_id)
         instance = HallofFame.objects.filter(school=school_instance)
         sr_data = serializers.serialize('json', instance)
@@ -175,13 +154,15 @@ class HallofFameAdd(View):
             return JsonResponse({'message': 'Server error'}, status=400)
 
 
+## hall of fame delete
 class HallofFameDelete(View):
     def post(self, request):
         _id = request.POST.get('id')
-      
         HallofFame.objects.get(pk=_id).delete()
         return JsonResponse({'message': 'Deleted successfully'}, status=201)
     
+
+## school gallery view only
 class SchoolGalleryView(View):
     def get(self, request):
         school_gallery = SchoolGallery.objects.all()
@@ -191,7 +172,6 @@ class SchoolGalleryView(View):
         try:
             school_instance = School.objects.get(owner=request.user)
             img = request.FILES['school-img']
-
             if not img:
                 return HttpResponse('img not provied')
             instance = SchoolGallery(school=school_instance, school_img=img)
@@ -200,5 +180,3 @@ class SchoolGalleryView(View):
         except Exception as e:
             print(e)
             return HttpResponse('You are not authorized!')
-
-        return redirect('upload_csv')
