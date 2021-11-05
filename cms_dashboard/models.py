@@ -16,10 +16,14 @@ class CSVFile(models.Model):
 
     # Deleting old csv file
     def save(self, *args, **kwargs):
-        old_import = CSVFile.objects.all()
-        old_import.delete()
-        return super(CSVFile, self).save(*args, **kwargs)
+        if self.pk:
+            old_import = CSVFile.objects.get(pk=self.pk)
 
+            if old_import.csv_file:
+                old_import.csv_file.delete(save=False)
+
+        return super(CSVFile, self).save(*args, **kwargs)
+        
     def __str__(self):
         return f"{self.csv_file.name}"
     
