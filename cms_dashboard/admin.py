@@ -1,3 +1,5 @@
 from django.contrib import admin
 
-# Register your models here.
+from cms_dashboard.models import CSVFile
+
+admin.site.register(CSVFile)

@@ -3,20 +3,21 @@ from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.views.generic import View
 from django.contrib import messages
-import csv, io, ast
-from schools.models import *
 from django.core import serializers
 
+import csv, io, ast
+
+from cms_dashboard.models import CSVFile
+from schools.models import *
 from schools.forms import *
 
-from schools.models import HallofFame, School, SchoolDetail, SchoolFacilities
-
-
+## cms view only
 class CmsDashboard(View):
     def get(self, request):
         return render(request, 'cms_dashboard/index1.html', {'dashboard': 'active'})
 
 
+## upload csv
 class UploadCsv(View):
     template_name = 'cms_dashboard/upload-csv.html'
     def get(self, request):
@@ -31,170 +32,13 @@ class UploadCsv(View):
         # let's check if it is a csv file
         if not csv_file.name.endswith('.csv'):
             messages.error(request, 'THIS IS NOT A CSV FILE')
-        data_set = csv_file.read().decode('UTF-8')
-        # setup a stream which is when we loop through each line we are able to handle a data in a stream
-        io_string = io.StringIO(data_set)
-        reader = csv.DictReader(io_string)
-        try:
-            for row in reader:
-                #school
-                ownership=row['Ownership']
-                school_name=row['school_name']
-                school_image=row['school_image']
-                board=row['Board']
-                address=row['address']
-                co_ed_status=row['Co-Ed Status']
-                class_offered=row['class_offered']
-                sf_ratio=row['sf_ratio']
+        instance = CSVFile.objects.create(csv_file=csv_file)
+        instance.save()
+        return redirect('upload_csv')
 
 
-                #school details
-                gallery=row['gallery']
-                email=row['email']
-                website=row['website']
-                phone_no=row['phone_no']
-                year_of_establishment=row['Year of Establishment']
-                campus_size=row['Campus Size']
-                campus_type=row['Campus Type']
-
-                #school facilities
-                ac_classes=row['ac_classes']
-                smart_classes=row['smart_classes']
-                wifi=row['wifi']
-                boys_hostel=row['boys_hostel']
-                girls_hostel=row['girls_hostel']
-                auditorium_media_room=row['auditorium/media_room']
-                cafeteria_canteen=row['cafeteria/canteen']
-                library_reading_room=row['library/reading_room']
-                playground=row['playground']
-                cctv=row['cctv']
-                gps_bus_tracking_app=row['gps_bus_tracking_app']
-                student_tracking_app=row['student_tracking_app']
-                alumni_association=row['alumni_association']
-                day_care=row['day_care']
-                meals=row['meals']
-                medical_room=row['medical_room']
-                transportation=row['transportation']
-                art_and_craft=row['art_and_craft']
-                dance=row['dance']
-                debate=row['debate']
-                drama=row['drama']
-                gardening=row['gardening']
-                music=row['music']
-                picnics_and_excursion=row['picnics_and_excursion']
-                skating=row['skating']
-                horse_riding=row['horse_riding']
-                gym=row['gym']
-                indoor_sports=row['indoor_sports']
-                outdoor_sports=row['outdoor_sports']
-                swimming_pool=row['swimming_pool']
-                karate=row['karate']
-                taekwondo=row['taekwondo']
-                yoga=row['yoga']
-                computer_lab=row['computer_lab']
-                science_lab=row['science_lab']
-                robotics_lab=row['robotics_lab']
-                ramps=row['ramps']
-                washrooms=row['washrooms']
-                elevators=row['elevators']
-                hall_of_fame=row['hall_of_fame']
-                
-
-                ## Creating school instances
-                school_obj, created1 = School.objects.update_or_create(
-                    school_name=school_name,
-                    address=address,
-                    board=board,
-                    co_ed_status=co_ed_status,
-                    ownership=ownership,
-                    school_image=school_image,
-                    sf_ratio=sf_ratio,
-                    class_offered=class_offered
-                )
-
-                ## Creating school details instances
-                school_detail_obj, created2 = SchoolDetail.objects.update_or_create(
-                    school = school_obj,
-                    phone_no = phone_no,
-                    webiste = website,
-                    email = email,
-                    year_of_establishment = year_of_establishment,
-                    campus_size = campus_size,
-                    campus_type = campus_type,
-                    gallery = gallery,
-                )
-            
-                ## Creating school facilities instances
-                school_fc_obj, created3 = SchoolFacilities.objects.update_or_create(
-                    school = school_obj,
-                    #class
-                    ac_classes = ac_classes,  
-                    smart_classes = smart_classes,  
-                    wifi = wifi,  
-                    #boarding
-                    boys_hostel = boys_hostel,  
-                    girls_hostel = girls_hostel,  
-                    #infrastructure
-                    auditorium_media_room = auditorium_media_room,  
-                    cafeteria_canteen = cafeteria_canteen,  
-                    library_reading_room = library_reading_room,  
-                    playground = playground,  
-                    #safty and security
-                    cctv = cctv,  
-                    gps_bus_tracking_app = gps_bus_tracking_app,  
-                    student_tracking_app = student_tracking_app,  
-                    #advanced facilities
-                    alumni_association = alumni_association,  
-                    day_care = day_care,  
-                    meals = meals,  
-                    medical_room = medical_room,  
-                    transportation = transportation,  
-                    #extra curricular
-                    art_and_craft = art_and_craft,  
-                    dance = dance,  
-                    debate = debate,  
-                    drama = drama,  
-                    gardening = gardening,  
-                    music = music,  
-                    picnics_and_excursion = picnics_and_excursion,  
-                    # sports and fitness
-                    skating =   skating,  
-                    horse_riding = horse_riding,  
-                    gym = gym,  
-                    indoor_sports = indoor_sports,  
-                    outdoor_sports = outdoor_sports,  
-                    swimming_pool = swimming_pool,  
-                    karate = karate,  
-                    taekwondo = taekwondo,  
-                    yoga = yoga,  
-                    # lab
-                    computer_lab = computer_lab,  
-                    science_lab = science_lab,  
-                    robotics_lab = robotics_lab,  
-                    # disabled friendly
-                    ramps = ramps,  
-                    washrooms = washrooms,  
-                    elevators = elevators, 
-                ) 
-
-                ## Creating hall of fame instances
-                hof_list = ast.literal_eval(hall_of_fame)
-                if(len(hof_list)>0):
-                    for h in hof_list:
-                        hall_of_fame_obj, created4 = HallofFame.objects.update_or_create(
-                            school = school_obj,
-                            title=h
-                        )
-                print(row['school_name'])
-        except Exception as e:
-            print(e)
-        return redirect('employee_dashbaord')
-
-
-
-
+## employee school info
 def employee_school_info(request, school_id):
-   
     if request.method == 'POST':
         instance = School.objects.get(id=school_id)
         form = school_addForm(request.POST, instance=instance)
@@ -205,41 +49,34 @@ def employee_school_info(request, school_id):
             fee_data = SchoolFee.objects.filter(school=instance)
             return render(request, 'employee/school_form.html', {'school_form': form, 'instance': instance, 'fee_data': fee_data, 'School_Information' : 'active'})
     else:
-      
         instance = School.objects.get(id=school_id)
         fee_data = SchoolFee.objects.filter(school=instance)
         form = school_addForm(instance=instance)
         return render(request, 'employee/school_form.html', {'school_form': form, 'instance': instance, 'fee_data': fee_data})
     
 
-    
+## school facilities
 def school_facilities(request, school_id):
     if request.method == 'POST':
-      
         instance = School.objects.get(id=school_id)
         form = school_fc_Form(request.POST)
         if form.is_valid():
             return redirect('employee_school_facilities')
-      
     else:
-      
         instance = School.objects.get(id=school_id)
         school_facilities = SchoolFacilities.objects.get(school=instance)
         form = school_fc_Form(instance=school_facilities)
         return render(request, 'employee/school_facilities.html', {'school_fc_form': form, 'instance':instance, 'employee_school_facilities': 'active'})
     
+
+## school fees
 class SchoolFeesView(View):
     def get(self, request, *args, **kwargs ):
         school_id = self.kwargs['school_id']
-        
         school_instance = School.objects.get(id=school_id)
-
-        print(school_instance)
-        
         school_fee_instance = SchoolFee.objects.filter(school=school_instance)
         serialized_data = serializers.serialize('json', school_fee_instance)
         return JsonResponse({'data': serialized_data}, status=200)
-    
         
     def post(self, request, *args, **kwargs):
         print('in post')
@@ -271,10 +108,10 @@ class SchoolFeesView(View):
             return JsonResponse({'message': 'Server error'}, status=400)
 
 
+## school fees delete
 class SchoolFeeDelete(View):
     def post(self, request):
         _id = request.POST.get('id')
-      
         SchoolFee.objects.get(pk=_id).delete()
         return JsonResponse({'message': 'Deleted successfully'}, status=201)
     
@@ -282,13 +119,13 @@ class SchoolFeeDelete(View):
 ## Hall of fame
 class SchoolFameView(View ):
     def get(self, request, school_id):
-    
         instance = School.objects.get(id=school_id)
         return render(request, "employee/hall_of_fame.html", {'instance':instance, 'employee_school_fame': 'active'})
-    
+
+
+## hall of fame add
 class HallofFameAdd(View):
     def get(self, request, school_id):
-        
         school_instance = School.objects.get(id=school_id)
         instance = HallofFame.objects.filter(school=school_instance)
         sr_data = serializers.serialize('json', instance)
@@ -317,13 +154,15 @@ class HallofFameAdd(View):
             return JsonResponse({'message': 'Server error'}, status=400)
 
 
+## hall of fame delete
 class HallofFameDelete(View):
     def post(self, request):
         _id = request.POST.get('id')
-      
         HallofFame.objects.get(pk=_id).delete()
         return JsonResponse({'message': 'Deleted successfully'}, status=201)
     
+
+## school gallery view only
 class SchoolGalleryView(View):
     def get(self, request):
         school_gallery = SchoolGallery.objects.all()
@@ -333,7 +172,6 @@ class SchoolGalleryView(View):
         try:
             school_instance = School.objects.get(owner=request.user)
             img = request.FILES['school-img']
-
             if not img:
                 return HttpResponse('img not provied')
             instance = SchoolGallery(school=school_instance, school_img=img)
@@ -342,5 +180,3 @@ class SchoolGalleryView(View):
         except Exception as e:
             print(e)
             return HttpResponse('You are not authorized!')
-
-       
