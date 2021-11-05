@@ -50,7 +50,7 @@ class UploadCsv(View):
             messages.error(request, 'THIS IS NOT A CSV FILE')
         instance = CSVFile.objects.create(csv_file=csv_file)
         instance.save()
-        return redirect('upload_csv')
+        return redirect('employee_dashbaord')
 
 
 ## employee school info
