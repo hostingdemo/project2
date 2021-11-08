@@ -4,9 +4,9 @@ from django.shortcuts import redirect, render
 from django.views.generic import View
 from django.contrib import messages
 from django.core import serializers
+from django.views.generic.list import ListView
 
-import csv, io, ast
-
+from cms_dashboard.forms import ImportFileForm
 from cms_dashboard.models import CSVFile
 from schools.models import *
 from schools.forms import *
@@ -18,25 +18,40 @@ class CmsDashboard(View):
 
 
 ## upload csv
-class UploadCsv(View):
+from django.core.paginator import Paginator
+def upload_csv(request):
     template_name = 'cms_dashboard/upload-csv.html'
-    def get(self, request):
-        school_list = School.objects.all().order_by('school_name')
-        paginator = Paginator(school_list, 25)
-        page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-        return render(request, self.template_name, {'page_obj': page_obj})
 
-    def post(self, request):
-        csv_file = request.FILES['csv-file']
-        # let's check if it is a csv file
-        if not csv_file.name.endswith('.csv'):
-            messages.error(request, 'THIS IS NOT A CSV FILE')
-        instance = CSVFile.objects.create(csv_file=csv_file)
-        instance.save()
-        return redirect('employee_dashbaord')
+    if request.method == 'POST':
+        form = ImportFileForm(request.FILES)
+
+        if form.is_valid():
+            form.save()
+            return redirect('employee_dashboard')
+        else:
+            return render(request, template_name, {'form': form})
+
+    form = ImportFileForm()    
+    school_list = School.objects.all().order_by('school_name')
+    paginator = Paginator(school_list, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, template_name, {'form':form, 'page_obj': page_obj})
 
 
+class UploadHistory(ListView):
+    template_name = 'cms_dashboard/upload-history.html'
+    paginate_by = 10
+    model = CSVFile
+    ordering = ['-upload_date']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['csv_upload'] = 'active'
+        return context
+
+
+    
 ## employee school info
 def employee_school_info(request, school_id):
     if request.method == 'POST':

@@ -12,20 +12,9 @@ class CSVFile(models.Model):
     # upload to MEDIA_ROOT/temp
     csv_file = models.FileField(upload_to="csv_files", blank=False, null=False)
     upload_date = models.DateTimeField(auto_now_add=True, )
-    status = models.CharField(max_length=100, blank=True)
-
-    # Deleting old csv file
-    def save(self, *args, **kwargs):
-        if self.pk:
-            old_import = CSVFile.objects.get(pk=self.pk)
-
-            if old_import.csv_file:
-                old_import.csv_file.delete(save=False)
-
-        return super(CSVFile, self).save(*args, **kwargs)
         
     def __str__(self):
-        return f"{self.csv_file.name}"
+        return f"{self.csv_file}"
     
 
 
@@ -188,7 +177,5 @@ def add_records_to_schools_from_csv_file(sender, instance, **kwargs):
                             title=h
                         )
                 print(row['school_name'])
-                instance.status = "Success"
         except Exception as e:
             print(e)
-            instance.status = e
