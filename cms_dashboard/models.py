@@ -9,7 +9,6 @@ from schools.models import HallofFame, School, SchoolDetail, SchoolFacilities
 
 #===#
 class CSVFile(models.Model):
-    # upload to MEDIA_ROOT/temp
     csv_file = models.FileField(upload_to="csv_files", blank=False, null=False)
     upload_date = models.DateTimeField(auto_now_add=True, )
         
@@ -23,6 +22,9 @@ class CSVFile(models.Model):
 @receiver(post_save, sender=CSVFile, dispatch_uid="add_records_to_schools_from_csv_file")
 def add_records_to_schools_from_csv_file(sender, instance, **kwargs):
     to_import = os.path.join(settings.MEDIA_ROOT, instance.csv_file.name)
+    print('-'*10)
+    print(to_import)
+    print('-'*10)
 
     with open(to_import) as f:
         reader = csv.DictReader(f)
