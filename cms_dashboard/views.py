@@ -14,22 +14,6 @@ from schools.forms import *
 ## cms view only
 class CmsDashboard(View):
     def get(self, request):
-        print('i am here')
-        print('i am here')
-        print('i am here')
-        print('i am here')
-        print('i am here')
-        print('i am here')
-        print('i am here')
-        print('i am here')
-        print('i am here')
-        print('i am here')
-        print('i am here')
-        print('i am here')
-        print('i am here')
-        print('i am here')
-        print('i am here')
-        print('i am here')
         return render(request, 'cms_dashboard/index1.html', {'dashboard': 'active'})
 
 
