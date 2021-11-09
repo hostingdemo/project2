@@ -9,8 +9,8 @@ from schools.models import HallofFame, School, SchoolDetail, SchoolFacilities
 
 #===#
 class CSVFile(models.Model):
-    csv_file = models.FileField(upload_to="csv_files", blank=False, null=False)
-    upload_date = models.DateTimeField(auto_now_add=True, )
+    csv_file = models.FileField(max_length=999, upload_to="csv_files", blank=False, null=False)
+    upload_date = models.DateTimeField(auto_now_add=True)
         
     def __str__(self):
         return f"{self.csv_file}"
