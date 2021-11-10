@@ -4,7 +4,10 @@ from . import views
 
 urlpatterns = [
     path('', views.CmsDashboard.as_view(), name="cms_dashboard"),
-    path('employee-dashbaord', views.UploadCsv.as_view(), name="employee_dashbaord"),
+
+    # csv upload
+    path('employee_dashboard', views.upload_csv, name="employee_dashboard"),
+    path('upload-history', views.UploadHistory.as_view(), name="upload_history"),
 
     path('school-info/<school_id>', views.employee_school_info, name="employee_school_info"),
     path('school-facilities/<school_id>', views.school_facilities, name="employee_school_facilities"),

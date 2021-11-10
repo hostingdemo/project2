@@ -109,7 +109,7 @@ class School(models.Model):
     address = models.TextField(max_length=250)
     board = models.CharField(max_length=5, choices=BOARD_TYPE_CHOICES, default=STATE_BOARD)
     co_ed_status = models.CharField(max_length=100, choices=CO_ED_CHOICES)
-    ownership = models.CharField(max_length=3, choices=OWNERSHIP_TYPE_CHOICES, default=UNKWON_TYPE)
+    ownership = models.CharField(max_length=50, choices=OWNERSHIP_TYPE_CHOICES, default=UNKWON_TYPE)
     sf_ratio = models.CharField(max_length=6)
     class_offered = models.CharField(max_length=100, choices=CLASS_OFFERED_CHOISES)
     verified = models.BooleanField(default=False)
