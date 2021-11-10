@@ -18,27 +18,40 @@ class CmsDashboard(View):
 
 
 ## upload csv
-from django.core.paginator import Paginator
-def upload_csv(request):
+class UploadCsv(View):
+    # template path
     template_name = 'cms_dashboard/upload-csv.html'
 
-    if request.method == 'POST':
-        form = ImportFileForm(request.FILES)
+    def get(self, request):
+        # form
+        form = ImportFileForm() 
+        # pagination stuff
+        school_list = School.objects.all().order_by('school_name')
+        paginator = Paginator(school_list, 10)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
 
+        context = {
+            'page_obj': page_obj,
+            'form': form,
+            'csv_upload': 'active'
+        }
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        csv_file = request.FILES.get('csv_file')
+        # let's check if it is a csv file
+        if not csv_file.name.endswith('.csv'):
+            messages.error(request, 'THIS IS NOT A CSV FILE')
+
+        form = ImportFileForm(request.FILES)
         if form.is_valid():
             form.save()
             return redirect('employee_dashboard')
-        else:
-            return render(request, template_name, {'form': form})
-
-    form = ImportFileForm()    
-    school_list = School.objects.all().order_by('school_name')
-    paginator = Paginator(school_list, 10)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    return render(request, template_name, {'form':form, 'page_obj': page_obj})
+        return render(request, self.template_name, {'form': form, 'csv_upload': 'active'})
 
 
+## history of uploaded csv files
 class UploadHistory(ListView):
     template_name = 'cms_dashboard/upload-history.html'
     paginate_by = 10
@@ -50,38 +63,70 @@ class UploadHistory(ListView):
         context['csv_upload'] = 'active'
         return context
 
-
     
 ## employee school info
 def employee_school_info(request, school_id):
+    template_name = 'employee/school_form.html'
+
     if request.method == 'POST':
         instance = School.objects.get(id=school_id)
         form = school_addForm(request.POST, instance=instance)
         if form.is_valid():
             form.save()
-            instance = School.objects.get(id=school_id)
-            form = school_addForm(instance=instance)
-            fee_data = SchoolFee.objects.filter(school=instance)
-            return render(request, 'employee/school_form.html', {'school_form': form, 'instance': instance, 'fee_data': fee_data, 'School_Information' : 'active'})
+
+            context = {
+                'school_form': form, 
+                'instance': instance, 
+                'School_Information': 'active',
+            }
+            return render(request, template_name, context)
+        context = {
+            'school_form': form, 
+            'instance': instance, 
+            'School_Information': 'active'
+        }
+        return render(request, template_name, context)
     else:
         instance = School.objects.get(id=school_id)
         fee_data = SchoolFee.objects.filter(school=instance)
         form = school_addForm(instance=instance)
-        return render(request, 'employee/school_form.html', {'school_form': form, 'instance': instance, 'fee_data': fee_data})
+
+        context = {
+            'school_form': form, 
+            'instance': instance, 
+            'fee_data': fee_data, 
+            'School_Information': 'active',
+        }
+        return render(request, template_name, context)
     
 
 ## school facilities
 def school_facilities(request, school_id):
     if request.method == 'POST':
         instance = School.objects.get(id=school_id)
-        form = school_fc_Form(request.POST)
+        form = school_fc_Form(instance)
+
         if form.is_valid():
+            form.save()
             return redirect('employee_school_facilities')
+
+        context = {
+            'school_fc_form': form, 
+            'instance':instance, 
+            'employee_school_facilities': 'active'
+        }
+        return render(request, 'employee/school_facilities.html', context)
     else:
         instance = School.objects.get(id=school_id)
         school_facilities = SchoolFacilities.objects.get(school=instance)
         form = school_fc_Form(instance=school_facilities)
-        return render(request, 'employee/school_facilities.html', {'school_fc_form': form, 'instance':instance, 'employee_school_facilities': 'active'})
+
+        context = {
+            'school_fc_form': form, 
+            'instance':instance, 
+            'employee_school_facilities': 'active'
+        }
+        return render(request, 'employee/school_facilities.html', context)
     
 
 ## school fees
@@ -132,10 +177,14 @@ class SchoolFeeDelete(View):
     
 
 ## Hall of fame
-class SchoolFameView(View ):
+class SchoolFameView(View):
     def get(self, request, school_id):
         instance = School.objects.get(id=school_id)
-        return render(request, "employee/hall_of_fame.html", {'instance':instance, 'employee_school_fame': 'active'})
+        context = {
+            'instance':instance, 
+            'employee_school_fame': 'active'
+        }
+        return render(request, "employee/hall_of_fame.html", context)
 
 
 ## hall of fame add

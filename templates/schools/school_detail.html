@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load str_to_arr %}
-{% block title %}Details - {{ object.school.school_name }}{% endblock %}
+{% block title %}Details - {{ school.school_name }}{% endblock %}
 
 {% block style %}
 <style>
@@ -23,11 +23,17 @@
     <div class="container">
         <div class="text-white">
             <nav aria-label="breadcrumb" class="d-inline">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#" class="text-link">Home</a></li>
-                    <li class="breadcrumb-item"><a href="#" class="text-link">Explore</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">school Name</li>
-                </ol>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'home' %}" class="text-link text-info">Home</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'explore' %}" class="text-link text-info">Explore</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'school_details' school.id %}" class="text-link text-info">{{school.school_name}}</a>
+                    </li>
+                </ul>
             </nav>
         </div>
 
@@ -36,10 +42,10 @@
                 <img src="{% static 'assets/explore-page/school-logo.png' %}" alt="school-logo" class="school-logo">
             </div>
             <div class="d-flex flex-column justify-content-center align-items-start">
-                <h4 class="fw-700 ">{{ object.school.school_name }}</h4>
+                <h4 class="fw-700 ">{{ school.school_name }}</h4>
                 <p class="d-flex align-items-top gap-3">
                     <span><i class="fas fa-map-marker-alt"></i></span>
-                    <span style="display:block; max-width: 70%;">{{ object.school.address }}</span>
+                    <span style="display:block; max-width: 70%;">{{ school.address }}</span>
                 </p>
             </div>
         </div>
@@ -61,7 +67,7 @@
                 aria-controls="admission" aria-selected="false">Admission & Fees</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link link fw-500" id="infrastrucure-tab" data-toggle="tab" href="#infrastrucure" role="tab"
+            <a class="nav-link link fw-500 active" id="infrastrucure-tab" data-toggle="tab" href="#infrastrucure" role="tab"
                 aria-controls="infrastrucure" aria-selected="false">Infrastrucure & Facilities</a>
         </li>
         <li class="nav-item">
@@ -73,7 +79,7 @@
                 aria-controls="academics" aria-selected="false">Academics</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link link fw-500 active" id="reviews-tab" data-toggle="tab" href="#reviews" role="tab"
+            <a class="nav-link link fw-500" id="reviews-tab" data-toggle="tab" href="#reviews" role="tab"
                 aria-controls="reviews" aria-selected="true">Reviews</a>
         </li>
         <li class="nav-item">
@@ -84,8 +90,8 @@
 
     <div class="tab-content" id="myTabContent">
 
-        <!-- admission tab starts -->
-        <div class="tab-pane fade show active" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
+        <!-- school review tab starts -->
+        <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12 col-md-8 my-5 p-3 rounded" style="background: #FFF4E3;">
@@ -213,7 +219,7 @@
                             <button class="btn btn-sm btn-primary rounded-pill" id="btn-load-more">Load more</button>
                         </div>
                         {% comment %}
-                        {% for obj in object.school_reviews.all %}
+                        {% for obj in school_reviews %}
                         {% if obj.status %}
                         <div class="review-card shadow-sm p-3 bg-light rounded mb-3">
                             <div class="d-flex gap-2 mb-2">
@@ -265,7 +271,7 @@
                 </div>
             </div>
         </div>
-        <!-- admission tab ends -->
+        <!-- school review tab ends -->
 
         <!-- about tab starts -->
         <div class="tab-pane fade" id="about" role="tabpanel" aria-labelledby="about-tab">
@@ -283,7 +289,7 @@
                         accusantium asperiores beatae. Ipsam nam neque ipsum deleniti laudantium!
                     </p>
 
-                    <h5 class="fw-700 mt-5">Basic facts about School Name</h5>
+                    <h5 class="fw-700 mt-5">Basic facts about {{school.school_name}}</h5>
                     <div class="grid-3 mb-4">
 
                         <!-- school owner -->
@@ -292,7 +298,7 @@
                                 src="{% static 'assets/school-name-page/school-type.svg' %}">
                             <div>
                                 <h6 class="fw-700 text-muted">Ownership</h6>
-                                <h6 class="fw-700">{{ object.school.ownership }} School</h6>
+                                <h6 class="fw-700">{{ school.ownership }} School</h6>
                             </div>
                         </div>
 
@@ -303,7 +309,7 @@
                             <div>
                                 <h6 class="fw-700 text-muted">Board</h6>
                                 <h6 class="fw-700">
-                                    {{ object.school.board}}
+                                    {{ school.board }}
                                 </h6>
                             </div>
                         </div>
@@ -314,7 +320,7 @@
                                 src="{% static 'assets/school-name-page/establish-badge.svg' %}">
                             <div>
                                 <h6 class="fw-700 text-muted">Established Year</h6>
-                                <h6 class="fw-700">{{ object.year_of_establishment }}</h6>
+                                <h6 class="fw-700">{{ sd.year_of_establishment|slice:":4" }}</h6>
                             </div>
                         </div>
 
@@ -324,7 +330,7 @@
                                 src="{% static 'assets/school-name-page/establish-badge.svg' %}">
                             <div>
                                 <h6 class="fw-700 text-muted">co Ed-Status</h6>
-                                <h6 class="fw-700">{{ object.school.co_ed_status }}</h6>
+                                <h6 class="fw-700">{{ school.co_ed_status }}</h6>
                             </div>
                         </div>
 
@@ -333,7 +339,7 @@
                             <img height="48px" width="48px" src="{% static 'assets/school-name-page/management.svg' %}">
                             <div>
                                 <h6 class="fw-700 text-muted">campus size</h6>
-                                <h6 class="fw-700">{{object.campus_size}}</h6>
+                                <h6 class="fw-700">{{ sd.campus_size}}</h6>
                             </div>
                         </div>
 
@@ -343,7 +349,7 @@
                                 src="{% static 'assets/school-name-page/establish-badge.svg' %}">
                             <div>
                                 <h6 class="fw-700 text-muted">Campus Type</h6>
-                                <h6 class="fw-700">{{ object.campus_type }}</h6>
+                                <h6 class="fw-700">{{ sd.campus_type }}</h6>
                             </div>
                         </div>
                     </div>
@@ -400,7 +406,7 @@
         <!-- admission tab ends -->
 
         <!-- infrastrucure tab starts -->
-        <div class="tab-pane fade" id="infrastrucure" role="tabpanel" aria-labelledby="infrastrucure-tab">
+        <div class="tab-pane fade show active" id="infrastrucure" role="tabpanel" aria-labelledby="infrastrucure-tab">
             <section class="p-0">
                 <div style="background: #FFF4E3;" class="py-5 px-4">
                     <p class="fw-500">
@@ -419,22 +425,34 @@
                         </div>
                         <div class="feature-border"></div>
                         <div class="feature-list mt-4 grid-responsive">
-                            {% for obj in object.class_type|str_to_arr %}
+
                             <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
-                                {% if obj %}
-                                <img src="{% static 'assets/school-name-page/available.svg' %}">
-                                <span class="fw-500">{{obj}}</span>
+                                {% if sfc.ac_classes %}
+                                    <img src="{% static 'assets/school-name-page/available.svg' %}">
                                 {% else %}
-                                <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
-                                <span class="fw-500">N/A</span>
+                                    <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
                                 {% endif %}
+                                <span class="fw-500">AC Classes</span>
                             </div>
-                            {% empty %}
+
                             <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
-                                <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
-                                <span class="fw-500">N/A</span>
+                                {% if sfc.smart_classes %}
+                                    <img src="{% static 'assets/school-name-page/available.svg' %}">
+                                {% else %}
+                                    <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
+                                {% endif %}
+                                <span class="fw-500">Smart classes</span>
                             </div>
-                            {% endfor %}
+
+                            <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
+                                {% if sfc.wifi %}
+                                    <img src="{% static 'assets/school-name-page/available.svg' %}">
+                                {% else %}
+                                    <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
+                                {% endif %}
+                                <span class="fw-500">Wifi</span>
+                            </div>
+
                         </div>
                     </div>
                     <!-- class facilities end -->
@@ -447,22 +465,23 @@
                         </div>
                         <div class="feature-border"></div>
                         <div class="feature-list mt-4 grid-responsive">
-                            {% for obj in object.boarding|str_to_arr %}
                             <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
-                                {% if obj %}
-                                <img src="{% static 'assets/school-name-page/available.svg' %}">
-                                <span class="fw-500">{{obj}}</span>
+                                {% if sfc.boys_hostel %}
+                                    <img src="{% static 'assets/school-name-page/available.svg' %}">
                                 {% else %}
-                                <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
-                                <span class="fw-500">N/A</span>
+                                    <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
                                 {% endif %}
+                                <span class="fw-500">Boys hostel</span>
                             </div>
-                            {% empty %}
+
                             <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
-                                <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
-                                <span class="fw-500">N/A</span>
+                                {% if sfc.girls_hostel %}
+                                    <img src="{% static 'assets/school-name-page/available.svg' %}">
+                                {% else %}
+                                    <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
+                                {% endif %}
+                                <span class="fw-500">Girls hostel</span>
                             </div>
-                            {% endfor %}
                         </div>
                     </div>
                     <!-- boarding facilities start -->
@@ -475,22 +494,41 @@
                         </div>
                         <div class="feature-border"></div>
                         <div class="feature-list mt-4 grid-responsive">
-                            {% for obj in object.infrasturcure|str_to_arr %}
                             <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
-                                {% if obj %}
-                                <img src="{% static 'assets/school-name-page/available.svg' %}">
-                                <span class="fw-500">{{obj}}</span>
+                                {% if sfc.auditorium_media_room %}
+                                    <img src="{% static 'assets/school-name-page/available.svg' %}">
                                 {% else %}
-                                <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
-                                <span class="fw-500">N/A</span>
+                                    <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
                                 {% endif %}
+                                <span class="fw-500">Auditorium / media room</span>
                             </div>
-                            {% empty %}
+
                             <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
-                                <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
-                                <span class="fw-500">N/A</span>
+                                {% if sfc.cafeteria_canteen %}
+                                    <img src="{% static 'assets/school-name-page/available.svg' %}">
+                                {% else %}
+                                    <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
+                                {% endif %}
+                                <span class="fw-500">Cafeteria Canteen</span>
                             </div>
-                            {% endfor %}
+
+                            <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
+                                {% if sfc.library_reading_room %}
+                                    <img src="{% static 'assets/school-name-page/available.svg' %}">
+                                {% else %}
+                                    <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
+                                {% endif %}
+                                <span class="fw-500">Library / Reading room</span>
+                            </div>
+
+                            <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
+                                {% if sfc.playground %}
+                                    <img src="{% static 'assets/school-name-page/available.svg' %}">
+                                {% else %}
+                                    <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
+                                {% endif %}
+                                <span class="fw-500">Playground</span>
+                            </div>
                         </div>
                     </div>
                     <!-- infrastructure facilities start -->
@@ -503,22 +541,41 @@
                         </div>
                         <div class="feature-border"></div>
                         <div class="feature-list mt-4 grid-responsive">
-                            {% for obj in object.safty_and_security|str_to_arr %}
                             <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
-                                {% if obj %}
-                                <img src="{% static 'assets/school-name-page/available.svg' %}">
-                                <span class="fw-500">{{obj}}</span>
+                                {% if sfc.cctv %}
+                                    <img src="{% static 'assets/school-name-page/available.svg' %}">
                                 {% else %}
-                                <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
-                                <span class="fw-500">N/A</span>
+                                    <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
                                 {% endif %}
+                                <span class="fw-500">CCTV</span>
                             </div>
-                            {% empty %}
+
                             <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
-                                <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
-                                <span class="fw-500">N/A</span>
+                                {% if sfc.gps_bus_tracking_app %}
+                                    <img src="{% static 'assets/school-name-page/available.svg' %}">
+                                {% else %}
+                                    <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
+                                {% endif %}
+                                <span class="fw-500">GPS Bus Tracking App</span>
                             </div>
-                            {% endfor %}
+
+                            <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
+                                {% if sfc.student_tracking_app %}
+                                    <img src="{% static 'assets/school-name-page/available.svg' %}">
+                                {% else %}
+                                    <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
+                                {% endif %}
+                                <span class="fw-500">Student Tracking App</span>
+                            </div>
+
+                            <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
+                                {% if sfc.student_tracking_app %}
+                                    <img src="{% static 'assets/school-name-page/available.svg' %}">
+                                {% else %}
+                                    <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
+                                {% endif %}
+                                <span class="fw-500">Student Tracking App</span>
+                            </div>
                         </div>
                     </div>
                     <!-- Safty and security facilities start -->
@@ -531,54 +588,53 @@
                         </div>
                         <div class="feature-border"></div>
                         <div class="feature-list mt-4 grid-responsive">
-                            {% for obj in object.advance_facilities|str_to_arr %}
                             <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
-                                {% if obj %}
-                                <img src="{% static 'assets/school-name-page/available.svg' %}">
-                                <span class="fw-500">{{obj}}</span>
+                                {% if sfc.alumni_association %}
+                                    <img src="{% static 'assets/school-name-page/available.svg' %}">
                                 {% else %}
-                                <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
-                                <span class="fw-500">N/A</span>
+                                    <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
                                 {% endif %}
+                                <span class="fw-500">Alumni Association</span>
                             </div>
-                            {% empty %}
+
                             <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
-                                <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
-                                <span class="fw-500">N/A</span>
+                                {% if sfc.day_care %}
+                                    <img src="{% static 'assets/school-name-page/available.svg' %}">
+                                {% else %}
+                                    <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
+                                {% endif %}
+                                <span class="fw-500">Day Care</span>
                             </div>
-                            {% endfor %}
+
+                            <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
+                                {% if sfc.meals %}
+                                    <img src="{% static 'assets/school-name-page/available.svg' %}">
+                                {% else %}
+                                    <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
+                                {% endif %}
+                                <span class="fw-500">Meals</span>
+                            </div>
+
+                            <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
+                                {% if sfc.medical_room %}
+                                    <img src="{% static 'assets/school-name-page/available.svg' %}">
+                                {% else %}
+                                    <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
+                                {% endif %}
+                                <span class="fw-500">Medical room</span>
+                            </div>
+
+                            <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
+                                {% if sfc.transportation %}
+                                    <img src="{% static 'assets/school-name-page/available.svg' %}">
+                                {% else %}
+                                    <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
+                                {% endif %}
+                                <span class="fw-500">Transportation</span>
+                            </div>
                         </div>
                     </div>
                     <!-- ADVANCED FACILITIES facilities start -->
-
-
-                    <!-- Extra curricular facilities start -->
-                    <div class="features my-5">
-                        <div class="features-title d-flex justify-content-between align-items-center">
-                            <h5 class="fw-700">EXTRA CURRIULAR</h5>
-                            <!-- <h5>(2/4)</h5> -->
-                        </div>
-                        <div class="feature-border"></div>
-                        <div class="feature-list mt-4 grid-responsive">
-                            {% for obj in object.extra_curricular|str_to_arr %}
-                            <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
-                                {% if obj %}
-                                <img src="{% static 'assets/school-name-page/available.svg' %}">
-                                <span class="fw-500">{{obj}}</span>
-                                {% else %}
-                                <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
-                                <span class="fw-500">N/A</span>
-                                {% endif %}
-                            </div>
-                            {% empty %}
-                            <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
-                                <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
-                                <span class="fw-500">N/A</span>
-                            </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    <!-- Extra curricular facilities start -->
 
                     <!-- sports facilities start -->
                     <div class="features my-5">
@@ -589,17 +645,86 @@
                         <div class="feature-border"></div>
 
                         <div class="feature-list mt-4 grid-responsive">
-                            {% for obj in object.sports_and_fitness|str_to_arr %}
                             <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
-                                {% if obj %}
-                                <img src="{% static 'assets/school-name-page/available.svg' %}">
-                                <span class="fw-500">{{obj}}</span>
+                                {% if sfc.skating %}
+                                    <img src="{% static 'assets/school-name-page/available.svg' %}">
                                 {% else %}
-                                <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
-                                <span class="fw-500">N/A</span>
+                                    <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
                                 {% endif %}
+                                <span class="fw-500">Skating</span>
                             </div>
-                            {% endfor %}
+
+                            <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
+                                {% if sfc.horse_riding %}
+                                    <img src="{% static 'assets/school-name-page/available.svg' %}">
+                                {% else %}
+                                    <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
+                                {% endif %}
+                                <span class="fw-500">Horse Riding</span>
+                            </div>
+
+                            <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
+                                {% if sfc.gym %}
+                                    <img src="{% static 'assets/school-name-page/available.svg' %}">
+                                {% else %}
+                                    <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
+                                {% endif %}
+                                <span class="fw-500">Gym</span>
+                            </div>
+
+                            <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
+                                {% if sfc.indoor_sports %}
+                                    <img src="{% static 'assets/school-name-page/available.svg' %}">
+                                {% else %}
+                                    <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
+                                {% endif %}
+                                <span class="fw-500">Indoor Sports</span>
+                            </div>
+
+                            <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
+                                {% if sfc.outdoor_sports %}
+                                    <img src="{% static 'assets/school-name-page/available.svg' %}">
+                                {% else %}
+                                    <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
+                                {% endif %}
+                                <span class="fw-500">Outdoor Sports</span>
+                            </div>
+
+                            <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
+                                {% if sfc.swimming_pool %}
+                                    <img src="{% static 'assets/school-name-page/available.svg' %}">
+                                {% else %}
+                                    <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
+                                {% endif %}
+                                <span class="fw-500">Swimming pool</span>
+                            </div>
+
+                            <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
+                                {% if sfc.karate %}
+                                    <img src="{% static 'assets/school-name-page/available.svg' %}">
+                                {% else %}
+                                    <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
+                                {% endif %}
+                                <span class="fw-500">Karate</span>
+                            </div>
+
+                            <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
+                                {% if sfc.taekwondo %}
+                                    <img src="{% static 'assets/school-name-page/available.svg' %}">
+                                {% else %}
+                                    <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
+                                {% endif %}
+                                <span class="fw-500">Taekwondo</span>
+                            </div>
+
+                            <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
+                                {% if sfc.yoga %}
+                                    <img src="{% static 'assets/school-name-page/available.svg' %}">
+                                {% else %}
+                                    <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
+                                {% endif %}
+                                <span class="fw-500">Yoga</span>
+                            </div>
                         </div>
                     </div>
                     <!-- sports facilities end -->
@@ -613,17 +738,32 @@
                         <div class="feature-border"></div>
 
                         <div class="feature-list mt-4 grid-responsive">
-                            {% for obj in object.lab|str_to_arr %}
                             <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
-                                {% if obj %}
-                                <img src="{% static 'assets/school-name-page/available.svg' %}">
-                                <span class="fw-500">{{obj}}</span>
+                                {% if sfc.computer_lab %}
+                                    <img src="{% static 'assets/school-name-page/available.svg' %}">
                                 {% else %}
-                                <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
-                                <span class="fw-500">N/A</span>
+                                    <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
                                 {% endif %}
+                                <span class="fw-500">Computer Lab</span>
                             </div>
-                            {% endfor %}
+
+                            <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
+                                {% if sfc.science_lab %}
+                                    <img src="{% static 'assets/school-name-page/available.svg' %}">
+                                {% else %}
+                                    <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
+                                {% endif %}
+                                <span class="fw-500">Science Lab</span>
+                            </div>
+
+                            <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
+                                {% if sfc.robotics_lab %}
+                                    <img src="{% static 'assets/school-name-page/available.svg' %}">
+                                {% else %}
+                                    <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
+                                {% endif %}
+                                <span class="fw-500">Robotics Lab</span>
+                            </div>
                         </div>
                     </div>
                     <!-- Lab facilities end -->
@@ -637,17 +777,32 @@
                         <div class="feature-border"></div>
 
                         <div class="feature-list mt-4 grid-responsive">
-                            {% for obj in object.disabled_friendly|str_to_arr %}
                             <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
-                                {% if obj %}
-                                <img src="{% static 'assets/school-name-page/available.svg' %}">
-                                <span class="fw-500">{{obj}}</span>
+                                {% if sfc.ramps %}
+                                    <img src="{% static 'assets/school-name-page/available.svg' %}">
                                 {% else %}
-                                <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
-                                <span class="fw-500">N/A</span>
+                                    <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
                                 {% endif %}
+                                <span class="fw-500">Ramps</span>
                             </div>
-                            {% endfor %}
+
+                            <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
+                                {% if sfc.washrooms %}
+                                    <img src="{% static 'assets/school-name-page/available.svg' %}">
+                                {% else %}
+                                    <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
+                                {% endif %}
+                                <span class="fw-500">Washrooms</span>
+                            </div>
+
+                            <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
+                                {% if sfc.elevators %}
+                                    <img src="{% static 'assets/school-name-page/available.svg' %}">
+                                {% else %}
+                                    <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
+                                {% endif %}
+                                <span class="fw-500">Elevators</span>
+                            </div>
                         </div>
                     </div>
                     <!-- Disabled friendly facilities end -->
@@ -673,20 +828,81 @@
                         iaculis sit. Eu enim, in bibendum elit.
                     </p>
 
-                    <div class="grid-responsive">
-                        <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
-                            <img src="{% static 'assets/school-name-page/available.svg' %}">
-                            <span class="fw-500">Arobics</span>
+                    <!-- Extra curricular facilities start -->
+                    <div class="features my-5">
+                        <div class="features-title d-flex justify-content-between align-items-center">
+                            <h5 class="fw-700">EXTRA CURRIULAR</h5>
+                            <!-- <h5>(2/4)</h5> -->
                         </div>
-                        <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
-                            <img src="{% static 'assets/school-name-page/available.svg' %}">
-                            <span class="fw-500">Arobics</span>
-                        </div>
-                        <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
-                            <img src="{% static 'assets/school-name-page/available.svg' %}">
-                            <span class="fw-500">Arobics</span>
+                        <div class="feature-border"></div>
+                        <div class="feature-list mt-4 grid-responsive">
+                            <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
+                                {% if sfc.art_and_craft %}
+                                    <img src="{% static 'assets/school-name-page/available.svg' %}">
+                                {% else %}
+                                    <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
+                                {% endif %}
+                                <span class="fw-500">Art and craft</span>
+                            </div>
+
+                            <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
+                                {% if sfc.dance %}
+                                    <img src="{% static 'assets/school-name-page/available.svg' %}">
+                                {% else %}
+                                    <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
+                                {% endif %}
+                                <span class="fw-500">Dance</span>
+                            </div>
+
+                            <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
+                                {% if sfc.debate %}
+                                    <img src="{% static 'assets/school-name-page/available.svg' %}">
+                                {% else %}
+                                    <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
+                                {% endif %}
+                                <span class="fw-500">Debate</span>
+                            </div>
+
+                            <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
+                                {% if sfc.drama %}
+                                    <img src="{% static 'assets/school-name-page/available.svg' %}">
+                                {% else %}
+                                    <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
+                                {% endif %}
+                                <span class="fw-500">Drama</span>
+                            </div>
+
+                            <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
+                                {% if sfc.gardening %}
+                                    <img src="{% static 'assets/school-name-page/available.svg' %}">
+                                {% else %}
+                                    <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
+                                {% endif %}
+                                <span class="fw-500">Gardening</span>
+                            </div>
+
+                            <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
+                                {% if sfc.music %}
+                                    <img src="{% static 'assets/school-name-page/available.svg' %}">
+                                {% else %}
+                                    <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
+                                {% endif %}
+                                <span class="fw-500">Music</span>
+                            </div>
+
+
+                            <div class="feature-item d-flex gap-2 align-items-center m-1 m-md-2">
+                                {% if sfc.picnics_and_excursion %}
+                                    <img src="{% static 'assets/school-name-page/available.svg' %}">
+                                {% else %}
+                                    <img src="{% static 'assets/school-name-page/unavailable.svg' %}">
+                                {% endif %}
+                                <span class="fw-500">Picnics and Excursion</span>
+                            </div>
                         </div>
                     </div>
+                    <!-- Extra curricular facilities start -->
+                    <!-- <div class="grid-responsive"> </div> -->
                 </div>
             </section>
         </div>
@@ -757,45 +973,52 @@
         <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
             <section class="p-0">
                 <div style="background: #FFF4E3;" class="py-5 px-4">
-                    <div class="d-flex gap-3 mb-3">
+                    <div class="d-flex flex-column flex-md-row gap-3 mb-3">
                         <div class="contact-icon shadow">
                             <i class="fas fa-phone-alt"></i>
                         </div>
                         <div class="d-flex flex-column">
                             <h6 class="fw-700 m-0">Phone Number</h6>
-                            <p class="fw-500">1234567890</p>
+                            <ul class="mt-2">
+                            {% for n in sd.phone_no|str_to_arr %}
+
+                                <li class="fw-500">{{ n }}</li>
+                            {% empty %}
+                                <li class="fw-500">N/A</li>
+                            {% endfor %}
+                            </ul>
                         </div>
                     </div>
 
-                    <div class="d-flex gap-3 mb-3">
+                    <div class="d-flex flex-column flex-md-row gap-3 mb-3">
                         <div class="contact-icon shadow">
                             <i class="fas fa-at"></i>
                         </div>
                         <div class="d-flex flex-column">
                             <h6 class="fw-700 m-0">Email</h6>
-                            <p class="fw-500">school@gmail.com</p>
+                            <p class="fw-500">{{ sd.email }}</p>
                         </div>
                     </div>
 
-                    <div class="d-flex gap-3 mb-3">
+                    <div class="d-flex flex-column flex-md-row gap-3 mb-3">
                         <div class="contact-icon shadow">
                             <i class="fas fa-globe"></i>
                         </div>
                         <div class="d-flex flex-column">
                             <h6 class="fw-700 m-0">Website</h6>
-                            <p class="fw-500">www.website.com</p>
+                            <p class="fw-500">{{ sd.webiste|urlize|default:"N/A" }}</p>
                         </div>
                     </div>
 
-                    <div class="d-flex gap-3 mb-3">
+                    <div class="d-flex flex-column flex-md-row gap-3 mb-3">
                         <div class="contact-icon shadow">
                             <i class="fas fa-map-marker-alt"></i>
                         </div>
                         <div class="d-flex flex-column">
                             <h6 class="fw-700 m-0">Location</h6>
-                            <p class="fw-500" style="width: 50%;">Lorem ipsum dolor sit amet, consectetur adipiscing
-                                elit. Fringilla
-                                consectetur purus nulla massa nibh. Arcu, facilisis cras elit massa </p>
+                            <p class="fw-500" style="width: 80%;">
+                                {{ sd.school.address }}
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -810,14 +1033,22 @@
 {% block extrascript %}
 
 <script>
+    // variable declaration
     const ratingStars = document.querySelectorAll('.score')
     const ratingInput = document.querySelector('#rating')
 
+    // global review list
     let review_list = []
+
+    // pagination variable
     let reivew_page = 1
-    let review_url = "{% url 'school_reviews' object.id %}"
+
+    // review url and user id
+    let review_url = "{% url 'school_reviews' school.id %}"
     let userId = '{{ request.user.email }}'
 
+
+    // Activating & Deactivating Star
     const handleSelect = (num) => {
         ratingInput.value = num;
         for (let i = 0; i < num; i++) {
@@ -827,6 +1058,8 @@
             ratingStars[i].classList.add('inactive')
         }
     }
+
+    // listening for mouseover event
     ratingStars.forEach(ele => {
         ele.addEventListener('mouseover', (e) => {
             let score = e.target.dataset.score
@@ -834,13 +1067,17 @@
         })
     })
 
+
+    /**
+     * Submitting review form
+     */
     $('#rating-form').submit(function (e) {
         e.preventDefault()
         let data = $(this).serialize()
         console.log(data)
         $.ajax({
             type: 'POST',
-            url: '{% url "school_details" object.id  %}',
+            url: '{% url "school_details" school.id  %}',
             data: $(this).serialize(),
             headers: { 'X-CSRFToken': '{{ csrf_token }}' },
             success: function (response) {
@@ -868,12 +1105,17 @@
         })
     })
 
+
+    // loadmore reviews
     $('#btn-load-more').on('click', () => {
         reivew_page += 1
         getReviews(`${review_url}?page=${reivew_page}`)
     })
 
 
+    /**
+     * Fetching reviews
+     */
     function getReviews(url) {
         $('#btn-load-more').text('Loading...').prop('disabled', true)
 
@@ -888,14 +1130,16 @@
                 let reviews = data.map(obj => {
                     if (obj.fields.status) {
                         obj.fields.created_at = new Date(obj.fields.created_at).toDateString()
-                        console.log(obj.pk)
+
+                        // delete review url
                         let delete_review_url = `${review_url}delete/${obj.pk}`
+                        console.log(delete_review_url)
                         // obj.fields.created_at.toLocaleDateString()
                         return `
                                 <div class="review-card shadow-sm p-3 bg-light rounded mb-3">
                                     ${
                                         (userId === obj.fields.user[0]) &&
-                                        `<button data-review-id=${delete_review_url} class="btn btn-sm btn-info del-review-btn">
+                                        `<button data-delete-url="${delete_review_url}" class="btn btn-sm btn-info del-review-btn" onclick="deleteReview(this)">
                                             <i class="fas fa-trash"></i>
                                         </button>`
                                     }
@@ -905,7 +1149,7 @@
                                         </div>
                                         <div>
                                             <h5 class="mb-0">${obj.fields.user[0]}</h5>
-                                            <small class="fw-500 text-muted">Wropte on ${obj.fields.created_at}</small>
+                                            <small class="fw-500 text-muted">Wrote on ${obj.fields.created_at}</small>
                                             <p class="mb-0">${obj.fields.comment}</p>
                                         </div>
                                     </div>
@@ -936,8 +1180,11 @@
                             `
                     }
                 })
+
+                // pushing mapped data
                 review_list.push(reviews.join(''))
 
+                // checking for available reviews
                 if (review_list > 0 || review_list[0] == "") {
                     $('#reviews-card').html('<p>No reviews :(</p>')
                     $('#btn-load-more').addClass('d-none')
@@ -952,18 +1199,36 @@
         })
     }
 
-    function deleteReview(url) {
+    /**
+     * Function to delete reviews
+     */
+    function deleteReview(e) {
+        let url = e.dataset.deleteUrl;
         $.ajax({
             type: 'GET',
             url: url,
             success: function (res) {
-                
+                $('#review-msg').html(
+                    ` <small class="d-block alert alert-info alert-dismissible fade show mb-2" role="alert">
+                        ${res.message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </small>
+                    `)
+                    review_list = []
+                    getReviews(review_url + '?page=' + reivew_page)
             },
             error: function (res) {
-
+                $('#review-msg').html(
+                    ` <small class="d-block alert alert-info alert-dismissible fade show mb-2" role="alert">
+                        ${res.responseJSON.message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </small>
+                    `)
             }
         })
     }
+
+    // function call getReviews
     getReviews(review_url + '?page=' + reivew_page)
 </script>
 {% endblock %}
