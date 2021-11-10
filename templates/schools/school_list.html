@@ -347,8 +347,11 @@
                         </div>
 
                         <div class="d-flex d-md-block float-md-end flex-column mt-2">
-                            <button id="apply-now-btn" class="btn bg-wine-berry btn-dark btn-sm text-uppercase fw-700 me-2">Apply Now</button>
-                            <a href="{% url 'school_details' school.id %}" class="btn btn-sm btn-success text-uppercase fw-700">Visit <i class="fas fa-eye"></i></a>
+                            <button id="apply-now-btn" data-toggle="modal" data-target="#applyModal"
+                                class="btn bg-wine-berry btn-dark btn-sm text-uppercase fw-700 me-2">Apply Now</button>
+                            <a href="{% url 'school_details' school.id %}"
+                                class="btn btn-sm btn-success text-uppercase fw-700">Visit <i
+                                    class="fas fa-eye"></i></a>
                         </div>
                     </div>
                 </div>
@@ -404,5 +407,30 @@
     </div>
 </section>
 
+<!-- Apply to school Modal -->
+<div class="modal fade" id="applyModal" tabindex="-1" role="dialog" aria-labelledby="applyModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="applyModalLabel">Modal title</h5>
+                <button type="button" class="close btn btn-sm" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <select name="application" id="application">
+                    {% for child in children %}
+                    <option>{{child.first_name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}

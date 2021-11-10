@@ -168,7 +168,7 @@
                     $('#signup-btn').prop('disabled', false)
                     console.log(response)
                     if(response.is_school) window.location.href = 'school/dashboard'
-                    if(response.is_staff) window.location.href = 'cms/employee-dashbaord'
+                    else if(response.is_staff) window.location.href = 'cms/employee-dashbaord'
                     else window.location.href = window.location.search.substr(6)
                 },
                 error: function (response) {

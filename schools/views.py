@@ -6,16 +6,15 @@ from django.views.generic.detail import DetailView
 from django.shortcuts import get_object_or_404, render
 from django.core.paginator import Paginator
 
+from student_parents.models import Child
+
 from .forms import *
 from schools.forms import school_addForm
 from schools.models import School, SchoolDetail, SchoolFee, SchoolReviews
 
 def index(request):
     return render(request, 'schools/index.html', {})
-
-def update_school(request):
-    pass
-
+    
 
 class SchoolListView(ListView):
     model = School
@@ -23,6 +22,11 @@ class SchoolListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        try:
+            children = Child.objects.filter(user=self.request.user)
+            context['children'] = children
+        except Exception as e:
+            print(e)
         return context
 
 

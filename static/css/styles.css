@@ -443,7 +443,7 @@ footer ul li {
 /*
 *  Model Styling Start 
 */
-.modal-header {
+.custom-modal.modal-header {
   position: absolute;
   top: -1.8em;
   left: 50%;
@@ -454,11 +454,11 @@ footer ul li {
   background-color: #0277bd;
 }
 
-.nav-pills .nav-link {
+.custom-modal.nav-pills .nav-link {
   background-color: transparent;
   color: #fff;
 }
-.nav-pills .nav-link.active {
+.custom-modal.nav-pills .nav-link.active {
   background-color: rgba(0,0,0,.2);
   color: #fff;
 }

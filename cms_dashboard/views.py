@@ -104,7 +104,7 @@ def employee_school_info(request, school_id):
 def school_facilities(request, school_id):
     if request.method == 'POST':
         instance = School.objects.get(id=school_id)
-        form = school_fc_Form(instance)
+        form = school_fc_Form(request.POST)
 
         if form.is_valid():
             form.save()
