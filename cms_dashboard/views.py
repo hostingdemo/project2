@@ -62,12 +62,12 @@ def employee_school_info(request, school_id):
             instance = School.objects.get(id=school_id)
             form = school_addForm(instance=instance)
             fee_data = SchoolFee.objects.filter(school=instance)
-            return render(request, 'employee/school_form.html', {'school_form': form, 'instance': instance, 'fee_data': fee_data, 'School_Information' : 'active'})
+            return render(request, 'employee/school_form.html', {'school_form': form,'school_id':school_id, 'instance': instance, 'fee_data': fee_data, 'School_Information' : 'active'})
     else:
         instance = School.objects.get(id=school_id)
         fee_data = SchoolFee.objects.filter(school=instance)
         form = school_addForm(instance=instance)
-        return render(request, 'employee/school_form.html', {'school_form': form, 'instance': instance, 'fee_data': fee_data})
+        return render(request, 'employee/school_form.html', {'school_form': form,'school_id':school_id, 'instance': instance, 'fee_data': fee_data})
     
 
 ## school facilities
@@ -76,12 +76,12 @@ def school_facilities(request, school_id):
         instance = School.objects.get(id=school_id)
         form = school_fc_Form(request.POST)
         if form.is_valid():
-            return redirect('employee_school_facilities')
+            return redirect('employee_school_facilities', school_id)
     else:
         instance = School.objects.get(id=school_id)
         school_facilities = SchoolFacilities.objects.get(school=instance)
         form = school_fc_Form(instance=school_facilities)
-        return render(request, 'employee/school_facilities.html', {'school_fc_form': form, 'instance':instance, 'employee_school_facilities': 'active'})
+        return render(request, 'employee/school_facilities.html', {'school_fc_form': form,'school_id':school_id, 'instance':instance, 'employee_school_facilities': 'active'})
     
 
 ## school fees
