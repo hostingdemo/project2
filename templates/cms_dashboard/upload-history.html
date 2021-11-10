@@ -1,0 +1,78 @@
+{% extends 'cms_dashboard/base.html'%}
+{% block title%}Dashboard{% endblock %}
+{% block main_content %}
+{% if request.user.is_staff %}
+
+<div class="table-responsive rounded shadow-sm bg-white mb-3">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col" class="text-center ">#</th>
+                <th scope="col">File Name</th>
+                <th scope="col">Upload date</th>
+                <th scope="col" class="text-center">Download</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for f in page_obj %}
+            <tr>
+                <td class="text-center ">{{ forloop.counter }}</td>
+               <td>{{ f.csv_file }}</td>
+                <td>{{ f.upload_date }}</td>
+                <td class="text-center">
+                    <a href="{{ f.csv_file.url }}" class="">
+                        <i class="btn btn-sm btn-primary ti-download"></i>
+                    </a>
+                </td>
+                {% empty %}
+                <td class="text-center" colspan="4">No Data Available</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<!-- pagination start -->
+<div class="d-flex justify-content-center align-items-center">
+    <nav class="mt-2">
+        <ul class="pagination">
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page=1">
+                    <span>&laquo;</span>
+                    <span>First</span>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}"">
+                        <span>Previous</span>
+                    </a>
+                </li>
+                {% endif %}
+                <li class=" page-item">
+                    <span class="page-link">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                    </span>
+            </li>
+
+            {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                    <span>Next</span>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Next">
+                    <span>Last</span>
+                    <span>&raquo;</span>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+<!-- pagination ends -->
+
+{% else %}
+<h2 class="my-5 text-center">Restricted area </h2>
+{% endif %}
+{% endblock %}

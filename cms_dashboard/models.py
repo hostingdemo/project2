@@ -9,19 +9,11 @@ from schools.models import HallofFame, School, SchoolDetail, SchoolFacilities
 
 #===#
 class CSVFile(models.Model):
-    # upload to MEDIA_ROOT/temp
-    csv_file = models.FileField(upload_to="csv_files", blank=False, null=False)
-    upload_date = models.DateTimeField(auto_now_add=True, )
-    status = models.CharField(max_length=100, blank=True)
-
-    # Deleting old csv file
-    def save(self, *args, **kwargs):
-        old_import = CSVFile.objects.all()
-        old_import.delete()
-        return super(CSVFile, self).save(*args, **kwargs)
-
+    csv_file = models.FileField(max_length=999, upload_to="csv_files", blank=False, null=False)
+    upload_date = models.DateTimeField(auto_now_add=True)
+        
     def __str__(self):
-        return f"{self.csv_file.name}"
+        return f"{self.csv_file}"
     
 
 
@@ -30,6 +22,9 @@ class CSVFile(models.Model):
 @receiver(post_save, sender=CSVFile, dispatch_uid="add_records_to_schools_from_csv_file")
 def add_records_to_schools_from_csv_file(sender, instance, **kwargs):
     to_import = os.path.join(settings.MEDIA_ROOT, instance.csv_file.name)
+    print('-'*10)
+    print(to_import)
+    print('-'*10)
 
     with open(to_import) as f:
         reader = csv.DictReader(f)
@@ -184,7 +179,5 @@ def add_records_to_schools_from_csv_file(sender, instance, **kwargs):
                             title=h
                         )
                 print(row['school_name'])
-                instance.status = "Success"
         except Exception as e:
             print(e)
-            instance.status = e

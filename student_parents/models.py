@@ -33,7 +33,7 @@ class Child(models.Model):
     
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-    class_standard = models.CharField(max_length=3, choices=CLASS_STANDARD)
+    class_standard = models.CharField(max_length=50, choices=CLASS_STANDARD)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     date_of_birth = models.DateField(auto_now=False, auto_now_add=False)
