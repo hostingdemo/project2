@@ -50,12 +50,14 @@ def profile(request):
         if is_update_available:
             context = {
                 'is_update_available':True,
-                'is_student_detail_show':False
+                'is_student_detail_show':False,
+                'profile': 'active'
             }
     except:
         context = {
             'is_update_available':False,
-            'is_student_detail_show':True
+            'is_student_detail_show':True,
+            'profile': 'active'
         }
     return render(request, 'student_parents/user_profile.html',context=context)
 
