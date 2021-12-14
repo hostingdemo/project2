@@ -26,17 +26,9 @@
                 <div class="form-group">
                     <label for="fee-name">Select Class: </label>
                     <select name="standard" id="standard" class="form-control form-control-sm select custom-select form-select" required>
-                        <option value="0">Class Nursery</option>
-                        <option value="1">Class 1st</option>
-                        <option value="2">Class 2nd</option>
-                        <option value="3">Class 3rd</option>
-                        <option value="4">Class 4th</option>
-                        <option value="5">Class 5th</option>
-                        <option value="6">Class 6th</option>
-                        <option value="7">Class 7th</option>
-                        <option value="8">Class 8th</option>
-                        <option value="9">Class 9th</option>
-                        <option value="10">Class 10th</option>
+                        {% for obj in school %}
+                            <option value="{{ obj }}">{{ obj }}</option>
+                        {% endfor %}
                     </select>
                 </div>
                 <div class="form-group">
@@ -66,17 +58,9 @@
             <div class="form-group">
                 <label for="fee-name">Select Class: </label>
                 <select name="standard" id="standard-filter" class="form-control form-control-sm select custom-select form-select" required style="border-radius: 999px;">
-                    <option value="0">Class Nursery</option>
-                    <option value="1">Class 1st</option>
-                    <option value="2">Class 2nd</option>
-                    <option value="3">Class 3rd</option>
-                    <option value="4">Class 4th</option>
-                    <option value="5">Class 5th</option>
-                    <option value="6">Class 6th</option>
-                    <option value="7">Class 7th</option>
-                    <option value="8">Class 8th</option>
-                    <option value="9">Class 9th</option>
-                    <option value="10">Class 10th</option>
+                    {% for obj in school %}
+                        <option value="{{ obj }}">{{ obj }}</option>
+                    {% endfor %}
                 </select>
             </div>
             <div class="rounded border p-2">
@@ -128,6 +112,7 @@
         tableBody.innerHTML = ''
         std_list = fees_list.filter(ele => ele.standard === standardFilter.value)
 
+        console.log(std_list)
         if (std_list.length > 0) {
 
             const fees_list_html = std_list.map((data, i) => {
@@ -160,6 +145,7 @@
     async function getData(url) {
         tableBody.innerHTML = '<div class="mt-2" colspan="4">Loading...</div>'
         res = await fetch(url)
+        if(!res.ok) return []
         json = await res.json()
         return JSON.parse(json.data)
     }

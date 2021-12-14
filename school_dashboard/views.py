@@ -1,6 +1,5 @@
-import json
 from django.views.generic.base import TemplateView
-from django.views.generic.edit import UpdateView
+from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.list import ListView
 from django.views.generic import View
 
@@ -135,7 +134,7 @@ class StudentApplicationView(LoginRequiredMixin, SingleTableView):
 """
 School Info Tab
 """
-class SchoolInfoCreateOrUpdate(LoginRequiredMixin, UpdateView):
+class SchoolInfoCreateOrUpdate(LoginRequiredMixin, CreateView):
     template_name = 'school_dashboard/school_form.html'
     form_class = school_addForm
     success_url = reverse_lazy('school_info')
@@ -146,6 +145,7 @@ class SchoolInfoCreateOrUpdate(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['school'] = dict(School.CLASS_OFFERED_CHOISES)
         context['school_info'] = 'active'
         return context
     
@@ -182,11 +182,14 @@ School Fees GET, POST Ajax
 """
 class SchoolFeesView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-       
-        school_instance = School.objects.get(owner=request.user)
-        school_fee_instance = SchoolFee.objects.filter(school=school_instance)
-        serialized_data = serializers.serialize('json', school_fee_instance)
-        return JsonResponse({'data': serialized_data}, status=200)
+        try:
+            school_instance = School.objects.get(owner=request.user)
+            school_fee_instance = SchoolFee.objects.filter(school=school_instance)
+            serialized_data = serializers.serialize('json', school_fee_instance)
+            return JsonResponse({'data': serialized_data}, status=200)
+        except Exception as e:
+            print(e)
+            return JsonResponse({'message': 'School Not Found'}, status=404)
     
         
     def post(self, request, *args, **kwargs):

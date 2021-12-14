@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'student_parents',
     'school_dashboard',
     'cms_dashboard',
+    'django_filters',
 ]
 
 MIDDLEWARE = [

@@ -5,6 +5,8 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.shortcuts import get_object_or_404, render
 from django.core.paginator import Paginator
+from school_dashboard import models
+from schools.filterset import SchoolFilter
 
 from student_parents.models import Child
 
@@ -16,19 +18,30 @@ def index(request):
     return render(request, 'schools/index.html', {})
     
 
-class SchoolListView(ListView):
+class FilteredListView(ListView):
+    filterset_class = None
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        self.filterset = self.filterset_class(self.request.GET, queryset=queryset)
+        return self.filterset.qs.distinct()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        has_filter = any(field in self.request.GET for field in set(self.filterset.get_fields()))
+        context['filterset'] = self.filterset
+        context['has_filter'] = has_filter
+        return context
+
+class SchoolListView(FilteredListView):
+    filterset_class = SchoolFilter
     model = School
     paginate_by = 12 # if pagination is desired
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        try:
-            children = Child.objects.filter(user=self.request.user)
-            context['children'] = children
-        except Exception as e:
-            print(e)
+        # context['filterset'] = self.filterset
         return context
-
 
 class SchoolDetailView(View):
     template_name = 'schools/school_detail.html'
