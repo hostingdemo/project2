@@ -168,8 +168,8 @@
                     $('#signup-btn').prop('disabled', false)
                     console.log(response)
                     if(response.is_school) window.location.href = 'school/dashboard'
-                    if(response.is_staff) window.location.href = 'cms/employee-dashbaord'
-                    else window.location.href = window.location.search.substr(6)
+                    else if(response.is_staff) window.location.href = 'cms/employee-dashbaord'
+                    else window.location.href = window.location.href = 'user/dashboard/'
                 },
                 error: function (response) {
                     $(`#${form_type}-form`).trigger('reset')
@@ -211,19 +211,6 @@
     {% block extrascript %}
 
     {% endblock %}
-
-
-    <script>
-
-
-
-        // $.getJSON("{% static 'student_parents/js/states-and-districts.json' %}", function (json) {
-        //     console.log('printing'); // this will show the info it in firebug console
-
-        //     console.log(json); // this will show the info it in firebug console
-        // });
-
-    </script>
 
 </body>
 

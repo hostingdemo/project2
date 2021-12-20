@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load crispy_forms_tags %}
+{% load crispy_forms_field %}
 
 {% block title %}Explore Schools{% endblock %}
 {% block style %}
@@ -64,10 +66,14 @@
     </div>
     <div style="position: absolute;top: 1em; left: 3em; color: white;">
         <nav aria-label="breadcrumb" class="d-inline">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#" class="text-link">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Library</li>
-            </ol>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="{% url 'home' %}" class="text-link text-info">Home</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="{% url 'explore' %}" class="text-link text-info">Explore</a>
+                </li>
+            </ul>
         </nav>
     </div>
     <div class="container hero-search" style="height: 45vh; z-index: 1; display: grid;
@@ -75,15 +81,17 @@
         <div class="search-box">
             <div class="search-text">
                 <h2 class="text-center mb-3 fm-quicksand fw-700">Find Best School For Your Child</h2>
-                <div class="d-flex input-group-lg">
-                    <input type="text" class="form-control fm-quicksand-regular" placeholder="Search City"
-                        style="border-radius: 999px 0px 0px 999px;">
+                <form class="d-flex input-group-lg">
+                    <!-- {{ filterset.form.school_name }} -->
+                    {% crispy_field filterset.form.school_name 'class' 'form-control fm-quicksand-regular' 'style' 'border-radius: 999px 0px 0px 999px;' %}
+                    <!-- <input type="text" class="form-control fm-quicksand-regular" placeholder="Search City"
+                        > -->
                     <button class="btn bg-roof-terracotta text-white fm-quicksand fw-700 search-btn"
                         style="border-radius: 0px 999px 999px 0px;">Search
                         <img src="{% static 'assets/hero-svgs/Character.svg' %}"
                             class="character-svg d-none d-md-block">
                     </button>
-                </div>
+                </form>
             </div>
         </div>
     </div>
@@ -102,198 +110,28 @@
                     <div class="filters-header border-bottom p-3">
                         <h6 class="m-0 text-dark">Filter By</h6>
                     </div>
-                    <div class="filters-body">
-                        <div id="accordion">
-                            <div class="filters-card border-bottom p-3">
-                                <div class="filters-card-header" id="headingTwo">
-                                    <h6 class="mb-0">
-                                        <a href="#collapsetwo" class="btn-link d-flex justify-content-between"
-                                            data-bs-toggle="collapse" data-target="#collapsetwo" aria-expanded="true"
-                                            aria-controls="collapsetwo">
-                                            <b>Class</b>
-                                            <i class="fas fa-angle-down float-right"></i>
-                                        </a>
-                                    </h6>
-                                </div>
-                                <div id="collapsetwo" class="collapse show" aria-labelledby="headingTwo"
-                                    data-parent="#accordion">
-                                    <div class="filters-card-body">
-                                        <div class="button-group-pills" data-bs-toggle="buttons">
-                                            <label class="btn btn-default active">
-                                                <input type="checkbox" name="options" checked="">
-                                                <div>Play grop</div>
-                                            </label>
-                                            <label class="btn btn-default">
-                                                <input type="checkbox" name="options">
-                                                <div>Pre-Nursery</div>
-                                            </label>
-                                            <label class="btn btn-default">
-                                                <input type="checkbox" name="options">
-                                                <div>Nursery</div>
-                                            </label>
-                                            <label class="btn btn-default">
-                                                <input type="checkbox" name="options">
-                                                <div>1</div>
-                                            </label>
-                                            <label class="btn btn-default">
-                                                <input type="checkbox" name="options">
-                                                <div>2</div>
-                                            </label>
-                                            <label class="btn btn-default">
-                                                <input type="checkbox" name="options">
-                                                <div>3</div>
-                                            </label>
-                                            <label class="btn btn-default">
-                                                <input type="checkbox" name="options">
-                                                <div>4</div>
-                                            </label>
-                                            <label class="btn btn-default">
-                                                <input type="checkbox" name="options">
-                                                <div>5</div>
-                                            </label>
-                                            <label class="btn btn-default">
-                                                <input type="checkbox" name="options">
-                                                <div>6</div>
-                                            </label>
-                                            <label class="btn btn-default">
-                                                <input type="checkbox" name="options">
-                                                <div>7</div>
-                                            </label>
-                                            <label class="btn btn-default">
-                                                <input type="checkbox" name="options">
-                                                <div>8</div>
-                                            </label>
-                                            <label class="btn btn-default">
-                                                <input type="checkbox" name="options">
-                                                <div>9</div>
-                                            </label>
-                                            <label class="btn btn-default">
-                                                <input type="checkbox" name="options">
-                                                <div>10</div>
-                                            </label>
-                                            <label class="btn btn-default">
-                                                <input type="checkbox" name="options">
-                                                <div>11</div>
-                                            </label>
-                                            <label class="btn btn-default">
-                                                <input type="checkbox" name="options">
-                                                <div>12</div>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
+                    <div class="filters-body p-3">
+                        <form class="d-flex flex-column gap-3">
+                            <div>
+                                {{ filterset.form.class_offered|as_crispy_field }}
                             </div>
-                        </div>
-
-                        <div id="accordion">
-                            <div class="filters-card border-bottom p-3">
-                                <div class="filters-card-header" id="headingThress">
-                                    <h6 class="mb-0">
-                                        <a href="#collapsethree" class="btn-link d-flex justify-content-between"
-                                            data-bs-toggle="collapse" data-target="#collapsethree" aria-expanded="true"
-                                            aria-controls="collapsethree">
-                                            <b>Board</b>
-                                            <i class="fas fa-angle-down float-right"></i>
-                                        </a>
-                                    </h6>
-                                </div>
-                                <div id="collapsethree" class="collapse show" aria-labelledby="headingThress"
-                                    data-parent="#accordion">
-                                    <div class="filters-card-body">
-                                        <div class="button-group-pills" data-bs-toggle="buttons">
-                                            <label class="btn btn-default active">
-                                                <input type="checkbox" name="options" checked="">
-                                                <div>CBSE</div>
-                                            </label>
-                                            <label class="btn btn-default">
-                                                <input type="checkbox" name="options">
-                                                <div>CISCE</div>
-                                            </label>
-                                            <label class="btn btn-default">
-                                                <input type="checkbox" name="options">
-                                                <div>IGCSE</div>
-                                            </label>
-                                            <label class="btn btn-default">
-                                                <input type="checkbox" name="options">
-                                                <div>IB</div>
-                                            </label>
-                                            <label class="btn btn-default">
-                                                <input type="checkbox" name="options">
-                                                <div>Cambridge</div>
-                                            </label>
-                                            <label class="btn btn-default">
-                                                <input type="checkbox" name="options">
-                                                <div>State Board</div>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div>
+                                {{ filterset.form.board|as_crispy_field }}
                             </div>
-                        </div>
-
-                        <div id="accordion">
-                            <div class="filters-card border-bottom p-3">
-                                <div class="filters-card-header" id="headingFour">
-                                    <h6 class="mb-0">
-                                        <a href="#collapsefour" class="btn-link d-flex justify-content-between"
-                                            data-bs-toggle="collapse" data-target="#collapsefour" aria-expanded="true"
-                                            aria-controls="collapsefour">
-                                            <b>School Type</b>
-                                            <i class="fas fa-angle-down float-right"></i>
-                                        </a>
-                                    </h6>
-                                </div>
-                                <div id="collapsefour" class="collapse show" aria-labelledby="headingFour"
-                                    data-parent="#accordion">
-                                    <div class="filters-card-body">
-                                        <div class="button-group-pills" data-bs-toggle="buttons">
-                                            <label class="btn btn-default active">
-                                                <input type="checkbox" name="options" checked="">
-                                                <div>Boys</div>
-                                            </label>
-                                            <label class="btn btn-default">
-                                                <input type="checkbox" name="options">
-                                                <div>Girls</div>
-                                            </label>
-                                            <label class="btn btn-default">
-                                                <input type="checkbox" name="options">
-                                                <div>Co-ed</div>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div>
+                                {{ filterset.form.co_ed_status|as_crispy_field }}
                             </div>
-                        </div>
-
-                        <div id="accordion">
-                            <div class="filters-card border-bottom p-3">
-                                <div class="filters-card-header" id="headingFive">
-                                    <h6 class="mb-0">
-                                        <a href="#collapsefive" class="btn-link d-flex justify-content-between"
-                                            data-bs-toggle="collapse" data-target="#collapsefive" aria-expanded="true"
-                                            aria-controls="collapsefive">
-                                            <b>Fees</b>
-                                            <i class="fas fa-angle-down float-right"></i>
-                                        </a>
-                                    </h6>
-                                </div>
-                                <div id="collapsefive" class="collapse show" aria-labelledby="headingFive"
-                                    data-parent="#accordion">
-                                    <div class="filters-card-body">
-                                        <div class="button-group-pills" data-bs-toggle="buttons">
-                                            <label class="btn btn-default active">
-                                                <input type="checkbox" name="options" checked="">
-                                                <div>Low to High</div>
-                                            </label>
-                                            <label class="btn btn-default">
-                                                <input type="checkbox" name="options">
-                                                <div>Hight to Low</div>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div>
+                                <button class="btn btn-sm btn-primary">
+                                    <i class="fas fa-filter me-1"></i> Apply Filter
+                                </button>
+                                {% if has_filter %}
+                                    <a href="{%  url 'explore' %}" class="btn btn-danger btn-sm">
+                                        <i class="fas fa-times me-1"></i> clear
+                                    </a>
+                                {% endif %}
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -343,10 +181,13 @@
                         </div>
 
                         <div class="d-flex d-md-block float-md-end flex-column mt-2">
-                            <a href="#" class="btn bg-wine-berry btn-dark text-uppercase fw-700">Apply Now</a>
+                            <button id="apply-now-btn" data-toggle="modal" data-target="#applyModal"
+                                class="btn bg-wine-berry btn-dark btn-sm text-uppercase fw-700 me-2">Apply Now</button>
+                            <a href="{% url 'school_details' school.id %}"
+                                class="btn btn-sm btn-success text-uppercase fw-700">Visit <i
+                                    class="fas fa-eye"></i></a>
                         </div>
                     </div>
-                    <a href="{% url 'school_details' school.id %}" class="stretched-link"></a>
                 </div>
                 {% empty %}
                 <h5 class="text-center">No Data Available</h5>
@@ -400,5 +241,30 @@
     </div>
 </section>
 
+<!-- Apply to school Modal -->
+<div class="modal fade" id="applyModal" tabindex="-1" role="dialog" aria-labelledby="applyModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="applyModalLabel">Modal title</h5>
+                <button type="button" class="close btn btn-sm" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <select name="application" id="application">
+                    {% for child in children %}
+                    <option>{{child.first_name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}

@@ -16,7 +16,7 @@
             </a>
         </li>
 
-        <li class="nav-item">
+        <li class="nav-item {{ profile }}">
             <a class="nav-link" href="{% url 'profile' %}">
                 <i class="ti-user menu-icon"></i>
                 <span class="menu-title">Manage Profile</span>
@@ -36,15 +36,6 @@
                 <span class="menu-title">Common Form</span>
             </a>
         </li>
-
-        {% if is_update_available %}
-        <li class="nav-item">
-            <a class="nav-link">
-                <i class="icon-paper menu-icon"></i>
-                <span class="menu-title">Update</span>
-            </a>
-        </li>
-        {% endif %}
     </ul>
 </nav>
 <!-- partial -->

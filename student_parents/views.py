@@ -1,30 +1,27 @@
-import json
-from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.models import User
-from django.db import models
-from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.conf import settings
-from django.http import JsonResponse
-from django.views.generic.base import View
-import uuid 
-from bootstrap_modal_forms.generic import BSModalCreateView, BSModalDeleteView, BSModalUpdateView
-from django.urls import reverse_lazy
-from django.views.generic.edit import CreateView, UpdateView
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
+from django.http.response import HttpResponse, HttpResponseRedirect
+
+from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
+from django.views.generic.base import View
 
+from django.shortcuts import redirect, render, get_object_or_404
+from django.http import JsonResponse
+from django.urls import reverse_lazy
+from django.contrib import messages
+from django.conf import settings
 
-from .forms import (
-    ChildForm,
-    CommonFormForm,
+from bootstrap_modal_forms.generic import (
+    BSModalCreateView, 
+    BSModalDeleteView,
+    BSModalUpdateView
 )
 
-from .models import (
-    Child,
-    CommonForm
-)
-
+from student_parents.forms import ChildForm, CommonFormForm
+from student_parents.models import Child, CommonForm
 from schools.models import School
 
 User = get_user_model()
@@ -53,12 +50,14 @@ def profile(request):
         if is_update_available:
             context = {
                 'is_update_available':True,
-                'is_student_detail_show':False
+                'is_student_detail_show':False,
+                'profile': 'active'
             }
     except:
         context = {
             'is_update_available':False,
-            'is_student_detail_show':True
+            'is_student_detail_show':True,
+            'profile': 'active'
         }
     return render(request, 'student_parents/user_profile.html',context=context)
 
@@ -92,7 +91,7 @@ class ManageChild(LoginRequiredMixin ,View):
     template_name = 'student_parents/manage-child.html'
 
     def get(self, request):
-        instance = Child.objects.all()
+        instance = Child.objects.filter(user=self.request.user)
         context = {'form': ChildForm, 'manage_child': "active", 'data': instance}
         return render(request, self.template_name, context)
 
@@ -100,6 +99,7 @@ class ManageChild(LoginRequiredMixin ,View):
 class ChildCreateView(BSModalCreateView):
     template_name = 'student_parents/_child-form.html'
     form_class = ChildForm
+    success_message = "Success: record was created successfully"
     success_url = reverse_lazy('manage_child')
 
     def form_valid(self, form):
@@ -111,12 +111,20 @@ class ChildUpdateView(BSModalUpdateView):
     model = Child
     template_name = 'student_parents/_child-form.html'
     form_class = ChildForm
+    success_message = "Success: record was updated successfully"
     success_url = reverse_lazy('manage_child')
+
+    def form_valid(self, form):
+        current_child = self.get_object()
+        if self.request.user == current_child.user:
+            return super().form_valid(form)
+        return HttpResponse("It seems tha you don't have permission to do it. Sorry :(")
 
 
 class ChildDeleteView(BSModalDeleteView):
     model = Child
     template_name = 'student_parents/_delete-child.html'
+    success_message = "Success: record was deleted successfully"
     success_url = reverse_lazy('manage_child')
 
 
@@ -126,11 +134,11 @@ class ChildDeleteView(BSModalDeleteView):
 class CommonFormView(LoginRequiredMixin, ListView):
     model = Child
     template_name = 'student_parents/common-form-view.html'
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['common_form'] = 'active'
-        return context
+
+    def get(self, request):
+        instance = Child.objects.filter(user=self.request.user)
+        context = {'common_form': "active", 'object_list': instance}
+        return render(request, self.template_name, context)
 
 
 class CommonFormCreateOrUpdate(LoginRequiredMixin, UpdateView):

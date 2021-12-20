@@ -18,12 +18,7 @@
             <ul class="navbar-nav navbar-nav-right">
                 
                 <li class="nav-item nav-profile dropdown">
-        <a href="{% url 'employee_dashboard' %}" style="margin: 0px 51px;
-        background: grey;
-        padding: 5px;
-        color: black;
-        border-radius: 10%;">select school</a>
-
+        
                     <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
                         <span class="profile-dropdown">{{ request.user.email|make_list|first}}</span>
                     </a>

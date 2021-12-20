@@ -2,7 +2,7 @@
 <!-- Nav Start -->
 <nav class="navbar navbar-expand-md navbar-dark sticky-top">
     <div class="container-fluid">
-        <a class="navbar-brand ms-md-5" href="#">
+        <a class="navbar-brand ms-md-5" href="{% url 'home' %}">
             <img src="{% static 'assets/logo-smartbachhe.svg' %}">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
@@ -48,16 +48,4 @@
         </div>
     </div>
 </nav>
-
-<script>
-
-
-
-$.getJSON("static/student_parents/js/states-and-districts.json", function(json) {
-    console.log('printing'); // this will show the info it in firebug console
-
-    console.log(json); // this will show the info it in firebug console
-});
-
-</script>
 <!-- Nav End -->

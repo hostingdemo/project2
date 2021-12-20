@@ -10,13 +10,13 @@
     {% endif %}
     <ul class="nav">
         <li class="nav-item {{ dashboard }}">
-            <a class="nav-link" href="{% url 'employee_dashboard' %}">
+            <a class="nav-link" href="{% url 'cms_dashboard' %}">
                 <i class="icon-grid menu-icon"></i>
                 <span class="menu-title">Dashboard</span>
             </a>
         </li>
 
-        <li class="nav-item {{ School_Information }} ">
+        <li class="nav-item {{ School_Information }}">
             <a class="nav-link" href="{% url 'employee_school_info' instance.id %}">
                 <i class="icon-grid menu-icon"></i>
                 <span class="menu-title">School Information</span>
